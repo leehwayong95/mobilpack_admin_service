@@ -76,6 +76,31 @@ public class AdminLoginController {
 			HttpServletRequest req) {
 		// do something
 		
+		//매개변수 불러오기
+		String id = param.get("id").toString();
+		String pw = param.get("pw").toString();
+		//JSON 결과 변수
+		Map<String, Object> resultMap = new HashMap<>();
+		//response status 변수
+		HttpStatus status = null;
+		//login 정보 객체
+		AdminModel loginadmin = null;
+		try {// 르그인 정보 확인 및 토큰 생성 시도
+			loginadmin = loginservice.Login(id, pw);
+			String token = jwtservice.createJWT(loginadmin);
+			resultMap.put("status", true);
+			resultMap.put("token", token);
+			resultMap.put("name", loginadmin.getName());
+			System.out.println("permission : "+loginadmin.getSuperadmin());
+			boolean superadmin = loginadmin.getSuperadmin().equals("1");
+			resultMap.put("super", superadmin);
+			status = HttpStatus.ACCEPTED;
+		} catch (NoinfoException e) {
+			resultMap.put("status", false);
+			//Debug
+			//resultMap.put("reason", e.getMessage());
+			status = HttpStatus.OK;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 }
