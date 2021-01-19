@@ -74,12 +74,12 @@ public class AdminManagerController {
 		}
 
 	}
-
+	
 	// (관리자 등록)
 	@PostMapping("/adminjoin")
 	public String join(@RequestBody AdminModel admin) {
 		try {
-			adminservice.joinadmin(admin.getSuperadmin(), admin.getAdmin_id(), admin.getName(), admin.getPhone(),
+			adminservice.joinadmin( admin.getAdmin_id(), admin.getName(), admin.getPhone(),
 					admin.getEmail());
 			String check = "1";
 			return check;
@@ -91,16 +91,8 @@ public class AdminManagerController {
 	
 	//(관리자 검색)
 	@GetMapping("/adminlistsearch")
-	public List<AdminModel> Search (@RequestParam int Currentpage,int Number,String supercheck,String id,String name, String createat ,String updateat){
-		return adminservice.searchadminlist(Currentpage, Number,supercheck,id,name,createat,updateat);
-	}
-	@GetMapping("/adminsearch")
-	public ResponseEntity<Map<String, Object>> adminSearch(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	public List<AdminModel> Search (@RequestParam int Currentpage,int Number,String id,String name, String createat ,String updateat){
+		return adminservice.searchadminlist(Currentpage, Number,id,name,createat,updateat);
 	}
 	
 	
@@ -108,6 +100,21 @@ public class AdminManagerController {
 	@PostMapping("/admininformation")
 	public List<AdminModel> Detailpage(@RequestBody AdminModel admin) {
 		return adminservice.admininformation(admin.getAdmin_id());
+	}
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/adminsearch")
+	public ResponseEntity<Map<String, Object>> adminSearch(
+			@RequestBody Map<String, Object> param,
+			HttpServletRequest req) {
+		// do something
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	@GetMapping("/admininfo")

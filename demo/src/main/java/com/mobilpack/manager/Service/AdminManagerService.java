@@ -24,9 +24,9 @@ public class AdminManagerService {
     }
     
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
-    public List<AdminModel> searchadminlist(int Currentpage,int Number,String supercheck,String id,String name, String createat ,String updateat)
+    public List<AdminModel> searchadminlist(int Currentpage,int Number,String id,String name, String createat ,String updateat)
     {
-        return dao.searchadminlist(Currentpage,Number,supercheck,id,name,createat,updateat);
+        return dao.searchadminlist(Currentpage,Number,id,name,createat,updateat);
     }
     
     //(관리자 id 중복 검사)
@@ -35,8 +35,8 @@ public class AdminManagerService {
     }
     
     //(관리자 등록)
-    public String joinadmin(String supercheck,String id,String name,String phone,String email) {
-    	return dao.joinadmin(supercheck,id,name,phone,email);
+    public String joinadmin(String id,String name,String phone,String email) {
+    	return dao.joinadmin(id,name,phone,email);
     }
     
     public List<AdminModel> admininformation(String id){

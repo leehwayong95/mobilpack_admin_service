@@ -23,8 +23,8 @@
     
     	<!-- 관리자 등록  -->
     <insert id="joinadmin" parameterType="String">
-		insert into admin(superadmin,admin_id,name,phone,email)
-		values('${supercheck}','${id}','${name}','${phone}','${email}');
+		insert into admin(admin_id,name,phone,email)
+		values('${id}','${name}','${phone}','${email}');
 	</insert>
     
       <!-- 관리자id 증복체크  -->    
@@ -38,7 +38,7 @@
      <select id="searchadminlist" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
         select *
     	from admin
-    	where superadmin='${supercheck}'and admin_id='${id}' and name='${name}'and createat between '${createat}' and '${updateat}'
+    	where admin_id='${id}' and name='${name}'and createat between '${createat}' and '${updateat}'
     	ORDER BY admin.createat DESC 
     	limit ${Currentpage},${Number}
     </select>
@@ -49,5 +49,24 @@
         from admin
         where admin_id = '${id}'
 	</select>
+	
+    <!-- 관리자 삭제 -->
+      <delete id="deleteboardtext" parameterType="String">
+    	DELETE FROM admin
+    	WHERE admin_id='${id}'
+    </delete>
+    
+      <!-- 관리자 비밀번호 초기화 -->
+    <update id="updateboardtext" parameterType="String">
+    UPDATE admin
+    SET password='admin1234!!' 
+    WHERE admin.id='${id}'
+    </update>
+    
+    
+    
+    
+    
+    
     
 </mapper>
