@@ -3,7 +3,7 @@
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
     <select id='LoginQuery' resultType='com.mobilpack.manager.Model.AdminModel'>
-    	select admin_id, password
+    	select *
     	from admin
     	where admin_id = '${id}' AND password = '${pw}'
     </select>
