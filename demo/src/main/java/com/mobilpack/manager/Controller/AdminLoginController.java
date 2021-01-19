@@ -20,7 +20,7 @@ import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Service.AdminLoginService;
 import com.mobilpack.manager.Service.JwtService;
 
-@CrossOrigin(origins = "http://localhost/")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/my")
 public class AdminLoginController {
@@ -49,8 +49,6 @@ public class AdminLoginController {
 			resultMap.put("status", true);
 			resultMap.put("token", token);
 			resultMap.put("name", loginadmin.getName());
-			boolean superadmin = loginadmin.getSuperadmin().equals("1");
-			resultMap.put("super", superadmin);
 			status = HttpStatus.ACCEPTED;
 		} catch (NoinfoException e) {
 			resultMap.put("status", false);

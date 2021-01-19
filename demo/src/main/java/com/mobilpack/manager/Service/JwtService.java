@@ -30,7 +30,6 @@ public class JwtService {
 		builder.setSubject("logintoken")
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
 				.claim("admin_id", admin.getAdmin_id())
-				.claim("superadmin", admin.getSuperadmin())
 				.claim("name", admin.getName());
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
 		
