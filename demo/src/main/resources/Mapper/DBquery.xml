@@ -3,9 +3,14 @@
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
     <select id='LoginQuery' resultType='com.mobilpack.manager.Model.AdminModel'>
-    	select *
-    	from admin
-    	where admin_id = '${id}' AND password = '${pw}'
+    	SELECT *
+    	FROM admin
+    	WHERE admin_id = '${id}' AND password = '${pw}'
+    </select>
+    <select id='editInfo'>
+    	UPDATE admin
+    	SET name = '${name}', phone='${phone}', email='${email}'
+    	WHERE admin_id = '${id}'
     </select>
 </mapper>
 
