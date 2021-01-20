@@ -14,7 +14,6 @@ public class AdminModel {
 	private String admin_id;
 	private String name;
 	private String password;
-	private String salt;
 	private String email;
 	private String phone;
 	private String createat;
@@ -36,12 +35,6 @@ public class AdminModel {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getSalt() {
-		return salt;
-	}
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 	public String getEmail() {
 		return email;

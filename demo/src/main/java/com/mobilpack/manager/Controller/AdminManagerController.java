@@ -105,6 +105,7 @@ public class AdminManagerController {
 	
 	
 	
+	// map 형식으로 통일 약속???   map을 리스트 처럼 쓸수 있나?? 
 	
 	
 	

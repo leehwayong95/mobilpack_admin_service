@@ -45,7 +45,7 @@
     
 	<!-- 클릭한 관리자 정보 상세조회 -->
 	<select id="admininformation" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
-	    select *
+	    select admin_id,name,email,phone,createat,updateat
         from admin
         where admin_id = '${id}'
 	</select>
