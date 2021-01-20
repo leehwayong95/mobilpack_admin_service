@@ -14,10 +14,8 @@ public class AdminModel {
 	private String admin_id;
 	private String name;
 	private String password;
-	private String salt;
 	private String email;
 	private String phone;
-	private String superadmin;
 	private String createat;
 	private String updateat;
 	public String getAdmin_id() {
@@ -38,12 +36,6 @@ public class AdminModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getSalt() {
-		return salt;
-	}
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -55,12 +47,6 @@ public class AdminModel {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-	public String getSuperadmin() {
-		return superadmin;
-	}
-	public void setSuperadmin(String superadmin) {
-		this.superadmin = superadmin;
 	}
 	public String getCreateat() {
 		return createat;
