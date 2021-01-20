@@ -8,11 +8,19 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserModel {
 	private String user_id;
+	private String password;
 	private String name;
 	private String phone;
 	private String country;
 	private String createat;
 	
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

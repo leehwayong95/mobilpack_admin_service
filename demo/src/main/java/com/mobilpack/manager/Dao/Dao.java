@@ -33,5 +33,9 @@ public interface Dao {
 	
 	//유저 로그인 
 	public UserModel getUserLogin(String id, String pw);
+	//유저 회원가입시 아이디 중복확인
+	public UserModel getCheckingId(String id);
+	//유저 회원가입
+	public void signinUser (UserModel user);
 }
 	

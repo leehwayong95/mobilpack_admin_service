@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,20 +54,28 @@ public class UserLoginController {
 	
 	@PostMapping("/check")
 	public ResponseEntity<Map<String, Object>> userInfo(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
+			@RequestBody Map<String, Object> param) {
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("status", loginservice.checkID((String)param.get("id")));
+		HttpStatus status = HttpStatus.OK;
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@PostMapping("/singin")
+	@PostMapping("/signin")
 	public ResponseEntity<Map<String, Object>> userPwreset(
-			@RequestBody Map<String, Object> param,
+			@RequestBody UserModel targetModel,
 			HttpServletRequest req) {
-		// do something
-		
+		Map<String, Object>resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			loginservice.signin(targetModel);
+			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
 }

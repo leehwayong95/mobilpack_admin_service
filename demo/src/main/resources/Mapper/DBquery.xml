@@ -84,4 +84,13 @@
 		FROM user
 		WHERE user_id = '${id}' AND password = '${pw}'
 	</select>
+	<select id="getCheckingId" resultType="com.mobilpack.manager.Model.UserModel">
+		SELECT user_id
+		FROM user
+		WHERE user_id='${id}'
+	</select>
+	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
+		INSERT INTO user (user_id,password,name,country,phone)
+		VALUES ('${user_id}','${password}','${name}','${country}','${phone}')
+	</insert>
 </mapper>
