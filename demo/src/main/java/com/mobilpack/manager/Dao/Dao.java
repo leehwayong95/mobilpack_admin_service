@@ -23,5 +23,7 @@ public interface Dao {
 	public AdminModel LoginQuery(String id, String pw);
 	//사용자 정보 변경
 	public void editInfo(String id, String name, String phone, String email);
+	//사용자 비밀번호 변경
+	public void editPw(String id, String editpw);
 }
 	

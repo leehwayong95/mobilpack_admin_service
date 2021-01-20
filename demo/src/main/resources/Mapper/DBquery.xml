@@ -2,14 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
+	<!-- 로그인 -->
     <select id='LoginQuery' resultType='com.mobilpack.manager.Model.AdminModel'>
     	SELECT *
     	FROM admin
     	WHERE admin_id = '${id}' AND password = '${pw}'
     </select>
+    <!-- 정보수정(비밀번호제외) -->
     <select id='editInfo'>
     	UPDATE admin
     	SET name = '${name}', phone='${phone}', email='${email}'
+    	WHERE admin_id = '${id}'
+    </select>
+    <!-- 비밀번호수정 -->
+    <select id='editPw'>
+    	UPDATE admin
+    	SET password = '${editpw}'
     	WHERE admin_id = '${id}'
     </select>
     

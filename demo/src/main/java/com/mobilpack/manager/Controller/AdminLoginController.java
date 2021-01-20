@@ -68,7 +68,20 @@ public class AdminLoginController {
 	public ResponseEntity<Map<String, Object>> myPwUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
-		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		String currentpw = param.get("currentpw").toString();
+		String editpw = param.get("editpw").toString();
+		try {
+			String id = (String)jwtservice.getInfo(req.getHeader("authorization")).get("admin_id");
+			loginservice.editPw(id, currentpw, editpw);
+			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (Exception e){
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.ACCEPTED;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
