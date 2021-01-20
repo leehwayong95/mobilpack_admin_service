@@ -67,11 +67,4 @@
     SET password='admin1234!!' 
     WHERE admin.id='${id}'
     </update>
-    
-    
-    
-    
-    
-    
-    
 </mapper>
