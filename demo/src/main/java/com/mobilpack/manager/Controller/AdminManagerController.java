@@ -98,7 +98,7 @@ public class AdminManagerController {
 	
 	// (관리자 상세페이지)
 	@PostMapping("/admininformation")
-	public List<AdminModel> Detailpage(@RequestBody AdminModel admin) {
+	public AdminModel Detailpage(@RequestBody AdminModel admin) {
 		return adminservice.admininformation(admin.getAdmin_id());
 	}
 	
