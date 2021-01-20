@@ -18,19 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Service.AdminLoginService;
+import com.mobilpack.manager.Service.AdminManagerService;
 import com.mobilpack.manager.Service.JwtService;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/my")
 public class AdminLoginController {
+	//어드민 정보 반환을 위한 서비스 객체 생성
+	@Autowired
+	private AdminManagerService managerService;
+	//loginService 객체 생성
 	@Autowired
 	private AdminLoginService loginservice;
-	
+	//jwtService 생성
 	@Autowired
 	private JwtService jwtservice;
 	
-	@PostMapping("/login")
+	@PostMapping("/login")//로그인 RestAPI. Response : 토큰 발행
 	public ResponseEntity<Map<String, Object>> checkLogin(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
@@ -47,7 +52,7 @@ public class AdminLoginController {
 			loginadmin = loginservice.Login(id, pw);
 			String token = jwtservice.createJWT(loginadmin);
 			resultMap.put("status", true);
-			resultMap.put("token", token);
+			resultMap.put("jwt-token", token);
 			resultMap.put("name", loginadmin.getName());
 			status = HttpStatus.ACCEPTED;
 		} catch (NoinfoException e) {
@@ -59,7 +64,7 @@ public class AdminLoginController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@PostMapping("/pwupdate")
+	@PostMapping("/pwupdate")//비밀번호 초기화
 	public ResponseEntity<Map<String, Object>> myPwUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
@@ -67,25 +72,43 @@ public class AdminLoginController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	@GetMapping("/info")//로그인 정보 조회
+	public ResponseEntity<Map<String, Object>> getMyInfo(
+			HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String token = req.getHeader("authorization");
+			Map<String, Object> info = jwtservice.getInfo(token);
+			String id = (String)info.get("admin_id");
+			resultMap.put("admininfo", managerService.admininformation(id));
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	@PostMapping("/infoupdate")
 	public ResponseEntity<Map<String, Object>> myInfoUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
-		//안주면...?
 		Map<String, Object> resultMap = new HashMap<>();
-		String id = param.get("id").toString();
+		//Request Parameter
 		String name = param.get("name").toString();
 		String phone = param.get("phone").toString();
 		String email = param.get("email").toString();
 		HttpStatus status = null;
 		try {
+			String id = (String)jwtservice.getInfo(req.getHeader("authorization")).get("admin_id");
 			loginservice.editInfo(id, name, phone, email);
 			status = HttpStatus.OK;
 			resultMap.put("status", true);
-		} catch (NoinfoException e) {
+		} catch (Exception e) {
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
-			status = HttpStatus.ACCEPTED;
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
