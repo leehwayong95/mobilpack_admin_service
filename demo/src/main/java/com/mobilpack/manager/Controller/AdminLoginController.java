@@ -20,7 +20,7 @@ import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Service.AdminLoginService;
 import com.mobilpack.manager.Service.JwtService;
 
-@CrossOrigin(origins = "http://localhost/")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/my")
 public class AdminLoginController {
@@ -49,8 +49,6 @@ public class AdminLoginController {
 			resultMap.put("status", true);
 			resultMap.put("token", token);
 			resultMap.put("name", loginadmin.getName());
-			boolean superadmin = loginadmin.getSuperadmin().equals("1");
-			resultMap.put("super", superadmin);
 			status = HttpStatus.ACCEPTED;
 		} catch (NoinfoException e) {
 			resultMap.put("status", false);
@@ -65,7 +63,6 @@ public class AdminLoginController {
 	public ResponseEntity<Map<String, Object>> myPwUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
-		// do something
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -74,32 +71,21 @@ public class AdminLoginController {
 	public ResponseEntity<Map<String, Object>> myInfoUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
-		// do something
-		
-		//매개변수 불러오기
-		String id = param.get("id").toString();
-		String pw = param.get("pw").toString();
-		//JSON 결과 변수
+		//안주면...?
 		Map<String, Object> resultMap = new HashMap<>();
-		//response status 변수
+		String id = param.get("id").toString();
+		String name = param.get("name").toString();
+		String phone = param.get("phone").toString();
+		String email = param.get("email").toString();
 		HttpStatus status = null;
-		//login 정보 객체
-		AdminModel loginadmin = null;
-		try {// 르그인 정보 확인 및 토큰 생성 시도
-			loginadmin = loginservice.Login(id, pw);
-			String token = jwtservice.createJWT(loginadmin);
+		try {
+			loginservice.editInfo(id, name, phone, email);
+			status = HttpStatus.OK;
 			resultMap.put("status", true);
-			resultMap.put("token", token);
-			resultMap.put("name", loginadmin.getName());
-			System.out.println("permission : "+loginadmin.getSuperadmin());
-			boolean superadmin = loginadmin.getSuperadmin().equals("1");
-			resultMap.put("super", superadmin);
-			status = HttpStatus.ACCEPTED;
 		} catch (NoinfoException e) {
 			resultMap.put("status", false);
-			//Debug
-			//resultMap.put("reason", e.getMessage());
-			status = HttpStatus.OK;
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.ACCEPTED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

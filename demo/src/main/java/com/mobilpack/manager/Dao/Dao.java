@@ -24,5 +24,7 @@ public interface Dao {
     
     //(관리자 상세 정보)
     public List<AdminModel> admininformation(String id);
+	public AdminModel LoginQuery(String id, String pw);
+	public void editInfo(String id, String name, String phone, String email);
 }
 	

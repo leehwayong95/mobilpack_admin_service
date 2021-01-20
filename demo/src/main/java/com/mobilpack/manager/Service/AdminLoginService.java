@@ -20,4 +20,15 @@ public class AdminLoginService {
 		else
 			throw new NoinfoException("Wrong PW or ID");
 	}
+	
+	public boolean editInfo(String id, String name, String phone, String email) throws NoinfoException
+	{
+		try {
+			dao.editInfo(id, name, phone, email);
+			return true;
+		} catch (Exception e)
+		{
+			throw new NoinfoException("Can't find ID");
+		}
+	}
 }
