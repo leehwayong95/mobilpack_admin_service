@@ -39,7 +39,7 @@ public class AdminManagerService {
     	return dao.joinadmin(id,name,phone,email);
     }
     
-    public List<AdminModel> admininformation(String id){
+    public AdminModel admininformation(String id){
     	 return dao.admininformation(id);
     }
 }

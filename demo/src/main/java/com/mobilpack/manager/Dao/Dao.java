@@ -12,7 +12,7 @@ public interface Dao {
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
     public List<AdminModel> searchadminlist( int Currentpage,int Number,String id,String name, String createat ,String updateat);
     //(관리자 상세 정보)
-    public List<AdminModel> admininformation(String id);
+    public AdminModel admininformation(String id);
     
     //(관리자 id 증복 검사)
     public String idcheck(String id);

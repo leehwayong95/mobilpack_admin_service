@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Service.AdminManagerService;
 
-@CrossOrigin(origins = "http://localhost/")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/admin")
 public class AdminManagerController {
@@ -34,7 +34,7 @@ public class AdminManagerController {
 	}
 
 	// (관리자 처음페이지) 페이지 최종 몇개 페이지 필요한지 반환하는 것 (위에꺼랑 같이 보낼수 있다?) 카운트
-	@GetMapping("/adminlistcount")
+	@GetMapping("/listcount")
 	public int Allpagecount(@RequestParam(value = "pageNo", required = false) int pageNo) {
 		int count; // 전체 항목수
 		int Total; // 필요한 페이지 수 표시
@@ -54,7 +54,7 @@ public class AdminManagerController {
 	}
 	
 	// (관리자 id 중복 체크 )
-	@GetMapping("/adminidcheck")
+	@GetMapping("/idcheck")
 	public String IdAgaincheck(@RequestParam String id) {
 		try {
 			String Check = adminservice.idcheck(id);
@@ -76,7 +76,7 @@ public class AdminManagerController {
 	}
 	
 	// (관리자 등록)
-	@PostMapping("/adminjoin")
+	@PostMapping("/join")
 	public String join(@RequestBody AdminModel admin) {
 		try {
 			adminservice.joinadmin( admin.getAdmin_id(), admin.getName(), admin.getPhone(),
@@ -90,26 +90,24 @@ public class AdminManagerController {
 	}
 	
 	//(관리자 검색)
-	@GetMapping("/adminlistsearch")
+	@GetMapping("/listsearch")
 	public List<AdminModel> Search (@RequestParam int Currentpage,int Number,String id,String name, String createat ,String updateat){
 		return adminservice.searchadminlist(Currentpage, Number,id,name,createat,updateat);
 	}
 	
 	
 	// (관리자 상세페이지)
-	@PostMapping("/admininformation")
-	public List<AdminModel> Detailpage(@RequestBody AdminModel admin) {
+	@PostMapping("/information")
+	public AdminModel Detailpage(@RequestBody AdminModel admin) {
 		return adminservice.admininformation(admin.getAdmin_id());
 	}
-	
-	
 	
 	
 	// map 형식으로 통일 약속???   map을 리스트 처럼 쓸수 있나?? 
 	
 	
 	
-	@GetMapping("/adminsearch")
+	@GetMapping("/search")
 	public ResponseEntity<Map<String, Object>> adminSearch(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
@@ -118,7 +116,7 @@ public class AdminManagerController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@GetMapping("/admininfo")
+	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> adminInfo(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
