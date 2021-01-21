@@ -91,6 +91,6 @@
 	</select>
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
 		INSERT INTO user (user_id,password,name,country,phone)
-		VALUES ('${user_id}','${password}','${name}','${country}','${phone}')
+		VALUES ('${user_id}','${password}','${name}','${contry}','${phone}')
 	</insert>
 </mapper>
