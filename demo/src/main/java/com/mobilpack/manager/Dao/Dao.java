@@ -37,5 +37,7 @@ public interface Dao {
 	public UserModel getCheckingId(String id);
 	//유저 회원가입
 	public void signinUser (UserModel user);
+	//유저 회원정보
+	public UserModel getUserInfo(String id);
 }
 	

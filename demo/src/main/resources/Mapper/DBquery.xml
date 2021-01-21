@@ -84,13 +84,21 @@
 		FROM user
 		WHERE user_id = '${id}' AND password = '${pw}'
 	</select>
+	<!-- 사용자 아이디 중복 체크 쿼리 -->
 	<select id="getCheckingId" resultType="com.mobilpack.manager.Model.UserModel">
 		SELECT user_id
 		FROM user
 		WHERE user_id='${id}'
 	</select>
+	<!-- 회원가입 쿼리 -->
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
 		INSERT INTO user (user_id,password,name,country,phone)
 		VALUES ('${user_id}','${password}','${name}','${contry}','${phone}')
 	</insert>
+	<!-- 사용자 회원 정보 쿼리 -->
+	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">
+		SELECT user_id,phone,name
+		FROM user
+		WHERE user_id = '${id}'
+	</select>
 </mapper>
