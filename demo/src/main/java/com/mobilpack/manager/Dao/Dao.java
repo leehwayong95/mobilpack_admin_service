@@ -1,6 +1,7 @@
 package com.mobilpack.manager.Dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.UserModel;
@@ -37,7 +38,9 @@ public interface Dao {
 	public UserModel getCheckingId(String id);
 	//유저 회원가입
 	public void signinUser (UserModel user);
-	//유저 회원정보
+	//유저 회원정보 확인
 	public UserModel getUserInfo(String id);
+	//유저 회원정보 수정
+	public void updateInfo(Map<String, Object> editinfo);
 }
 	

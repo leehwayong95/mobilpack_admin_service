@@ -31,7 +31,7 @@ public class JwtService {
 		builder.setHeaderParam("typ","JWT");
 		
 		builder.setSubject("logintoken")
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
+				.setExpiration(new Date(System.currentTimeMillis()*1000+60 * expireMin))
 				.claim("admin_id", admin.getAdmin_id())
 				.claim("name", admin.getName());
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
@@ -59,7 +59,7 @@ public class JwtService {
 		try {
 			claims = Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
 		} catch (Exception e) { 
-			throw new Exception("KeyExpired");
+			throw new Exception(e.getMessage());
 		}
 		return claims.getBody();
 	}

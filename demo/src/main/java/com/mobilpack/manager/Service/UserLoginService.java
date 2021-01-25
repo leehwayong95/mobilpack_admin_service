@@ -22,11 +22,11 @@ public class UserLoginService {
 	}
 	//회원가입의 아이디 중복확인 서비스
 	public boolean checkID(String id) {
-		UserModel user = dao.getCheckingId(id);
-		if (user != null) {
-			return false;
+		UserModel user = dao.getCheckingId(id);	
+		if (user != null) {//검색된 사용자 객체가 있으면
+			return false;// 불가능
 		} else {
-			return true;
+			return true;// null일땐 가능
 		}
 	}
 	//회원가입 서비스

@@ -95,10 +95,16 @@
 		INSERT INTO user (user_id,password,name,country,phone)
 		VALUES ('${user_id}','${password}','${name}','${contry}','${phone}')
 	</insert>
-	<!-- 사용자 회원 정보 쿼리 -->
+	<!-- 사용자 회원 정보 출력 쿼리 -->
 	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">
 		SELECT user_id,phone,name
 		FROM user
 		WHERE user_id = '${id}'
 	</select>
+	<!-- 사용자 정보출력. 여러개의 파라메터 타입을 위해 HashMap사용 -->
+	<update id="updateInfo" parameterType="HashMap">
+		UPDATE user
+	    SET user_id='${editModel.user_id}', name='${editModel.name}', phone='${editModel.phone}'
+	    WHERE user_id='${target}'
+	</update>
 </mapper>

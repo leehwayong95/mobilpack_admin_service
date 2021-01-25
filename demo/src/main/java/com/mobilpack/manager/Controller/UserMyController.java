@@ -32,8 +32,22 @@ public class UserMyController {
 	public ResponseEntity<Map<String, Object>> userInfo(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
-		// do something
-		
+		UserModel editModel = new UserModel();
+		Map<String,Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		editModel.setName(param.get("name").toString());
+		editModel.setPhone(param.get("phone").toString());
+		editModel.setUser_id(param.get("email").toString());
+		try {
+			String targetUser = jwtservice.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			myservice.updateUserInfo(targetUser, editModel);
+			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
