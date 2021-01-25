@@ -35,11 +35,27 @@ public class AdminManagerService {
     }
     
     //(관리자 등록)
-    public String joinadmin(String id,String name,String phone,String email) {
-    	return dao.joinadmin(id,name,phone,email);
+    public void joinadmin(String id,String password,String name,String phone,String email) {
+    	dao.joinadmin(id,password,name,phone,email);
     }
     
+    //(관리자 수정)
+    public void editadmin(String id,String name,String phone,String email) {
+    	dao.editadmin(id,name,phone,email);
+    }
+    
+  //(관리자 비밀번호 초기화)
+    public void pwreset(String id) {
+    	dao.pwreset(id);
+    }
+    
+    //(관리자 상세정보)
     public AdminModel admininformation(String id){
     	 return dao.admininformation(id);
+    }
+    
+    //(관리자 삭제)
+    public void deleteadmin(String id){
+    	 dao.deleteadmin(id);
     }
 }
