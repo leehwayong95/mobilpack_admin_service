@@ -42,5 +42,7 @@ public interface Dao {
 	public UserModel getUserInfo(String id);
 	//유저 회원정보 수정
 	public void updateInfo(Map<String, Object> editinfo);
+	//유저 패스워드 수정
+	public void updatepw(String id, String editpw);
 }
 	

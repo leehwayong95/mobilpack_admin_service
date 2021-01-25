@@ -101,10 +101,16 @@
 		FROM user
 		WHERE user_id = '${id}'
 	</select>
-	<!-- 사용자 정보출력. 여러개의 파라메터 타입을 위해 HashMap사용 -->
+	<!-- 사용자 정보 수정. 여러개의 파라메터 타입을 위해 HashMap사용 -->
 	<update id="updateInfo" parameterType="HashMap">
 		UPDATE user
 	    SET user_id='${editModel.user_id}', name='${editModel.name}', phone='${editModel.phone}'
 	    WHERE user_id='${target}'
+	</update>
+	<!-- 사용자 아이디 수정-->
+	<update id="updatepw">
+		UPDATE user
+		SET password='${editpw}'
+		WHERE user_id='${id}'
 	</update>
 </mapper>
