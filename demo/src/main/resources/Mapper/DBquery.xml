@@ -11,13 +11,13 @@
     <!-- 정보수정(비밀번호제외) -->
     <select id='editInfo'>
     	UPDATE admin
-    	SET name = '${name}', phone='${phone}', email='${email}'
+    	SET name = '${name}', phone='${phone}', email='${email}', updateat=now()
     	WHERE admin_id = '${id}'
     </select>
     <!-- 비밀번호수정 -->
     <select id='editPw'>
     	UPDATE admin
-    	SET password = '${editpw}'
+    	SET password = '${editpw}', updateat=now()
     	WHERE admin_id = '${id}'
     </select>
     
