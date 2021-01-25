@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost/")
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/su/user")
 public class AdminUserController {
 	
 	@GetMapping("/search")

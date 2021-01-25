@@ -1,28 +1,31 @@
 package com.mobilpack.manager.Model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AdminModel {
-	private String admin_id;
+public class UserModel {
+	private String user_id;
+	private String password;
 	private String name;
-	private String email;
 	private String phone;
+	private String contry;
 	private String createat;
-	private String updateat;
 	
-	public String getAdmin_id() {
-		return admin_id;
+	
+	public String getPassword() {
+		return password;
 	}
-	public void setAdmin_id(String admin_id) {
-		this.admin_id = admin_id;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	public String getName() {
 		return name;
@@ -30,17 +33,17 @@ public class AdminModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public String getPhone() {
 		return phone;
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getContry() {
+		return contry;
+	}
+	public void setContry(String country) {
+		this.contry = country;
 	}
 	public String getCreateat() {
 		return createat;
@@ -48,12 +51,5 @@ public class AdminModel {
 	public void setCreateat(String createat) {
 		this.createat = createat;
 	}
-	public String getUpdateat() {
-		return updateat;
-	}
-	public void setUpdateat(String updateat) {
-		this.updateat = updateat;
-	}
-	
 	
 }
