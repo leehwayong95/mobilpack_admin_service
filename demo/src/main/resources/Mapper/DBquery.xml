@@ -85,7 +85,7 @@
     
     <!-- 유저 리스트 검색 인출 -->
     <select id="getUserList" resultType='com.mobilpack.manager.Model.UserModel'>
-    	SELECT country, user_id, name, phone, DATE_FORMAT(createat, '%Y%m%d') AS createat
+    	SELECT country, user_id, name, phone, createat
     	FROM user
     	${where}
     	${limit}

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobilpack.manager.Model.UserModel;
 import com.mobilpack.manager.Service.AdminUserService;
 
-@CrossOrigin(origins = "http://localhost/")
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/user")
 public class AdminUserController {
 	@Autowired
 	AdminUserService userService;
 	
-	@GetMapping("/search")
+	@PatchMapping("/search")
 	public ResponseEntity<Map<String, Object>> userSearch(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
@@ -40,7 +41,8 @@ public class AdminUserController {
 			//cookie 형식의 key=value;형식으로 String 만듦.
 			for(int i = 0 ; i < 5 ; i++) {
 				try {
-					param.get(keyList[i]).toString();
+					if(param.get(keyList[i]).toString().equals(""))
+						continue;
 					usedKey.add(keyList[i]);
 				} catch (Exception e) {
 					if (keyList[i].equals("page")) {
@@ -56,6 +58,7 @@ public class AdminUserController {
 			resultMap.put("total", userlist.size());
 			status = HttpStatus.OK;
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultMap.put("userdata",null);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

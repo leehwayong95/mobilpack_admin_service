@@ -40,10 +40,10 @@ public class AdminUserService {
 				where += "name LIKE \'%" + param.get(key).toString() +"%\'";
 				break;
 			case("min"):
-				where += "createat > STR_TO_DATE(\'" + param.get(key).toString() + "\','%Y%m%d')";
+				where += "DATE_FORMAT(createat, '%Y%m%d') >= STR_TO_DATE(\'" + param.get(key).toString() + "\','%Y%m%d')";
 				break;
 			case("max"):
-				where += "createat < STR_TO_DATE(\'" + param.get(key).toString() + "\','%Y%m%d')";
+				where += "DATE_FORMAT(createat, '%Y%m%d') <= STR_TO_DATE(\'" + param.get(key).toString() + "\','%Y%m%d')";
 				break;
 			case("region"):
 				where += "country = \'" + param.get(key).toString() + "\'";
