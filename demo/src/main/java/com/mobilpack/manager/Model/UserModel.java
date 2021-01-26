@@ -11,7 +11,7 @@ public class UserModel {
 	private String password;
 	private String name;
 	private String phone;
-	private String contry;
+	private String country;
 	private String createat;
 	
 	
@@ -39,11 +39,11 @@ public class UserModel {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getContry() {
-		return contry;
+	public String getCountry() {
+		return country;
 	}
-	public void setContry(String country) {
-		this.contry = country;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	public String getCreateat() {
 		return createat;

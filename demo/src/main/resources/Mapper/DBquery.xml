@@ -82,6 +82,14 @@
    		SET password='admin1234!!'
    		WHERE admin_id='${id}'
     </update>
+    
+    <!-- 유저 리스트 검색 인출 -->
+    <select id="getUserList" resultType='com.mobilpack.manager.Model.UserModel'>
+    	SELECT country, user_id, name, phone, DATE_FORMAT(createat, '%Y%m%d') AS createat
+    	FROM user
+    	${where}
+    	${limit}
+    </select>
 
 	<!--아래는 사용자용 쿼리 입니다.-->
 
@@ -100,7 +108,7 @@
 	<!-- 회원가입 쿼리 -->
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
 		INSERT INTO user (user_id,password,name,country,phone)
-		VALUES ('${user_id}','${password}','${name}','${contry}','${phone}')
+		VALUES ('${user_id}','${password}','${name}','${country}','${phone}')
 	</insert>
 	<!-- 사용자 회원 정보 출력 쿼리 -->
 	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">
