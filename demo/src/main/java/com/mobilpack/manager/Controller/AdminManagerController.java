@@ -39,7 +39,7 @@ public class AdminManagerController {
 		int count; // 전체 항목수
 		int Total; // 필요한 페이지 수 표시
 		try {
-			count = adminservice.getadminlistcount(); // 전체 관리자 항목 수 구하는곳 가능하면 서비스로 옮기자 
+			count = adminservice.getadminlistcount(); // 전체 관리자 항목 수 구하는곳 가능하면 서비스로 옮기자
 
 			Total = count / Number;
 			if (count % Number > 0) {
@@ -52,7 +52,7 @@ public class AdminManagerController {
 			return -1;
 		}
 	}
-	
+
 	// (관리자 id 중복 체크 )
 	@GetMapping("/idcheck")
 	public String IdAgaincheck(@RequestParam String id) {
@@ -73,7 +73,7 @@ public class AdminManagerController {
 			return Check;
 		}
 	}
-	
+
 	// (관리자 등록) ( 0:정상 작동 1: 오류 )
 	@PostMapping("/join")
 	public String join(@RequestBody AdminModel admin) {
@@ -86,7 +86,7 @@ public class AdminManagerController {
 			return check;
 		}
 	}
-	
+
 	// (관리자 수정) ( 0k:정상 작동 1: 오류 )
 	@PostMapping("/edit")
 	public String edit(@RequestBody AdminModel admin) {
@@ -99,7 +99,7 @@ public class AdminManagerController {
 			return check;
 		}
 	}
-	
+
 	//(비밀번호 초기화)
 	@PostMapping("/pwreset")
 	public String pwreset(@RequestBody AdminModel admin) {
@@ -112,7 +112,7 @@ public class AdminManagerController {
 			return check;
 		}
 	}
-	
+
 
 	//(관리자 검색)
 	@GetMapping("/listsearch")
@@ -120,14 +120,10 @@ public class AdminManagerController {
 		Currentpage=Number*(Currentpage-1); //서비스로 옮겨야함
 		return adminservice.searchadminlist(Currentpage, Number,id,name,createat,updateat);
 	}
-	
-	
+
+
 	// (관리자 상세페이지)
-<<<<<<< HEAD
-	@PostMapping("/admininformation")
-=======
 	@PostMapping("/information")
->>>>>>> origin/adminedit
 	public AdminModel Detailpage(@RequestBody AdminModel admin) {
 		return adminservice.admininformation(admin.getAdmin_id());
 	}
@@ -144,49 +140,49 @@ public class AdminManagerController {
 			return check;
 		}
 	}
-	
+
 	@GetMapping("/search")
 	public ResponseEntity<Map<String, Object>> adminSearch(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something
-		
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> adminInfo(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something
-		
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@PostMapping("/adminupdate")
 	public ResponseEntity<Map<String, Object>> adminUpdate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something
-		
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@DeleteMapping("/admindelete")
 	public ResponseEntity<Map<String, Object>> adminDelete(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something
-		
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@GetMapping("/adminpwreset")
 	public ResponseEntity<Map<String, Object>> adminPwreset(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something
-		
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
