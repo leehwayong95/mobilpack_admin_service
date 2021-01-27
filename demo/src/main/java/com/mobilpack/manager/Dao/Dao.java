@@ -30,26 +30,36 @@ public interface Dao {
     
     //관리자 로그인쿼리
 	public AdminModel LoginQuery(String id, String pw);
-	//사용자 정보 변경
+	//관리자 정보 변경 : 자기자신
 	public void editInfo(String id, String name, String phone, String email);
-	//사용자 비밀번호 변경
+	//관리자 비밀번호 변경 : 자기자신
 	public void editPw(String id, String editpw);
+	
+	//유저 리스트 조회
+	public List<UserModel> getUserList (String where, String limit);
+	//유저 리스트 조회 개수 반환
+	public int getUserListCount (String where);
+	//유저 정보 조회는 아래 유저 쿼리 재활용
+	//유저 패스워드 초기화
+	public void setUserPwReset (String id);
+	//유저 삭제
+	public void setUserDelete (String id);
 	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
 	/**********************************************************/
 	
 	//유저 로그인 
-	public UserModel getUserLogin(String id, String pw);
+	public UserModel getUserLogin (String id, String pw);
 	//유저 회원가입시 아이디 중복확인
-	public UserModel getCheckingId(String id);
+	public UserModel getCheckingId (String id);
 	//유저 회원가입
 	public void signinUser (UserModel user);
 	//유저 회원정보 확인
-	public UserModel getUserInfo(String id);
+	public UserModel getUserInfo (String id);
 	//유저 회원정보 수정
-	public void updateInfo(Map<String, Object> editinfo);
+	public void updateInfo (Map<String, Object> editinfo);
 	//유저 패스워드 수정
-	public void updatepw(String id, String editpw);
+	public void updatepw (String id, String editpw);
 }
 	
