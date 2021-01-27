@@ -76,8 +76,13 @@ public class AdminUserService {
 	}
 	
 	//유저 pw reset 서비스
-	public void setUserPwReset (String id) throws NoinfoException{
+	public void setUserPwReset (String id) throws NoinfoException {
 		this.getUserInfo(id);
 		dao.setUserPwReset(id);
+	}
+	
+	public void setUserDelete (String id) throws NoinfoException {
+		this.getUserInfo(id);
+		dao.setUserDelete(id);
 	}
 }

@@ -103,6 +103,11 @@
    		SET password='password123'
    		WHERE user_id='${id}'
    	</update>
+   	<!-- 관리자가 유저 삭제 -->
+   	<delete id="setUserDelete">
+   		DELETE FROM user
+   		WHERE user_id = '${id}'
+   	</delete>
 
 	<!--아래는 사용자용 쿼리 입니다.-->
 
