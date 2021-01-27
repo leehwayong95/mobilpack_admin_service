@@ -88,8 +88,21 @@
     	SELECT country, user_id, name, phone, createat
     	FROM user
     	${where}
+    	ORDER BY createat
     	${limit}
     </select>
+    <!-- 유저 리스트 총 개수 반환 -->
+    <select id="getUserListCount" resultType="int">
+    	SELECT COUNT(*) AS count
+    	FROM user
+    	${where}
+   	</select>
+   	<!-- 유저 패스워드 리셋 -->
+   	<update id="setUserPwReset">
+   		UPDATE user
+   		SET password='password123'
+   		WHERE user_id='${id}'
+   	</update>
 
 	<!--아래는 사용자용 쿼리 입니다.-->
 
@@ -97,7 +110,7 @@
 	<select id="getUserLogin" resultType="com.mobilpack.manager.Model.UserModel">
 		SELECT *
 		FROM user
-		WHERE user_id = '${id}' AND password = '${pw}'
+	WHERE user_id = '${id}' AND password = '${pw}'
 	</select>
 	<!-- 사용자 아이디 중복 체크 쿼리 -->
 	<select id="getCheckingId" resultType="com.mobilpack.manager.Model.UserModel">
@@ -112,7 +125,7 @@
 	</insert>
 	<!-- 사용자 회원 정보 출력 쿼리 -->
 	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT user_id,phone,name
+		SELECT user_id,phone,name,createat,country
 		FROM user
 		WHERE user_id = '${id}'
 	</select>

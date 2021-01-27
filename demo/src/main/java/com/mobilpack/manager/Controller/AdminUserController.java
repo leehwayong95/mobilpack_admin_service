@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.UserModel;
 import com.mobilpack.manager.Service.AdminUserService;
 
@@ -55,10 +57,9 @@ public class AdminUserController {
 			List<UserModel> userlist = userService.getUserList(param, usedKey);
 			resultMap.put("userdata", userlist);
 			//리스트 개수 반환
-			resultMap.put("total", userlist.size());
+			resultMap.put("total", userService.getUserListCount());
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			e.printStackTrace();
 			resultMap.put("userdata",null);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -68,19 +69,41 @@ public class AdminUserController {
 	
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> userInfo(
-			@RequestBody Map<String, Object> param,
+			@RequestParam(value="userid") String id,
 			HttpServletRequest req) {
-		// do something
-		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			resultMap.put("info", userService.getUserInfo(id));
+			resultMap.put("result", true);
+			status = HttpStatus.OK;
+		} catch (NoinfoException e) {
+			resultMap.put("result", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			resultMap.put("result", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		//userService doSomeThing
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	@GetMapping("/pwreset")
 	public ResponseEntity<Map<String, Object>> userPwreset(
-			@RequestBody Map<String, Object> param,
+			@RequestParam String userid,
 			HttpServletRequest req) {
-		// do something
-		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			userService.setUserPwReset(userid);
+			resultMap.put("result", true);
+			status = HttpStatus.OK;
+		}	catch (Exception e) {
+			resultMap.put("result", false);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	

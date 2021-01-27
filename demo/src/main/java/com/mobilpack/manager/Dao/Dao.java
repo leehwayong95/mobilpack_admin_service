@@ -37,6 +37,11 @@ public interface Dao {
 	
 	//유저 리스트 조회
 	public List<UserModel> getUserList (String where, String limit);
+	//유저 리스트 조회 개수 반환
+	public int getUserListCount (String where);
+	//유저 정보 조회는 아래 유저 쿼리 재활용
+	//유저 패스워드 초기화
+	public void setUserPwReset (String id);
 	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
