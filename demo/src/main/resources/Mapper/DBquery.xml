@@ -2,122 +2,91 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
-	<!-- 로그인 -->
     <select id='LoginQuery' resultType='com.mobilpack.manager.Model.AdminModel'>
     	SELECT *
     	FROM admin
     	WHERE admin_id = '${id}' AND password = '${pw}'
     </select>
-    <!-- 정보수정(비밀번호제외) -->
     <select id='editInfo'>
     	UPDATE admin
-    	SET name = '${name}', phone='${phone}', email='${email}', updateat=now()
+    	SET name = '${name}', phone='${phone}', email='${email}'
     	WHERE admin_id = '${id}'
     </select>
-    <!-- 비밀번호수정 -->
-    <select id='editPw'>
-    	UPDATE admin
-    	SET password = '${editpw}', updateat=now()
-    	WHERE admin_id = '${id}'
-    </select>
-
+    
    <!-- 관리자 리스트 현재페이지에 필요한 항목수+정보 가져오기 -->
     <select id="getadminlist" resultType='com.mobilpack.manager.Model.AdminModel'>
         select *
     	from admin
     	LIMIT ${Currentpage},${Number}
     </select>
-
-    <!-- 전체 관리자 리스트 수 구하기  -->
+    
+    <!-- 전체 관리자 리스트 수 구하기  --> 
     <select id="getadminlistcount" resultType="int">
-         select count(*)
+         select count(*) 
          from admin
     </select>
-
+    
     	<!-- 관리자 등록  -->
     <insert id="joinadmin" parameterType="String">
 		insert into admin(admin_id,name,password,email,phone)
 		values('${id}','${name}','${password}','${email}','${phone}');
 	</insert>
-
+	
 	 	<!-- 관리자 수정  -->
     <update id="editadmin" parameterType="String">
    		UPDATE admin
     	SET name='${name}',phone='${phone}',email='${email}'
     	WHERE admin_id='${id}'
 	</update>
-
-      <!-- 관리자id 증복체크  -->
+    
+      <!-- 관리자id 증복체크  -->    
     <select id="idcheck" parameterType="String" resultType="String">
         select admin_id
         from admin
         where admin_id='${id}'
-   </select>
-
-     <!-- 관리자 검색 설정한것에 대한 리스트 가져오기 -->
+   </select> 
+    
+     <!-- 관리자 검색 설정한것에 대한 리스트 가져오기 --> 
      <select id="searchadminlist" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
         select admin_id,name,phone,email,createat,updateat
     	from admin
-    	where admin_id='${id}' or name='${name}'or createat between '${createat}' and '${updateat}'
+    	<where>
+    	<!-- id가 빈값이 아닐때 --> 
+    	<if test="id!=null and id!=''">
+    	and admin_id LIKE'%${id}%'
+    	</if>
+    	<!-- name 빈값이 아닐때 --> 
+    	<if test="name != null and name != ''">
+    	and name LIKE '%${name}%'
+    	</if>
+    	<!-- 날짜가 빈값이 아닐때 -->
+    	<if test="createat!=null and createat !='' and updateat !=null and updateat !=''">
+    	and createat between '${createat}' and '${updateat}'
+    	</if>
+    	</where>
     	ORDER BY admin.createat ASC
-    	limit ${Currentpage},${Number}
+    	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''"> 
+    	LIMIT ${Currentpage},${Number}
+    	</if>
     </select>
-
+       
 	<!-- 클릭한 관리자 정보 상세조회 -->
 	<select id="admininformation" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
 	    select admin_id,name,email,phone,createat,updateat
         from admin
         where admin_id = '${id}'
 	</select>
-
+	
     <!-- 관리자 삭제 -->
       <delete id="deleteadmin" parameterType="String">
     	DELETE FROM admin
     	WHERE admin_id='${id}'
     </delete>
-
+    
       <!-- 관리자 비밀번호 초기화 -->
     <update id="pwreset" parameterType="String">
     	UPDATE admin
-   		SET password='admin1234!!'
+   		SET password='admin1234!!' 
    		WHERE admin_id='${id}'
     </update>
-
-	<!--아래는 사용자용 쿼리 입니다.-->
-
-	<!-- 사용자 로그인 쿼리 -->
-	<select id="getUserLogin" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT *
-		FROM user
-		WHERE user_id = '${id}' AND password = '${pw}'
-	</select>
-	<!-- 사용자 아이디 중복 체크 쿼리 -->
-	<select id="getCheckingId" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT user_id
-		FROM user
-		WHERE user_id='${id}'
-	</select>
-	<!-- 회원가입 쿼리 -->
-	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
-		INSERT INTO user (user_id,password,name,country,phone)
-		VALUES ('${user_id}','${password}','${name}','${contry}','${phone}')
-	</insert>
-	<!-- 사용자 회원 정보 출력 쿼리 -->
-	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT user_id,phone,name
-		FROM user
-		WHERE user_id = '${id}'
-	</select>
-	<!-- 사용자 정보 수정. 여러개의 파라메터 타입을 위해 HashMap사용 -->
-	<update id="updateInfo" parameterType="HashMap">
-		UPDATE user
-	    SET user_id='${editModel.user_id}', name='${editModel.name}', phone='${editModel.phone}'
-	    WHERE user_id='${target}'
-	</update>
-	<!-- 사용자 아이디 수정-->
-	<update id="updatepw">
-		UPDATE user
-		SET password='${editpw}'
-		WHERE user_id='${id}'
-	</update>
 </mapper>

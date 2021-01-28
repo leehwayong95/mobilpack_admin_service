@@ -3,6 +3,8 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
+
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.UserModel;
 
@@ -12,7 +14,7 @@ public interface Dao {
     //(페이징) 전체 관리자 항목수 가져오기 
     public int getadminlistcount();
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
-    public List<AdminModel> searchadminlist( int Currentpage,int Number,String id,String name, String createat ,String updateat);
+    public List<AdminModel> searchadminlist( String Currentpage,String Number,String id,String name, String createat ,String updateat);
     //(관리자 상세 정보)
     public AdminModel admininformation(String id);
     //(관리자 삭제)

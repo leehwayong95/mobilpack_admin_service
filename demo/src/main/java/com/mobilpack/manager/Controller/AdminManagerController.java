@@ -1,11 +1,14 @@
 package com.mobilpack.manager.Controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,7 +64,7 @@ public class AdminManagerController {
 			System.out.println(Check);
 			if (Check == null) {
 				// 중복 id 없음
-				Check = "0";
+				Check = "ok";
 				return Check;
 			} else {
 				// id 중복됨
@@ -78,8 +81,8 @@ public class AdminManagerController {
 	@PostMapping("/join")
 	public String join(@RequestBody AdminModel admin) {
 		try {
-			adminservice.joinadmin(admin.getAdmin_id(), admin.getPassword(), admin.getName(), admin.getPhone(),admin.getEmail());
-			String check = "0";
+			adminservice.joinadmin(admin.getAdmin_id(), admin.getName(), admin.getPhone(),admin.getEmail());
+			String check = "ok";
 			return check;
 		} catch (Exception e) {
 			String check = "1";
@@ -113,14 +116,32 @@ public class AdminManagerController {
 		}
 	}
 
-
-	//(관리자 검색)
+	
+	// (관리자 검색)
 	@GetMapping("/listsearch")
-	public List<AdminModel> Search (@RequestParam int Currentpage,int Number,String id,String name, String createat ,String updateat){
-		Currentpage=Number*(Currentpage-1); //서비스로 옮겨야함
-		return adminservice.searchadminlist(Currentpage, Number,id,name,createat,updateat);
+	public ResponseEntity<Map<String, Object>> Search1(@RequestParam int Currentpage, int Number, String id, String name, String createat,String updateat) {
+		Currentpage = Number * (Currentpage - 1); // 서비스로 옮겨야함
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<AdminModel> adminsearchlist = new ArrayList<AdminModel>();
+		List<AdminModel> adminsearchlistcount = new ArrayList<AdminModel>();
+		
+		String testCurrentpage=Integer.toString(Currentpage);
+		String testNumber=Integer.toString(Number);
+		// (검색한 결과 게시글 리스트 담는곳)
+		System.out.println("여기가 Currentpage번호야"+Currentpage);
+		System.out.println("여기가 Number번호야"+Number);
+		adminsearchlist=adminservice.searchadminlist(testCurrentpage, testNumber, id, name, createat, updateat);
+		// (검색한 결과 게시글 수 담는곳)
+		testCurrentpage="";
+		testNumber="";
+		adminsearchlistcount=adminservice.searchadminlist(testCurrentpage, testNumber, id, name, createat, updateat);
+		int listsize = adminsearchlistcount.size();
+		
+		map.put("result",adminsearchlist);
+		map.put("count",listsize);
+		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK );
+		
 	}
-
 
 	// (관리자 상세페이지)
 	@PostMapping("/information")
