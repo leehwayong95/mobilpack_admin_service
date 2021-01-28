@@ -3,16 +3,11 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
-
 import com.mobilpack.manager.Model.AdminModel;
+import com.mobilpack.manager.Model.NoticeModel;
 import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
-	//(페이징) 현재 페이지에 대한 관리자 항목 정보,정해진 컬럼수 가져오기 
-    public List<AdminModel> getadminlist(int Currentpage,int Number);
-    //(페이징) 전체 관리자 항목수 가져오기 
-    public int getadminlistcount();
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
     public List<AdminModel> searchadminlist( String Currentpage,String Number,String id,String name, String createat ,String updateat);
     //(관리자 상세 정보)
@@ -36,6 +31,23 @@ public interface Dao {
 	public void editInfo(String id, String name, String phone, String email);
 	//사용자 비밀번호 변경
 	public void editPw(String id, String editpw);
+	
+	/**********************************************************/
+	/********************공지사항 관련 입니다.**********************/
+	/**********************************************************/
+	
+	//(공지사항 검색)
+	public List<NoticeModel> searchnotice(int Currentpage,int Number,String title,String content);
+	//(공지사항 상세)
+	public NoticeModel detailnotice(String postindex);
+	
+	//(공지사항 작성)
+	public void insertnotice(String id,String enabled,String language,String title,String content,String topsetting);
+	//(공지사항 수정)
+    public void editnotice(String postindex,String id,String enabled,String language,String title,String content,String topsetting);
+    //(공지사항 삭제)
+    public void deletenotice(String postindex);
+	
 	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/

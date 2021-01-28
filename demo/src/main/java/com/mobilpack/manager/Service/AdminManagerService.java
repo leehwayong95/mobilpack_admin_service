@@ -18,16 +18,6 @@ public class AdminManagerService {
 	@Autowired
 	private Dao dao;
 	
-	//(처음 페이지 관리자 리스트 페이징) 현재 페이지에 대한 관리자 항목 정보,정해진 컬럼수 가져오기 
-    public List<AdminModel> getadminlist(int Currentpage, int Number)
-    {
-        return dao.getadminlist(Currentpage, Number);
-    }
-    
-    //(처음 페이지 관리자 리스트 페이징) 전체 관리자 항목수 가져오기 
-    public int getadminlistcount(){
-        return dao.getadminlistcount();
-    }
 
 	// (관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
 	public List<AdminModel> searchadminlist(String Currentpage, String Number, String id, String name, String createat,
