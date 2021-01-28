@@ -69,5 +69,7 @@ public interface Dao {
 	public List<QnaModel> getQnaList(String category, String title, String answer, String min, String max, String page, String count);
 	//유저 QnA 자세히 보기
 	public QnaModel getQnaPost(String index);
+	//유저 QnA 삭제
+	public void deleteQnaPost (String index, String id);
 }
 	

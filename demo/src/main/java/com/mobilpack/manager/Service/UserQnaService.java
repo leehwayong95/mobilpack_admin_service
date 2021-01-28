@@ -70,4 +70,8 @@ public class UserQnaService {
 			return target;
 		}
 	}
+	//Qna 삭제 메서드
+	public void deleteQnaPost (String index, String id) {
+		dao.deleteQnaPost(index, id);
+	}
 }

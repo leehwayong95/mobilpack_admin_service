@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,7 +66,10 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			resultMap.put("QnaPostModel",qnaService.getQnaPost(index));
+			QnaModel target = qnaService.getQnaPost(index);
+			boolean permission = jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString().equals(target.getUser_id());
+			resultMap.put("permission", permission);
+			resultMap.put("QnaPostModel", target);
 			status = HttpStatus.OK;
 		} catch (NoinfoException e) {
 			resultMap.put("result", false);
@@ -75,6 +79,25 @@ public class UserQnaController {
 			e.printStackTrace();
 			resultMap.put("result", false);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@DeleteMapping("/{index}")
+	public ResponseEntity<Map<String, Object>> userQnadelete(
+			@PathVariable String index,
+			HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String id = jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			qnaService.deleteQnaPost(index, id);
+			resultMap.put("result", true);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("result", false);
+			status = HttpStatus.BAD_REQUEST;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
