@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mobilpack.manager.Model.AdminModel;
+import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
@@ -61,5 +62,10 @@ public interface Dao {
 	public void updateInfo (Map<String, Object> editinfo);
 	//유저 패스워드 수정
 	public void updatepw (String id, String editpw);
+	
+	//유저 QnA 작성
+	public void UserQnaWrite (QnaModel qna);
+	//유저 QnA List 검색
+	public List<QnaModel> getQnaList(String category, String title, String answer, String min, String max, String page, String count);
 }
 	

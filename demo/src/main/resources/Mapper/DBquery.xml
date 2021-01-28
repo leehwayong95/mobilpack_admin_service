@@ -146,4 +146,54 @@
 		SET password='${editpw}'
 		WHERE user_id='${id}'
 	</update>
+	
+	<!-- 사용자 Qna 작성 -->
+	<insert id="UserQnaWrite" parameterType="com.mobilpack.manager.Model.QnaModel">
+		INSERT INTO qnapost (category, title, content, user_id)
+		VALUE (${category},#{title},#{content},#{user_id})
+	</insert>
+	<!-- 사용자 Qna 리스트 검색 -->
+	<select id="getQnaList" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
+		<choose>
+			<when test="page != null and page != ''">
+				SELECT q.qnaindex, q.category, q.title, q.createat, a.name, q.replydate
+			</when>
+			<otherwise>
+				<!-- 리스트 개수 반환할때 반환형이 맞지않아 qna모델의 qnaindex에 넣어 반환 -->
+				SELECT COUNT(*) AS qnaindex
+			</otherwise>
+		</choose>
+		FROM qnapost AS q LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
+		<where>
+			<if test="category != null and category != ''">
+				AND q.category = ${category}
+			</if>
+			<if test="title != null and title != ''">
+				AND q.title LIKE %#{title}d%
+			</if>
+			<if test="answer != null and title != ''">
+				<choose>
+					<when test="answer == 0">
+						AND q.admin_id IS NULL
+					</when>
+					<when test="answer == 1">
+						AND q.admin_id IS NOT NULL
+					</when>
+				</choose>
+			</if>
+			<if test="min != null and min != ''">
+			 	<![CDATA[
+				AND DATE_FORMAT(q.createat, '%Y%m%d') >= STR_TO_DATE(#{min}, '%Y%m%d')
+				]]>
+			</if>
+			<if test="max != null and max != ''">
+			 	<![CDATA[
+				AND DATE_FORMAT(q.createat, '%Y%m%d') <= STR_TO_DATE(#{max}, '%Y%m%d')
+				]]>
+			</if>
+		</where>
+		<if test="page != null">
+			LIMIT ${page} , ${count}
+		</if>
+	</select>
 </mapper>
