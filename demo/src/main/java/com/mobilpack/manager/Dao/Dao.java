@@ -71,5 +71,7 @@ public interface Dao {
 	public QnaModel getQnaPost(String index);
 	//유저 QnA 삭제
 	public void deleteQnaPost (String index, String id);
+	//유저 QnA 수정
+	public void updateQnaPost (QnaModel model);
 }
 	

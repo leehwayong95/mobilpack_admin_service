@@ -74,4 +74,10 @@ public class UserQnaService {
 	public void deleteQnaPost (String index, String id) {
 		dao.deleteQnaPost(index, id);
 	}
+	//Qna 수정 메서드
+	public void updateQnaPost (QnaModel model, String id, String index) {
+		model.setUser_id(id);
+		model.setQnaindex(index);
+		dao.updateQnaPost(model);
+	}
 }

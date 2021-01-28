@@ -208,4 +208,10 @@
 		DELETE FROM qnapost
 		WHERE user_id=#{id} AND qnaindex = ${index}
 	</select>
+	<!-- Qna 수정 쿼리 -->
+	<update id="updateQnaPost" parameterType="com.mobilpack.manager.Model.QnaModel">
+		UPDATE qnapost
+		SET category = ${category}, title = '${title}', content = '${content}'
+		WHERE qnaindex = ${Qnaindex} AND user_id = '${user_id}'
+	</update>
 </mapper>
