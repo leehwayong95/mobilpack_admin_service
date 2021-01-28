@@ -196,4 +196,11 @@
 			LIMIT ${page} , ${count}
 		</if>
 	</select>
+	<!-- Qna 자세히보기 쿼리 -->
+	<select id="getQnaPost" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
+		SELECT q.category, q.title, q.content, q.createat, q.replydate, q.reply, a.name AS admin_id
+		FROM qnapost q LEFT OUTER JOIN admin a
+			ON q.admin_id = a.admin_id
+		WHERE q.qnaindex = ${index}
+	</select>
 </mapper>

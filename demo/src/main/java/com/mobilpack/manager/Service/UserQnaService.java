@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobilpack.manager.Dao.Dao;
+import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 
 @Service
@@ -23,6 +24,7 @@ public class UserQnaService {
 		dao.UserQnaWrite(qna);
 	}
 	
+	//Qna 검색 메서드
 	public List<QnaModel> getQnaList(Map<String, String> param) throws Exception {
 		//Limit절 추출
 		String page;
@@ -57,5 +59,15 @@ public class UserQnaService {
 		
 		//쿼리
 		return dao.getQnaList(category, title, answer, min, max, page, count);
+	}
+	
+	//Qna 자세히 보기 메서드
+	public QnaModel getQnaPost(String index) throws NoinfoException {
+		QnaModel target = dao.getQnaPost(index);
+		if(target == null) {
+			throw new NoinfoException("Can't find qna post");
+		} else {
+			return target;
+		}
 	}
 }

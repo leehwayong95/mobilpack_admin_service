@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.UserQnaService;
@@ -64,8 +65,13 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			
-		}	catch (Exception e) {
+			resultMap.put("QnaPostModel",qnaService.getQnaPost(index));
+			status = HttpStatus.OK;
+		} catch (NoinfoException e) {
+			resultMap.put("result", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("result", false);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
