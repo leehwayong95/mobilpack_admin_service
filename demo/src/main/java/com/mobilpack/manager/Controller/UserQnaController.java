@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.UserQnaService;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/qna")
 public class UserQnaController {
@@ -40,9 +42,9 @@ public class UserQnaController {
 			List<QnaModel> searchList = qnaService.getQnaList(param);
 			resultMap.put("list", searchList);
 			//전체 검색 결과 개수 반환
-			List<QnaModel> tmp = qnaService.getQnaList(null);
-			QnaModel tmp2= tmp.get(0);
-			resultMap.put("count",tmp2.getQnaindex());
+			//반환 형이 안맞아서 post index 에 값을 넣음.
+			QnaModel model = qnaService.getQnaList(null).get(0);
+			resultMap.put("count",model.getQnaindex());
 			status = HttpStatus.OK;
 		}	catch (Exception e) {
 			e.printStackTrace();
@@ -78,9 +80,10 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			//토큰해석
-			//jwtService.getInfo(req.getHeader("authorization"))
+			//토큰해석 : 글쓴이 파악 및 설정
+			model.setUser_id(jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString());
 			qnaService.UserQnaWrite(model);
+			status = HttpStatus.OK;
 		}	catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("result", false);

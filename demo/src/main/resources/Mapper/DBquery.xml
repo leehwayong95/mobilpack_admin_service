@@ -156,7 +156,7 @@
 	<select id="getQnaList" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
 		<choose>
 			<when test="page != null and page != ''">
-				SELECT q.qnaindex, q.category, q.title, q.createat, a.name, q.replydate
+				SELECT q.qnaindex, q.category, q.title, q.createat, a.name AS admin_name, q.reply, q.replydate
 			</when>
 			<otherwise>
 				<!-- 리스트 개수 반환할때 반환형이 맞지않아 qna모델의 qnaindex에 넣어 반환 -->
@@ -169,15 +169,15 @@
 				AND q.category = ${category}
 			</if>
 			<if test="title != null and title != ''">
-				AND q.title LIKE %#{title}d%
+				AND q.title LIKE '%${title}%'
 			</if>
-			<if test="answer != null and title != ''">
+			<if test="answer != null and answer != ''">
 				<choose>
 					<when test="answer == 0">
-						AND q.admin_id IS NULL
+						AND q.reply IS NULL
 					</when>
 					<when test="answer == 1">
-						AND q.admin_id IS NOT NULL
+						AND q.reply IS NOT NULL
 					</when>
 				</choose>
 			</if>

@@ -16,7 +16,6 @@ public class AdminUserService {
 	Dao dao;
 	
 	private String search_where = "";
-	private boolean flag = false;
 	//유저 검색 리스트 반환 메서드
 	//파라메터 맵과 전달된 키만 확인
 	public List<UserModel> getUserList (Map<String,Object>param, List<String> keyList){
@@ -62,13 +61,9 @@ public class AdminUserService {
 	
 	//최근 검색 결과 최종 개수 반환 메서드
 	public int getUserListCount () throws Exception {
-		if(flag) {
-			int count = dao.getUserListCount(search_where);
-			this.search_where = ""; //개수를 반환하면 최근 검색 where절 초기화
-			return count;
-		} else {
-			throw new Exception("no Recent Search");
-		}
+		int count = dao.getUserListCount(search_where);
+		this.search_where = ""; //개수를 반환하면 최근 검색 where절 초기화
+		return count;
 	}
 	
 	//유저 정보 반환 서비스
