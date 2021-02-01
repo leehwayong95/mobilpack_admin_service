@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
-	<!-- 관리자 Qna 쿼리 -->
+
+	<!-- 관리자 Qna 검색 쿼리 -->
    	<select id="getAdminQnaList"  parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
    		<choose>
 			<when test="page != null and page != ''">
@@ -45,6 +46,7 @@
 			LIMIT ${page} , ${count}
 		</if>
    	</select>
+   	
    	<!-- 관리자 Qna 인출 -->
    	<select id="getAdminQnaPost" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
    		SELECT 
@@ -53,4 +55,11 @@
 		WHERE q.user_id = u.user_id
 		AND q.qnaindex = ${index}
    	</select>
+   	
+   	<!-- 관리자 Qna 답변 쿼리 -->
+   	<update id="setReply" parameterType="String">
+   		UPDATE qnapost
+   		SET reply='${content}', admin_id='${admin_id}', replydate=now()
+   		WHERE qnaindex = ${index}
+   	</update>
 </mapper>

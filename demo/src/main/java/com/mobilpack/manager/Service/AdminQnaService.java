@@ -55,7 +55,12 @@ public class AdminQnaService {
 		return dao.getAdminQnaList(category, title, answer, min, max, page, count);
 	}
 	
-	//Qna Detail 인출 서비스
+	/**
+	 * Qna Detail 인출 서비스
+	 * @param index
+	 * @return
+	 * @throws NoinfoException
+	 */
 	public QnaModel getQna (String index) throws NoinfoException {
 		QnaModel target = dao.getAdminQnaPost(index);
 		if (target == null ) {
@@ -63,5 +68,14 @@ public class AdminQnaService {
 		} else {
 			return target;
 		}
+	}
+	
+	/**
+	 * 답변 기능 (수정, 새로 삽입 모두)
+	 * @param index
+	 * @param content
+	 */
+	public void setReply(String index, String content, String admin_id) {
+		dao.setReply(index, content, admin_id);
 	}
 }

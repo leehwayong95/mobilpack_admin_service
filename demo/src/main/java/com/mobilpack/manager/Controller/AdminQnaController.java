@@ -23,16 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.AdminQnaService;
-import com.mobilpack.manager.Service.UserQnaService;
+import com.mobilpack.manager.Service.JwtService;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/su/qna")
 public class AdminQnaController {
 	@Autowired
-	UserQnaService userQnaService;
-	@Autowired
 	AdminQnaService adminQnaService;
+	@Autowired
+	JwtService jwtService;
 	
 	//Qna자세히 보기 API
 	@GetMapping("/{index}")
@@ -91,29 +91,30 @@ public class AdminQnaController {
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	//QNA 답변 수정 및 삭제
+	@PostMapping("/chat/{index}")
+	public ResponseEntity<Map<String, Object>> qnaChatUpdate(
+			@PathVariable String index,
+			@RequestBody Map<String, Object> param,
+			HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String admin_id = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
+			adminQnaService.setReply(index, param.get("content").toString(), admin_id );
+			resultMap.put("status",true);
+			status=HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	//QNA 답변 삭제
 	@DeleteMapping("/chat/{index}")
 	public ResponseEntity<Map<String, Object>> qnaChatDelete(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
-	//QNA 답변 수정
-	@PostMapping("/chat/{index}")
-	public ResponseEntity<Map<String, Object>> qnaChatUpdate(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
-	//QNA 답변 달기
-	@PutMapping("/chat/{index}")
-	public ResponseEntity<Map<String, Object>> qnaChatCreate(
 			@RequestBody Map<String, Object> param,
 			HttpServletRequest req) {
 		// do something

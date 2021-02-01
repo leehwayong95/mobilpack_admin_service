@@ -43,8 +43,14 @@ public interface Dao {
 	
 	//Admin Qna List 검색
 	public List<QnaModel> getAdminQnaList (String category, String title, String answer, String min, String max, String page, String count);
-	//Admin Qna 인출
+	/*
+	 * Admin Qna 인출
+	 */
 	public QnaModel getAdminQnaPost (String index);
+	/*
+	 * Admin Qna 답변 update and insert(사실 둘다 update로 진행됩니다)
+	 */
+	public void setReply(String index, String content, String admin_id);
 	
 	/**********************************************************/
 	/********************공지사항 관련 입니다.**********************/
