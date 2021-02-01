@@ -12,19 +12,15 @@ import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 
 @Service
-public class UserQnaService {
+public class AdminQnaService {
 	@Autowired
 	Dao dao;
 	
-	private Map<String,String> recent_Search = new HashMap<>();
+	//검색 결과 인출을 위한 임시 변수
 	private boolean flag = false;
+	private Map<String,String> recent_Search = new HashMap<>();
 	
-	//QnA글쓰기 메서드
-	public void UserQnaWrite (QnaModel qna) {
-		dao.UserQnaWrite(qna);
-	}
-	
-	//Qna 검색 메서드
+	//검색 메서드
 	public List<QnaModel> getQnaList(Map<String, String> param) throws Exception {
 		//Limit절 추출
 		String page;
@@ -49,35 +45,23 @@ public class UserQnaService {
 			recent_Search = param;
 			flag = true;
 		}
-		
 		//Where절 추출
 		String category = param.get("category");
 		String title = param.get("title");
 		String answer = param.get("answer");
 		String min = param.get("min");
 		String max = param.get("max");
-		
 		//쿼리
-		return dao.getQnaList(category, title, answer, min, max, page, count);
+		return dao.getAdminQnaList(category, title, answer, min, max, page, count);
 	}
 	
-	//Qna 자세히 보기 메서드
-	public QnaModel getQnaPost(String index) throws NoinfoException {
-		QnaModel target = dao.getQnaPost(index);
-		if(target == null) {
-			throw new NoinfoException("Can't find qna post");
+	//Qna Detail 인출 서비스
+	public QnaModel getQna (String index) throws NoinfoException {
+		QnaModel target = dao.getAdminQnaPost(index);
+		if (target == null ) {
+			throw new NoinfoException("Can't find post");
 		} else {
 			return target;
 		}
-	}
-	//Qna 삭제 메서드
-	public void deleteQnaPost (String index, String id) {
-		dao.deleteQnaPost(index, id);
-	}
-	//Qna 수정 메서드
-	public void updateQnaPost (QnaModel model, String id, String index) {
-		model.setUser_id(id);
-		model.setQnaindex(index);
-		dao.updateQnaPost(model);
 	}
 }

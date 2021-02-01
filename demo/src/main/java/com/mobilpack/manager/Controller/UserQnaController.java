@@ -25,7 +25,7 @@ import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.UserQnaService;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api/qna")
 public class UserQnaController {

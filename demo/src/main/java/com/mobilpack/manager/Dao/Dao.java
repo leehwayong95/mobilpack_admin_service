@@ -46,6 +46,11 @@ public interface Dao {
 	//유저 삭제
 	public void setUserDelete (String id);
 	
+	//Admin Qna List 검색
+	public List<QnaModel> getAdminQnaList (String category, String title, String answer, String min, String max, String page, String count);
+	//Admin Qna 인출
+	public QnaModel getAdminQnaPost (String index);
+	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
 	/**********************************************************/

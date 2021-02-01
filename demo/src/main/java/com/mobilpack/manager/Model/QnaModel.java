@@ -17,10 +17,19 @@ public class QnaModel {
 	private String reply;
 	private String replydate;
 
-	//조인 속성
+	/**
+	 * 조인 속성
+	 */
 	private String user_name;
 	private String admin_name;
+	private String phone;
 	
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public String getQnaindex() {
 		return Qnaindex;
 	}
