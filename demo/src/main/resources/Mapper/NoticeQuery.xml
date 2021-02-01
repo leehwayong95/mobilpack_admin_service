@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobilpack.manager.Dao.Dao">
+	<!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
+	<!-- 공지사항 검색 -->
+	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		select postindex,id,enabled,language,title,createat,viewcount
+		from notice
+		<where>
+    	<!-- 언어가 빈값이 아닐때 -->
+    	<if test="language!=null and language!=''">
+    	and language LIKE'%${language}%'
+    	</if>
+    	<!-- 제목+내용이 빈값이 아닐때 -->
+    	<if test="titlename != null and titlename != ''">
+    	and title LIKE '%${titlename}%'and content LIKE '%${titlename}%'
+    	</if>
+    	</where>
+    	ORDER BY postindex ASC
+    	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
+    	LIMIT ${Currentpage},${Number}
+    	</if>
+	</select>
+
+	<!-- 공지사항 상세 -->
+	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		select id,enabled,title,content,topsetting,createat,updateat,viewcount
+		from notice
+		where postindex='${index}'
+	</select>
+	<!-- 공지사항 작성 -->
+	 <insert id="insertnotice" parameterType="String">
+		insert into notice(id,topsetting,language,title,content)
+		values('${id}','${topsetting}','${language}','${title}','${content}');
+	</insert>
+	<!-- 공지사항 조회수 +1 -->
+	<!-- 공지사항 수정 -->
+	<update id="editnotice" parameterType="String">
+		UPDATE notice
+		SET id='${id}',enabled='${enabled}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
+		WHERE postindex='${index}'
+	</update>
+</mapper>

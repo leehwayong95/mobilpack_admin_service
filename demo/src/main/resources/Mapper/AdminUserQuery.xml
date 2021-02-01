@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobilpack.manager.Dao.Dao">
+	<!-- 유저 리스트 검색 인출 -->
+    <select id="getUserList" resultType='com.mobilpack.manager.Model.UserModel'>
+    	SELECT country, user_id, name, phone, createat
+    	FROM user
+    	${where}
+    	ORDER BY createat
+    	${limit}
+    </select>
+    <!-- 유저 리스트 총 개수 반환 -->
+    <select id="getUserListCount" resultType="int">
+    	SELECT COUNT(*) AS count
+    	FROM user
+    	${where}
+   	</select>
+   	<!-- 유저 패스워드 리셋 -->
+   	<update id="setUserPwReset">
+   		UPDATE user
+   		SET password='password123'
+   		WHERE user_id='${id}'
+   	</update>
+   	<!-- 관리자가 유저 삭제 -->
+   	<delete id="setUserDelete">
+   		DELETE FROM user
+   		WHERE user_id = '${id}'
+   	</delete>
+</mapper>
