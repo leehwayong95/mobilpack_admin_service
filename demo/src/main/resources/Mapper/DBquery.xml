@@ -2,74 +2,72 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mobilpack.manager.Dao.Dao">
-	<!-- 로그인 -->
     <select id='LoginQuery' resultType='com.mobilpack.manager.Model.AdminModel'>
     	SELECT *
     	FROM admin
     	WHERE admin_id = '${id}' AND password = '${pw}'
     </select>
-    <!-- 정보수정(비밀번호제외) -->
     <select id='editInfo'>
     	UPDATE admin
-    	SET name = '${name}', phone='${phone}', email='${email}', updateat=now()
+    	SET name = '${name}', phone='${phone}', email='${email}'
     	WHERE admin_id = '${id}'
     </select>
-    <!-- 비밀번호수정 -->
-    <select id='editPw'>
-    	UPDATE admin
-    	SET password = '${editpw}', updateat=now()
-    	WHERE admin_id = '${id}'
-    </select>
-
-   <!-- 관리자 리스트 현재페이지에 필요한 항목수+정보 가져오기 -->
-    <select id="getadminlist" resultType='com.mobilpack.manager.Model.AdminModel'>
-        select *
-    	from admin
-    	LIMIT ${Currentpage},${Number}
-    </select>
-
-    <!-- 전체 관리자 리스트 수 구하기  -->
-    <select id="getadminlistcount" resultType="int">
-         select count(*)
-         from admin
-    </select>
+    
+     <!-- >>>>>>>>>> 관리자 관리 <<<<<<<<<< --> 
+     <!--     >>>>>>>>>>  <<<<<<<<<< -->
 
     	<!-- 관리자 등록  -->
     <insert id="joinadmin" parameterType="String">
 		insert into admin(admin_id,name,password,email,phone)
 		values('${id}','${name}','${password}','${email}','${phone}');
 	</insert>
-
+	
 	 	<!-- 관리자 수정  -->
     <update id="editadmin" parameterType="String">
    		UPDATE admin
     	SET name='${name}',phone='${phone}',email='${email}'
     	WHERE admin_id='${id}'
 	</update>
-
-      <!-- 관리자id 증복체크  -->
+    
+      <!-- 관리자id 증복체크  -->    
     <select id="idcheck" parameterType="String" resultType="String">
         select admin_id
         from admin
         where admin_id='${id}'
-   </select>
-
-     <!-- 관리자 검색 설정한것에 대한 리스트 가져오기 -->
+   </select> 
+    
+     <!-- 관리자 검색 설정한것에 대한 리스트 가져오기 --> 
      <select id="searchadminlist" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
         select admin_id,name,phone,email,createat,updateat
     	from admin
-    	where admin_id='${id}' or name='${name}'or createat between '${createat}' and '${updateat}'
+    	<where>
+    	<!-- id가 빈값이 아닐때 --> 
+    	<if test="id!=null and id!=''">
+    	and admin_id LIKE'%${id}%'
+    	</if>
+    	<!-- name 빈값이 아닐때 --> 
+    	<if test="name != null and name != ''">
+    	and name LIKE '%${name}%'
+    	</if>
+    	<!-- 날짜가 빈값이 아닐때 -->
+    	<if test="createat!=null and createat !='' and updateat !=null and updateat !=''">
+    	and createat between '${createat}' and '${updateat}'
+    	</if>
+    	</where>
     	ORDER BY admin.createat ASC
-    	limit ${Currentpage},${Number}
+    	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''"> 
+    	LIMIT ${Currentpage},${Number}
+    	</if>
     </select>
 
 	<!-- 클릭한 관리자 정보 상세조회 -->
 	<select id="admininformation" parameterType="String" resultType='com.mobilpack.manager.Model.AdminModel'>
-	    select admin_id,name,email,phone,createat,updateat
-        from admin
-        where admin_id = '${id}'
+		select admin_id,name,email,phone,createat,updateat
+		from admin
+		where admin_id = '${id}'
 	</select>
 
+<<<<<<< HEAD
     <!-- 관리자 삭제 -->
       <delete id="deleteadmin" parameterType="String">
     	DELETE FROM admin
@@ -116,13 +114,51 @@
 		SELECT *
 		FROM user
 	WHERE user_id = '${id}' AND password = '${pw}'
+=======
+	<!-- 관리자 삭제 -->
+	<delete id="deleteadmin" parameterType="String">
+		DELETE FROM admin
+		WHERE admin_id='${id}'
+	</delete>
+
+	<!-- 관리자 비밀번호 초기화 -->
+	<update id="pwreset" parameterType="String">
+		UPDATE admin
+		SET password='admin1234!!'
+		WHERE admin_id='${id}'
+	</update>
+	
+    <!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
+    <!--    >>>>>>>>>>  <<<<<<<<<< -->
+    
+	<!-- 공지사항 검색 -->
+	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		select postindex,id,enabled,language,title,createat,viewcount
+		from notice
+		<where>
+    	<!-- 언어가 빈값이 아닐때 -->
+    	<if test="language!=null and language!=''">
+    	and language LIKE'%${language}%'
+    	</if>
+    	<!-- 제목+내용이 빈값이 아닐때 -->
+    	<if test="titlename != null and titlename != ''">
+    	and title LIKE '%${titlename}%'and content LIKE '%${titlename}%'
+    	</if>
+    	</where>
+    	ORDER BY postindex ASC
+    	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
+    	LIMIT ${Currentpage},${Number}
+    	</if>
+>>>>>>> origin/adminsearch
 	</select>
-	<!-- 사용자 아이디 중복 체크 쿼리 -->
-	<select id="getCheckingId" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT user_id
-		FROM user
-		WHERE user_id='${id}'
+
+	<!-- 공지사항 상세 -->
+	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		select id,enabled,title,content,topsetting,createat,updateat,viewcount
+		from notice
+		where postindex='${index}'
 	</select>
+<<<<<<< HEAD
 	<!-- 회원가입 쿼리 -->
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
 		INSERT INTO user (user_id,password,name,country,phone)
@@ -145,5 +181,28 @@
 		UPDATE user
 		SET password='${editpw}'
 		WHERE user_id='${id}'
+=======
+
+	<!-- 공지사항 작성 -->
+	 <insert id="insertnotice" parameterType="String">
+		insert into notice(id,topsetting,language,title,content)
+		values('${id}','${topsetting}','${language}','${title}','${content}');
+	</insert>
+	
+	<!-- 공지사항 조회수 +1 -->
+
+	<!-- 관리자 수정 -->
+	<update id="editnotice" parameterType="String">
+		UPDATE notice
+		SET id='${id}',enabled='${enabled}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
+		WHERE postindex='${index}'
+>>>>>>> origin/adminsearch
 	</update>
+
+	<!-- 관리자 삭제 -->
+	<delete id="deletenotice" parameterType="String">
+		DELETE FROM notice
+		WHERE postindex='${index}'
+	</delete>
+	
 </mapper>
