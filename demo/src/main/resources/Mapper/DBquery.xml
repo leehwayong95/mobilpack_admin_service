@@ -13,22 +13,30 @@
     	WHERE admin_id = '${id}'
     </select>
     
-     <!-- >>>>>>>>>> 관리자 관리 <<<<<<<<<< --> 
-     <!--     >>>>>>>>>>  <<<<<<<<<< -->
+     <!-- >>>>>>>>>> 관리자 관리 <<<<<<<<<< -->
 
     	<!-- 관리자 등록  -->
     <insert id="joinadmin" parameterType="String">
 		insert into admin(admin_id,name,password,email,phone)
 		values('${id}','${name}','${password}','${email}','${phone}');
 	</insert>
-	
 	 	<!-- 관리자 수정  -->
     <update id="editadmin" parameterType="String">
    		UPDATE admin
     	SET name='${name}',phone='${phone}',email='${email}'
     	WHERE admin_id='${id}'
 	</update>
-    
+	<!-- 관리자 삭제 -->
+	<delete id="deleteadmin" parameterType="String">
+		DELETE FROM admin
+		WHERE admin_id='${id}'
+	</delete>
+	<!-- 관리자 비밀번호 초기화 -->
+	<update id="pwreset" parameterType="String">
+		UPDATE admin
+		SET password='admin1234!!'
+		WHERE admin_id='${id}'
+	</update>
       <!-- 관리자id 증복체크  -->    
     <select id="idcheck" parameterType="String" resultType="String">
         select admin_id
@@ -66,20 +74,6 @@
 		from admin
 		where admin_id = '${id}'
 	</select>
-
-<<<<<<< HEAD
-    <!-- 관리자 삭제 -->
-      <delete id="deleteadmin" parameterType="String">
-    	DELETE FROM admin
-    	WHERE admin_id='${id}'
-    </delete>
-
-      <!-- 관리자 비밀번호 초기화 -->
-    <update id="pwreset" parameterType="String">
-    	UPDATE admin
-   		SET password='admin1234!!'
-   		WHERE admin_id='${id}'
-    </update>
     
     <!-- 유저 리스트 검색 인출 -->
     <select id="getUserList" resultType='com.mobilpack.manager.Model.UserModel'>
@@ -158,30 +152,7 @@
 		WHERE q.user_id = u.user_id
 		AND q.qnaindex = ${index}
    	</select>
-
-	<!--아래는 사용자용 쿼리 입니다.-->
-
-	<!-- 사용자 로그인 쿼리 -->
-	<select id="getUserLogin" resultType="com.mobilpack.manager.Model.UserModel">
-		SELECT *
-		FROM user
-	WHERE user_id = '${id}' AND password = '${pw}'
-=======
-	<!-- 관리자 삭제 -->
-	<delete id="deleteadmin" parameterType="String">
-		DELETE FROM admin
-		WHERE admin_id='${id}'
-	</delete>
-
-	<!-- 관리자 비밀번호 초기화 -->
-	<update id="pwreset" parameterType="String">
-		UPDATE admin
-		SET password='admin1234!!'
-		WHERE admin_id='${id}'
-	</update>
-	
-    <!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
-    <!--    >>>>>>>>>>  <<<<<<<<<< -->
+	<!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
     
 	<!-- 공지사항 검색 -->
 	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
@@ -201,7 +172,6 @@
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
     	LIMIT ${Currentpage},${Number}
     	</if>
->>>>>>> origin/adminsearch
 	</select>
 
 	<!-- 공지사항 상세 -->
@@ -210,7 +180,28 @@
 		from notice
 		where postindex='${index}'
 	</select>
-<<<<<<< HEAD
+	<!-- 공지사항 작성 -->
+	 <insert id="insertnotice" parameterType="String">
+		insert into notice(id,topsetting,language,title,content)
+		values('${id}','${topsetting}','${language}','${title}','${content}');
+	</insert>
+	<!-- 공지사항 조회수 +1 -->
+	<!-- 공지사항 수정 -->
+	<update id="editnotice" parameterType="String">
+		UPDATE notice
+		SET id='${id}',enabled='${enabled}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
+		WHERE postindex='${index}'
+	</update>
+
+	<!--아래는 사용자용 쿼리 입니다.-->
+
+	<!-- 사용자 로그인 쿼리 -->
+	<select id="getUserLogin" resultType="com.mobilpack.manager.Model.UserModel">
+		SELECT *
+		FROM user
+		WHERE user_id = '${id}' AND password = '${pw}'
+	</select>
+    
 	<!-- 회원가입 쿼리 -->
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
 		INSERT INTO user (user_id,password,name,country,phone)
@@ -233,32 +224,7 @@
 		UPDATE user
 		SET password='${editpw}'
 		WHERE user_id='${id}'
-=======
-
-	<!-- 공지사항 작성 -->
-	 <insert id="insertnotice" parameterType="String">
-		insert into notice(id,topsetting,language,title,content)
-		values('${id}','${topsetting}','${language}','${title}','${content}');
-	</insert>
-	
-	<!-- 공지사항 조회수 +1 -->
-
-	<!-- 관리자 수정 -->
-	<update id="editnotice" parameterType="String">
-		UPDATE notice
-		SET id='${id}',enabled='${enabled}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
-		WHERE postindex='${index}'
->>>>>>> origin/adminsearch
 	</update>
-<<<<<<< HEAD
-
-	<!-- 관리자 삭제 -->
-	<delete id="deletenotice" parameterType="String">
-		DELETE FROM notice
-		WHERE postindex='${index}'
-	</delete>
-	
-=======
 	
 	<!-- 사용자 Qna 작성 -->
 	<insert id="UserQnaWrite" parameterType="com.mobilpack.manager.Model.QnaModel">
@@ -327,5 +293,4 @@
 		SET category = ${category}, title = '${title}', content = '${content}'
 		WHERE qnaindex = ${Qnaindex} AND user_id = '${user_id}'
 	</update>
->>>>>>> UserQnaFunction
 </mapper>

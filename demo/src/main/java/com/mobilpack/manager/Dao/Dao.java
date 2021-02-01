@@ -3,13 +3,8 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
-import com.mobilpack.manager.Model.AdminModel;
-<<<<<<< HEAD
-import com.mobilpack.manager.Model.NoticeModel;
-=======
-import com.mobilpack.manager.Model.QnaModel;
->>>>>>> UserQnaFunction
-import com.mobilpack.manager.Model.UserModel;
+import com.mobilpack.manager.Model.AdminModel;import com.mobilpack.manager.Model.NoticeModel;
+import com.mobilpack.manager.Model.QnaModel;import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
@@ -36,7 +31,6 @@ public interface Dao {
 	//관리자 비밀번호 변경 : 자기자신
 	public void editPw(String id, String editpw);
 	
-<<<<<<< HEAD
 	//유저 리스트 조회
 	public List<UserModel> getUserList (String where, String limit);
 	//유저 리스트 조회 개수 반환
@@ -68,8 +62,6 @@ public interface Dao {
     //(공지사항 삭제)
     public void deletenotice(String postindex);
 	
-=======
->>>>>>> origin/function_postcreate
 	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
