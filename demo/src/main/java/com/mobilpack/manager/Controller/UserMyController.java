@@ -19,7 +19,7 @@ import com.mobilpack.manager.Model.UserModel;
 import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.UserMyService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api/my")
 public class UserMyController {

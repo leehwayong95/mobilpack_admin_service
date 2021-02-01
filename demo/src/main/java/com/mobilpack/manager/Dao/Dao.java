@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.mobilpack.manager.Model.AdminModel;
+<<<<<<< HEAD
 import com.mobilpack.manager.Model.NoticeModel;
+=======
+import com.mobilpack.manager.Model.QnaModel;
+>>>>>>> UserQnaFunction
 import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
@@ -43,6 +47,11 @@ public interface Dao {
 	//유저 삭제
 	public void setUserDelete (String id);
 	
+	//Admin Qna List 검색
+	public List<QnaModel> getAdminQnaList (String category, String title, String answer, String min, String max, String page, String count);
+	//Admin Qna 인출
+	public QnaModel getAdminQnaPost (String index);
+	
 	/**********************************************************/
 	/********************공지사항 관련 입니다.**********************/
 	/**********************************************************/
@@ -78,5 +87,16 @@ public interface Dao {
 	public void updateInfo (Map<String, Object> editinfo);
 	//유저 패스워드 수정
 	public void updatepw (String id, String editpw);
+	
+	//유저 QnA 작성
+	public void UserQnaWrite (QnaModel qna);
+	//유저 QnA List 검색
+	public List<QnaModel> getQnaList(String category, String title, String answer, String min, String max, String page, String count);
+	//유저 QnA 자세히 보기
+	public QnaModel getQnaPost(String index);
+	//유저 QnA 삭제
+	public void deleteQnaPost (String index, String id);
+	//유저 QnA 수정
+	public void updateQnaPost (QnaModel model);
 }
 	

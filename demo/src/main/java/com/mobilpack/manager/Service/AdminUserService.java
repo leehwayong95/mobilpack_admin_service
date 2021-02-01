@@ -60,7 +60,7 @@ public class AdminUserService {
 	}
 	
 	//최근 검색 결과 최종 개수 반환 메서드
-	public int getUserListCount () {
+	public int getUserListCount () throws Exception {
 		int count = dao.getUserListCount(search_where);
 		this.search_where = ""; //개수를 반환하면 최근 검색 where절 초기화
 		return count;
