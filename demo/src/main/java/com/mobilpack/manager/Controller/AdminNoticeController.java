@@ -32,9 +32,23 @@ public class AdminNoticeController {
 		Currentpage = Number * (Currentpage - 1); 
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<NoticeModel> noticesearchlist = new ArrayList<NoticeModel>();
-		noticesearchlist=noticeservice.searchnotice(Currentpage,Number, language,titlename);
+		List<NoticeModel>noticesearchlistcount = new ArrayList<NoticeModel>();
+		
+		String testCurrentpage=Integer.toString(Currentpage);
+		String testNumber=Integer.toString(Number);
+		
+		
+		noticesearchlist=noticeservice.searchnotice(testCurrentpage,testNumber, language,titlename);
+		
+		testCurrentpage="";
+		testNumber="";
+		
+		noticesearchlistcount=noticeservice.searchnotice(testCurrentpage,testNumber, language,titlename);
+		int listsize = noticesearchlistcount.size();
+		map.put("result",noticesearchlist);
+		map.put("count",listsize);
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK );
-	}	
+	}
 	
 	//(공지사항 수정)
 	@PostMapping("/edit")
@@ -53,16 +67,29 @@ public class AdminNoticeController {
 	//(공지사항 작성)
 	@PostMapping("/insert")
 	public String noticeCreate(@RequestBody NoticeModel notice) {
-		try {
-			noticeservice.insertnotice(notice.getId(), notice.getEnabled(), notice.getLanguage(),
-					notice.getTitle(),notice.getContent(),notice.getTopsetting());
+			String language="";
+			if(notice.getLanguage().equals("한국어")) {
+				language="KR";
+			}else if(notice.getLanguage().equals("영어")) {
+				language="EN";
+			}else if(notice.getLanguage().equals("중국어")) {
+				language="CN";
+			}else if(notice.getLanguage().equals("일본어")) {
+				language="JP";
+			}
+			
+			String topsetting="";
+			if( notice.getTopsetting().equals("중요공지")) {
+				topsetting="1";
+			}
+			else {
+				topsetting="0"; //중요공지
+			}
+			
+			
+			noticeservice.insertnotice(notice.getId(),topsetting,language,notice.getTitle(),notice.getContent());
 			String check = "ok";
 			return check;
-		} catch (Exception e) {
-			String check = "1";
-			return check;
-		}
-
 	}
 	
 	 //(공지사항 상세)

@@ -37,12 +37,12 @@ public interface Dao {
 	/**********************************************************/
 	
 	//(공지사항 검색)
-	public List<NoticeModel> searchnotice(int Currentpage,int Number,String title,String content);
+	public List<NoticeModel> searchnotice(String Currentpage,String Number,String language,String titlename);
 	//(공지사항 상세)
 	public NoticeModel detailnotice(String postindex);
 	
 	//(공지사항 작성)
-	public void insertnotice(String id,String enabled,String language,String title,String content,String topsetting);
+	public void insertnotice(String id,String topsetting,String language,String title,String content);
 	//(공지사항 수정)
     public void editnotice(String postindex,String id,String enabled,String language,String title,String content,String topsetting);
     //(공지사항 삭제)

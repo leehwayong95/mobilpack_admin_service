@@ -14,7 +14,7 @@ public class NoticeManagerService {
 	private Dao dao;
 	
 	//(공지사항 검색)
-    public List<NoticeModel> searchnotice(int Currentpage,int Number,String language,String titlename) {
+    public List<NoticeModel> searchnotice(String Currentpage,String Number,String language,String titlename) {
     	return dao.searchnotice(Currentpage,Number,language,titlename);
     }
     //(공지사항 상세)
@@ -22,8 +22,8 @@ public class NoticeManagerService {
     	return dao.detailnotice(postindex);
     }
     //(공지사항 작성)
-    public void insertnotice(String id,String enabled,String language,String title,String content,String topsetting) {
-    	dao.insertnotice(id,enabled,language,title,content,topsetting);
+    public void insertnotice(String id,String topsetting,String language,String title,String content) {
+    	dao.insertnotice(id,topsetting,language,title,content);
     }
     //(공지사항 수정)
     public void editnotice(String postindex,String id,String enabled,String language,String title,String content,String topsetting) {

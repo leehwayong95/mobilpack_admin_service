@@ -85,19 +85,19 @@
     
 	<!-- 공지사항 검색 -->
 	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		select postindex,language,title,content,createat,id,viewcount,enabled
+		select postindex,id,enabled,language,title,createat,viewcount
 		from notice
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
-    	<if test="id!=null and id!=''">
-    	and admin_id LIKE'%${id}%'
+    	<if test="language!=null and language!=''">
+    	and language LIKE'%${language}%'
     	</if>
     	<!-- 제목+내용이 빈값이 아닐때 -->
-    	<if test="name != null and name != ''">
-    	and title LIKE '%${title}%',content LIKE '%${content}%'
+    	<if test="titlename != null and titlename != ''">
+    	and title LIKE '%${titlename}%'and content LIKE '%${titlename}%'
     	</if>
     	</where>
-    	ORDER BY createat ASC
+    	ORDER BY postindex ASC
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
     	LIMIT ${Currentpage},${Number}
     	</if>
@@ -112,9 +112,11 @@
 
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="String">
-		insert into notice(id,enabled,language,title,content,topsetting)
-		values('${id}','${enabled}','${language}','${title}','${content}','${topsetting}');
+		insert into notice(id,topsetting,language,title,content)
+		values('${id}','${topsetting}','${language}','${title}','${content}');
 	</insert>
+	
+	<!-- 공지사항 조회수 +1 -->
 
 	<!-- 관리자 수정 -->
 	<update id="editnotice" parameterType="String">

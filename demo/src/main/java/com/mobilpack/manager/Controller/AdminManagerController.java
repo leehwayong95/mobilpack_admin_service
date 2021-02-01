@@ -98,8 +98,6 @@ public class AdminManagerController {
 		String testCurrentpage=Integer.toString(Currentpage);
 		String testNumber=Integer.toString(Number);
 		// (검색한 결과 게시글 리스트 담는곳)
-		System.out.println("여기가 Currentpage번호야"+Currentpage);
-		System.out.println("여기가 Number번호야"+Number);
 		adminsearchlist=adminservice.searchadminlist(testCurrentpage, testNumber, id, name, createat, updateat);
 		// (검색한 결과 게시글 수 담는곳)
 		testCurrentpage="";
@@ -110,7 +108,6 @@ public class AdminManagerController {
 		map.put("result",adminsearchlist);
 		map.put("count",listsize);
 		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK );
-		
 	}
 
 	// (관리자 상세페이지)
