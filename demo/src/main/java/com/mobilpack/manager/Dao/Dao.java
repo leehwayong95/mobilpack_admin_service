@@ -32,6 +32,7 @@ public interface Dao {
 	//관리자 비밀번호 변경 : 자기자신
 	public void editPw(String id, String editpw);
 	
+<<<<<<< HEAD
 	//유저 리스트 조회
 	public List<UserModel> getUserList (String where, String limit);
 	//유저 리스트 조회 개수 반환
@@ -58,6 +59,8 @@ public interface Dao {
     //(공지사항 삭제)
     public void deletenotice(String postindex);
 	
+=======
+>>>>>>> origin/function_postcreate
 	
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/

@@ -29,29 +29,30 @@ public class AdminPostController {
 		// 사진 등록 부분 test 중
 		String test = "123";
 		String basePath ="C:\\Users\\shjo2\\Desktop\\Hub\\GitHub\\MobilPack\\demo\\src\\main\\resources\\images";
-		File test1 = new File(basePath+"/"+test);	// 경로에 폴더가 없을 경우 자동으로 생성
+		File test1 = new File(basePath+"/"+test);	
+		// 경로에 폴더가 없을 경우 자동으로 생성
 		if(!test1.exists()) {
 			test1.mkdir();
 		}
     	
-    		String originalName = file.getOriginalFilename();
-    		String filePath = test1 + "/" + originalName;
-    		File dest = new File(filePath);
-    		String[] nameCheck = dest.getName().split("\\.");
-    		if(nameCheck[1].equals("png")||nameCheck[1].equals("jpg")) {
-	    		try {
-		    		file.transferTo(dest);
-		    		dest.length();
-	    		} 
-	    		catch(Exception e) {
-	    			e.printStackTrace();
-	    			return "false";
-	    		}
-    		}
-    		else {
-    			return "right extension";
-    		}
-    	return "uploaded";
+		String originalName = file.getOriginalFilename();
+		String filePath = test1 + "/" + originalName;
+		File dest = new File(filePath);
+		String[] nameCheck = dest.getName().split("\\.");
+		if(nameCheck[1].equals("png")||nameCheck[1].equals("jpg")) {
+			try {
+	    		file.transferTo(dest);
+	    		dest.length();
+			} 
+			catch(Exception e) {
+				e.printStackTrace();
+				return "false";
+			}
+		}
+		else {
+			return "right extension";
+		}
+	return "uploaded";
 	}
 
 	@GetMapping("/search")
