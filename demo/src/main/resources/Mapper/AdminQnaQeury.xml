@@ -14,34 +14,36 @@
 				SELECT COUNT(*) AS qnaindex
 			</otherwise>
 		</choose>
-		FROM user u, qnapost AS q LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
-		WHERE q.user_id = u.user_id
-		<if test="category != null and category != ''">
-			AND q.category = ${category}
-		</if>
-		<if test="title != null and title != ''">
-			AND q.title LIKE '%${title}%'
-		</if>
-		<if test="answer != null and answer != ''">
-			<choose>
-				<when test="answer == 0">
-					AND q.reply IS NULL
-				</when>
-				<when test="answer == 1">
-					AND q.reply IS NOT NULL
-				</when>
-			</choose>
-		</if>
-		<if test="min != null and min != ''">
-		 	<![CDATA[
-			AND DATE_FORMAT(q.createat, '%Y%m%d') >= STR_TO_DATE(#{min}, '%Y%m%d')
-			]]>
-		</if>
-		<if test="max != null and max != ''">
-		 	<![CDATA[
-			AND DATE_FORMAT(q.createat, '%Y%m%d') <= STR_TO_DATE(#{max}, '%Y%m%d')
-			]]>
-		</if>
+		FROM qnapost AS q LEFT OUTER JOIN user u ON q.user_id = u.user_id
+		LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
+		<where>
+			<if test="category != null and category != ''">
+				AND q.category = ${category}
+			</if>
+			<if test="title != null and title != ''">
+				AND q.title LIKE '%${title}%'
+			</if>
+			<if test="answer != null and answer != ''">
+				<choose>
+					<when test="answer == 0">
+						AND q.reply IS NULL
+					</when>
+					<when test="answer == 1">
+						AND q.reply IS NOT NULL
+					</when>
+				</choose>
+			</if>
+			<if test="min != null and min != ''">
+			 	<![CDATA[
+				AND DATE_FORMAT(q.createat, '%Y%m%d') >= STR_TO_DATE(#{min}, '%Y%m%d')
+				]]>
+			</if>
+			<if test="max != null and max != ''">
+			 	<![CDATA[
+				AND DATE_FORMAT(q.createat, '%Y%m%d') <= STR_TO_DATE(#{max}, '%Y%m%d')
+				]]>
+			</if>
+		</where>	
 		ORDER BY q.createat DESC
 		<if test="page != null">
 			LIMIT ${page} , ${count}
@@ -52,9 +54,10 @@
    	<select id="getAdminQnaPost" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
    		SELECT 
    			q.category,q.createat ,q.title, q.content, u.name AS user_name, u.phone, q.reply, q.replydate, a.name AS admin_name, a.admin_id
-   		FROM user u, qnapost AS q LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
-		WHERE q.user_id = u.user_id
-		AND q.qnaindex = ${index}
+   		FROM qnapost AS q
+   			LEFT OUTER JOIN user AS u ON q.user_id = u.user_id 
+   			LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
+		WHERE q.qnaindex = ${index}
    	</select>
    	
    	<!-- 관리자 Qna 답변 쿼리 -->
