@@ -122,7 +122,6 @@ public class AdminUserController {
 			resultMap.put("result", true);
 			status = HttpStatus.OK;
 		}	catch (Exception e) {
-			e.printStackTrace();
 			resultMap.put("result", false);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

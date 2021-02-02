@@ -60,7 +60,6 @@ public class AdminQnaController {
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
-			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
@@ -89,7 +88,6 @@ public class AdminQnaController {
 			resultMap.put("count",model.getQnaindex());
 			status = HttpStatus.OK;
 		}	catch (Exception e) {
-			e.printStackTrace();
 			resultMap.put("result", false);
 			if (e.getMessage() == "Bad Request")
 				status = HttpStatus.BAD_REQUEST;
@@ -162,7 +160,6 @@ public class AdminQnaController {
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
