@@ -42,6 +42,7 @@
 			AND DATE_FORMAT(q.createat, '%Y%m%d') <= STR_TO_DATE(#{max}, '%Y%m%d')
 			]]>
 		</if>
+		ORDER BY q.createat DESC
 		<if test="page != null">
 			LIMIT ${page} , ${count}
 		</if>
@@ -50,7 +51,7 @@
    	<!-- 관리자 Qna 인출 -->
    	<select id="getAdminQnaPost" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
    		SELECT 
-   			q.category,q.createat ,q.title, q.content, u.name AS user_name, u.phone, q.reply, q.replydate, a.name AS admin_name
+   			q.category,q.createat ,q.title, q.content, u.name AS user_name, u.phone, q.reply, q.replydate, a.name AS admin_name, a.admin_id
    		FROM user u, qnapost AS q LEFT OUTER JOIN admin AS a ON q.admin_id = a.admin_id
 		WHERE q.user_id = u.user_id
 		AND q.qnaindex = ${index}
@@ -62,4 +63,10 @@
    		SET reply='${content}', admin_id='${admin_id}', replydate=now()
    		WHERE qnaindex = ${index}
    	</update>
+   	
+   	<!-- Qna Post 삭제 쿼리 -->
+   	<delete id="deleteQnaPost_admin" parameterType="String">
+   		DELETE FROM qnapost
+   		WHERE qnaindex=${index}
+   	</delete>
 </mapper>

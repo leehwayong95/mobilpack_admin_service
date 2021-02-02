@@ -28,20 +28,30 @@ public interface Dao {
 	public AdminModel LoginQuery(String id, String pw);
 	//관리자 정보 변경 : 자기자신
 	public void editInfo(String id, String name, String phone, String email);
-	//관리자 비밀번호 변경 : 자기자신
+	/*관리자 비밀번호 변경 : 자기자신
 	public void editPw(String id, String editpw);
 	
-	//유저 리스트 조회
+	/*
+	 * 유저 리스트 조회
+	 */
 	public List<UserModel> getUserList (String where, String limit);
-	//유저 리스트 조회 개수 반환
+	/*
+	 * 유저 리스트 조회 개수 반환
+	 */
 	public int getUserListCount (String where);
 	//유저 정보 조회는 아래 유저 쿼리 재활용
-	//유저 패스워드 초기화
+	/*
+	 * 유저 패스워드 초기화
+	 */
 	public void setUserPwReset (String id);
-	//유저 삭제
+	/*
+	 * 유저 삭제
+	 */
 	public void setUserDelete (String id);
 	
-	//Admin Qna List 검색
+	/*
+	 * Admin Qna List 검색
+	 */
 	public List<QnaModel> getAdminQnaList (String category, String title, String answer, String min, String max, String page, String count);
 	/*
 	 * Admin Qna 인출
@@ -51,6 +61,8 @@ public interface Dao {
 	 * Admin Qna 답변 update and insert(사실 둘다 update로 진행됩니다)
 	 */
 	public void setReply(String index, String content, String admin_id);
+	
+	public void deleteQnaPost_admin(String index);
 	
 	/**********************************************************/
 	/********************공지사항 관련 입니다.**********************/

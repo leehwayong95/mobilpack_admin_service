@@ -16,11 +16,18 @@ public class AdminQnaService {
 	@Autowired
 	Dao dao;
 	
-	//검색 결과 인출을 위한 임시 변수
+	/*
+	 * 검색 결과 인출을 위한 임시 변수
+	 */
 	private boolean flag = false;
 	private Map<String,String> recent_Search = new HashMap<>();
 	
-	//검색 메서드
+	/**
+	 * 검색 메서드
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	public List<QnaModel> getQnaList(Map<String, String> param) throws Exception {
 		//Limit절 추출
 		String page;
@@ -77,5 +84,9 @@ public class AdminQnaService {
 	 */
 	public void setReply(String index, String content, String admin_id) {
 		dao.setReply(index, content, admin_id);
+	}
+	
+	public void deleteQnaPost(String index) {
+		dao.deleteQnaPost_admin(index);
 	}
 }

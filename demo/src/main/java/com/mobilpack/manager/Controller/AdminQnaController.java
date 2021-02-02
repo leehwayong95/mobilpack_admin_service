@@ -34,7 +34,12 @@ public class AdminQnaController {
 	@Autowired
 	JwtService jwtService;
 	
-	//Qna자세히 보기 API
+	/**
+	 * Qna자세히 보기 API
+	 * @param index
+	 * @param req
+	 * @return
+	 */
 	@GetMapping("/{index}")
 	public ResponseEntity<Map<String, Object>> qnaInfo(
 			@PathVariable String index,
@@ -42,21 +47,32 @@ public class AdminQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
+			QnaModel target=adminQnaService.getQna(index);
+			String requestId = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
+			//답변을 자기가 했는지 출력해주는 값을 추가
+			if (target.getAdmin_id() != null)
+				resultMap.put("answerOwner", target.getAdmin_id().equals(requestId));
 			resultMap.put("status", true);
-			resultMap.put("post", adminQnaService.getQna(index));
+			resultMap.put("post", target);
 			status = HttpStatus.OK;
 		} catch (NoinfoException e) {
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	//검색 API
+	/**
+	 * 검색 API
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	@PatchMapping("/search")
 	public ResponseEntity<Map<String, Object>> qnaSearch(
 			@RequestBody Map<String, String> param,
@@ -82,16 +98,35 @@ public class AdminQnaController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	//QNA 삭제 API
+	/**
+	 * QNA 삭제 API
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	@DeleteMapping("/{index}")
-	public ResponseEntity<Map<String, Object>> qnaDelete(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
+	public ResponseEntity<Map<String, Object>> qnaDelete(@PathVariable String index) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			adminQnaService.deleteQnaPost(index);
+			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status =HttpStatus.BAD_REQUEST;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	//QNA 답변 수정 및 삭제
+	
+	/**
+	 * QNA 답변 수정 및 삽입	
+	 * @param index
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	@PostMapping("/chat/{index}")
 	public ResponseEntity<Map<String, Object>> qnaChatUpdate(
 			@PathVariable String index,
@@ -112,7 +147,12 @@ public class AdminQnaController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//QNA 답변 삭제
+	/**
+	 * QNA 답변 삭제
+	 * @param param
+	 * @param req
+	 * @return
+	 */
 	@DeleteMapping("/chat/{index}")
 	public ResponseEntity<Map<String, Object>> qnaChatDelete(
 			@RequestBody Map<String, Object> param,
