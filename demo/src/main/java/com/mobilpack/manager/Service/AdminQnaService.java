@@ -85,8 +85,18 @@ public class AdminQnaService {
 	public void setReply(String index, String content, String admin_id) {
 		dao.setReply(index, content, admin_id);
 	}
-	
+	/**
+	 * 관리자 Qna Post 삭제
+	 * @param index
+	 */
 	public void deleteQnaPost(String index) {
 		dao.deleteQnaPost_admin(index);
+	}
+	/**
+	 * 관리자 Qna 답변 삭제
+	 * @param index
+	 */
+	public void deleteAnswer(String index) {
+		dao.deleteAnswer(index);
 	}
 }

@@ -154,11 +154,19 @@ public class AdminQnaController {
 	 * @return
 	 */
 	@DeleteMapping("/chat/{index}")
-	public ResponseEntity<Map<String, Object>> qnaChatDelete(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
+	public ResponseEntity<Map<String, Object>> qnaChatDelete (@PathVariable String index) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			adminQnaService.deleteAnswer(index);
+			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	

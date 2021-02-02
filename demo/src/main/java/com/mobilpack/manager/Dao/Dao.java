@@ -61,8 +61,14 @@ public interface Dao {
 	 * Admin Qna 답변 update and insert(사실 둘다 update로 진행됩니다)
 	 */
 	public void setReply(String index, String content, String admin_id);
-	
+	/*
+	 * 관리자 Qna Post삭제
+	 */
 	public void deleteQnaPost_admin(String index);
+	/*
+	 * Qna 답변 삭제
+	 */
+	public void deleteAnswer(String index);
 	
 	/**********************************************************/
 	/********************공지사항 관련 입니다.**********************/

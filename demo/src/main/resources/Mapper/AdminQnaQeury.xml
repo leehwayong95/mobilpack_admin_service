@@ -69,4 +69,11 @@
    		DELETE FROM qnapost
    		WHERE qnaindex=${index}
    	</delete>
+   	
+    <!-- Answer 삭제 -->
+    <update id="deleteAnswer" parameterType="String">
+    	UPDATE qnapost q
+		SET q.reply = NULL, q.admin_id = NULL, q.replydate =NULL
+		WHERE q.qnaindex = ${index}
+    </update>
 </mapper>
