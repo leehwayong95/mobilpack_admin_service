@@ -1,25 +1,37 @@
 package com.mobilpack.manager.Model;
 
+import lombok.Data;
+
+@Data
 public class PostModel {
-	private String default_Lang;	//기본 언어
+	private String postindex;
+	private String default_lang;	//기본 언어
 	private String category;		//카테고리
 	private String title;			//추천장소명
+	private String admin_id;		//관리자 아이디
 	private String content;			//관광정보
 	private String tag;				//태그
-	private String voice_Info;		//음성안내 문구
+	private String voice_info;		//음성안내 문구
 	private String location;		//위치(위도와 경도:**.***,**.****)
 	private String address;			//주소
 	private String phone;			//연락처
-	private int day;				//운영요일(1은 운영, 0은 미운영: 1011100)
-	private String operationTime;	//오픈시간
-	private String closeTime;		//닫는시간
-	private String endTime;			//마감시간
-	
-	public String getDefault_Lang() {
-		return default_Lang;
+	private String state;			//서비스 상태
+	private String date;			//등록날짜
+	private String openday;			//운영요일(1은 운영, 0은 미운영: 1011100)
+	private String opentime;		//오픈시간
+	private String closetime;		//닫는시간
+	private String endtime;			//마감시간
+	public String getPostindex() {
+		return postindex;
 	}
-	public void setDefault_Lang(String default_Lang) {
-		this.default_Lang = default_Lang;
+	public void setPostindex(String postindex) {
+		this.postindex = postindex;
+	}
+	public String getDefault_lang() {
+		return default_lang;
+	}
+	public void setDefault_lang(String default_lang) {
+		this.default_lang = default_lang;
 	}
 	public String getCategory() {
 		return category;
@@ -33,17 +45,29 @@ public class PostModel {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getAdmin_id() {
+		return admin_id;
+	}
+	public void setAdmin_id(String admin_id) {
+		this.admin_id = admin_id;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public String getTag() {
 		return tag;
 	}
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-	public String getVoice_Info() {
-		return voice_Info;
+	public String getVoice_info() {
+		return voice_info;
 	}
-	public void setVoice_Info(String voice_Info) {
-		this.voice_Info = voice_Info;
+	public void setVoice_info(String voice_info) {
+		this.voice_info = voice_info;
 	}
 	public String getLocation() {
 		return location;
@@ -63,34 +87,40 @@ public class PostModel {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public int getDay() {
-		return day;
+	public String getState() {
+		return state;
 	}
-	public void setDay(int day) {
-		this.day = day;
+	public void setState(String state) {
+		this.state = state;
 	}
-	public String getOperationTime() {
-		return operationTime;
+	public String getDate() {
+		return date;
 	}
-	public void setOperationTime(String operationTime) {
-		this.operationTime = operationTime;
+	public void setDate(String date) {
+		this.date = date;
 	}
-	public String getCloseTime() {
-		return closeTime;
+	public String getOpenday() {
+		return openday;
 	}
-	public void setCloseTime(String closeTime) {
-		this.closeTime = closeTime;
+	public void setOpenday(String openday) {
+		this.openday = openday;
 	}
-	public String getEndTime() {
-		return endTime;
+	public String getOpentime() {
+		return opentime;
 	}
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setOpentime(String opentime) {
+		this.opentime = opentime;
 	}
-	public String getContent() {
-		return content;
+	public String getClosetime() {
+		return closetime;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setClosetime(String closetime) {
+		this.closetime = closetime;
+	}
+	public String getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
 }

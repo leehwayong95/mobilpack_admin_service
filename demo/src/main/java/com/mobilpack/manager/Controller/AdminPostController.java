@@ -1,14 +1,18 @@
 package com.mobilpack.manager.Controller;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,42 +20,73 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
+import com.mobilpack.manager.Service.AdminRecommandService;
 
 @CrossOrigin(origins = "http://localhost/")
 @RestController
 @RequestMapping("/api/su/post")
 public class AdminPostController {
+	@Autowired
+	AdminRecommandService service;
 	//게시글 등록 부분 api
 	@PostMapping("/create")
-	public String postCreate(@RequestBody PostModel post,
-			@RequestPart("files") MultipartFile file) {
-		// 사진 등록 부분 test 중
-		String test = "123";
-		String basePath ="C:\\Users\\shjo2\\Desktop\\Hub\\GitHub\\MobilPack\\demo\\src\\main\\resources\\images";
-		File test1 = new File(basePath+"/"+test);	
-		// 경로에 폴더가 없을 경우 자동으로 생성
-		if(!test1.exists()) {
-			test1.mkdir();
+	public String postCreate(@ModelAttribute PostModel post,
+			@RequestPart("files") List<MultipartFile> files) {
+		//vue에서 오는 값들을 insert문으로 DB에 넣기
+		//동시에 postindex값을 리턴 받는다.
+        service.RecommandCreate(post);
+		//postindex값을 토대로 폴더를 구분
+		String folderName = post.getPostindex();
+		System.out.println(post.getPostindex());
+		//기본 경로를 설정함
+		String basePath ="C:\\\\Users\\shjo2\\Desktop\\Hub"
+				+ "\\GitHub\\MobilPack\\demo\\src"
+				+ "\\main\\resources\\images";
+		//기본 경로에 postindex값을 넣어 게시글 별로 경로 생성
+		File folderPath = new File(basePath+"\\"+folderName);	
+		// 해당 경로가 없을 겅우 자동으로 폴더 생성
+		if(!folderPath.exists()) {
+			folderPath.mkdir();
 		}
-    	
-		String originalName = file.getOriginalFilename();
-		String filePath = test1 + "/" + originalName;
-		File dest = new File(filePath);
-		String[] nameCheck = dest.getName().split("\\.");
-		if(nameCheck[1].equals("png")||nameCheck[1].equals("jpg")) {
-			try {
-	    		file.transferTo(dest);
-	    		dest.length();
-			} 
-			catch(Exception e) {
-				e.printStackTrace();
-				return "false";
-			}
-		}
-		else {
-			return "right extension";
-		}
+		//파일을 받는다
+    	for(MultipartFile file : files) {
+    		FileModel RepeatModel = new FileModel();
+    		String originalName = file.getOriginalFilename();
+    		String[] nameCheck = 
+    				originalName.split("\\.");
+    		UUID newName = UUID.randomUUID();
+    		System.out.println(newName+"."+nameCheck[1]);
+    		String filePath = folderPath + "\\" + newName+"."+nameCheck[1];
+    		System.out.println(filePath);
+    		File dest = new File(filePath);
+    		if(nameCheck[1].equals("png")
+    				   ||nameCheck[1].equals("jpg")) {
+    					try {
+    			    		file.transferTo(dest);
+    			    		dest.length();
+    					} 
+    					catch(Exception e) {
+    						e.printStackTrace();
+    						return "false";
+    					}
+    					RepeatModel.setPostindex(post.getPostindex());
+    					RepeatModel.setFilename(originalName);
+    					RepeatModel.setFilepath(filePath);
+    					RepeatModel.setFileuuid(newName.toString());
+    					try {
+    					service.FileCreate(RepeatModel);
+    					}
+    					catch(Exception e) {
+    						e.printStackTrace();
+    						return "false";
+    					}
+    				}
+    		else {
+    			return "right extension";
+    		}
+    	}	
 	return "uploaded";
 	}
 

@@ -1,41 +1,40 @@
 package com.mobilpack.manager.Model;
 
 public class FileModel {
-	private int fileindex;		//파일의 index(파일 5개까지 받기 때문)
-    private int postindex;		//게시글 index(어떤 게시글의 파일인지 구분하기 위해)
-    private String fileName;   	//파일 이름
-    private String fileSize;  	//파일 용량
-    private String filePath;	//파일 경로
-	public int getFileindex() {
+	private String fileindex;		//파일의 index(파일 5개까지 받기 때문)
+    private String postindex;		//게시글 index(어떤 게시글의 파일인지 구분하기 위해)
+    private String filename;   	//파일 이름
+    private String fileuuid;  	//파일 용량
+    private String filepath;	//파일 경로
+	
+	public String getFileindex() {
 		return fileindex;
 	}
-	public void setFileindex(int fileindex) {
+	public void setFileindex(String fileindex) {
 		this.fileindex = fileindex;
 	}
-	public int getPostindex() {
+	public String getPostindex() {
 		return postindex;
 	}
-	public void setPostindex(int postindex) {
+	public void setPostindex(String postindex) {
 		this.postindex = postindex;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getFilename() {
+		return filename;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
-	public String getFileSize() {
-		return fileSize;
+	public String getFileuuid() {
+		return fileuuid;
 	}
-	public void setFileSize(String fileSize) {
-		this.fileSize = fileSize;
+	public void setFileuuid(String fileuuid) {
+		this.fileuuid = fileuuid;
 	}
-	public String getFilePath() {
-		return filePath;
+	public String getFilepath() {
+		return filepath;
 	}
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
 	}
-    
-    
 }
