@@ -20,8 +20,6 @@ public class UserLoginService {
 		String encryptPW = null;
 		try { // 비밀번호 암호화
 			encryptPW = InfoEncryptService.getEncrypt(pw, salt);
-			System.out.println("Login > Salt : " + salt);
-			System.out.println("Login > PW : " +encryptPW);
 		} catch (NullPointerException e) {
 			throw new NoinfoException("Wrong PW or ID");
 		} catch (NoSuchAlgorithmException e) {
@@ -53,10 +51,7 @@ public class UserLoginService {
 			
 			user.setPassword(encryptPw);
 			user.setSalt(Salt);
-			
-			System.out.println("Signin > Salt : " + Salt);
-			System.out.println("Sigin > PW : " +encryptPw);
-			
+
 			dao.signinUser(user);
 			return true;
 		} catch (NoSuchAlgorithmException e) {
