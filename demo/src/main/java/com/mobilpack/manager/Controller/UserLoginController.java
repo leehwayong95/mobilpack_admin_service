@@ -31,11 +31,11 @@ public class UserLoginController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> userSearch(
-			@RequestBody Map<String, Object> param) {
+			@RequestBody Map<String, String> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		String id = param.get("id").toString();
-		String pw = param.get("pw").toString();
+		String id = param.get("id");
+		String pw = param.get("pw");
 		try {
 			UserModel targetUser = loginservice.login(id, pw);
 			String token = jwtservice.createJWT(targetUser);

@@ -45,7 +45,7 @@ public interface Dao {
 	/*
 	 * 유저 패스워드 초기화
 	 */
-	public void setUserPwReset (String id);
+	public void setUserPwReset (String id, String pw, String salt);
 	/*
 	 * 유저 삭제
 	 */
@@ -95,6 +95,12 @@ public interface Dao {
 	
 	//유저 로그인 
 	public UserModel getUserLogin (String id, String pw);
+	/**
+	 * 유저 Salt 인출
+	 * @param id User Login ID
+	 * @return User encryptSalt
+	 */
+	public String getUserSalt(String id);
 	//유저 회원가입시 아이디 중복확인
 	public UserModel getCheckingId (String id);
 	//유저 회원가입

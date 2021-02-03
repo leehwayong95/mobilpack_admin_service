@@ -23,11 +23,16 @@
 		FROM user
 		WHERE user_id = '${id}' AND password = '${pw}'
 	</select>
-    
+    <!-- 유저 Salt값 인출 -->
+    <select id="getUserSalt" resultType="String" parameterType="String">
+    	SELECT salt
+    	FROM user
+    	WHERE user_id = #{id}
+    </select>
 	<!-- 회원가입 쿼리 -->
 	<insert id="signinUser" parameterType="com.mobilpack.manager.Model.UserModel">
-		INSERT INTO user (user_id,password,name,country,phone)
-		VALUES ('${user_id}','${password}','${name}','${country}','${phone}')
+		INSERT INTO user (user_id,password,name,country,phone,salt)
+		VALUES ('${user_id}','${password}','${name}','${country}','${phone}','${salt}')
 	</insert>
 	<!-- 사용자 회원 정보 출력 쿼리 -->
 	<select id="getUserInfo" resultType="com.mobilpack.manager.Model.UserModel">

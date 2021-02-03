@@ -13,8 +13,15 @@ public class UserModel {
 	private String phone;
 	private String country;
 	private String createat;
+	private String salt;
 	
 	
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 	public String getPassword() {
 		return password;
 	}

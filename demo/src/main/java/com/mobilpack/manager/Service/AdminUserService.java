@@ -1,5 +1,6 @@
 package com.mobilpack.manager.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +79,15 @@ public class AdminUserService {
 	//유저 pw reset 서비스
 	public void setUserPwReset (String id) throws NoinfoException {
 		this.getUserInfo(id);
-		dao.setUserPwReset(id);
+		String salt = InfoEncryptService.getSalt();
+		String Encryptpw ="";
+		try {
+			Encryptpw = InfoEncryptService.getEncrypt("password123", salt);
+			dao.setUserPwReset(id, Encryptpw, salt);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			throw new NoinfoException("Can Find infomation but password Encrypt Error");
+		}
 	}
 	
 	public void setUserDelete (String id) throws NoinfoException {

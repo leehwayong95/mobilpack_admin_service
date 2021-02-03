@@ -19,7 +19,7 @@
    	<!-- 유저 패스워드 리셋 -->
    	<update id="setUserPwReset">
    		UPDATE user
-   		SET password='password123'
+   		SET password='${pw}', salt='${salt}'
    		WHERE user_id='${id}'
    	</update>
    	<!-- 관리자가 유저 삭제 -->
