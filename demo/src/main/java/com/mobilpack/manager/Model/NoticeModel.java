@@ -1,7 +1,14 @@
 package com.mobilpack.manager.Model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NoticeModel {
-	private String index;
+	private String postindex;
 	private String id;
 	private String enabled;
 	private String language;
@@ -11,12 +18,11 @@ public class NoticeModel {
 	private String createat;
 	private String updateat;
 	private String viewcount;
-	
-	public String getIndex() {
-		return index;
+	public String getPostindex() {
+		return postindex;
 	}
-	public void setIndex(String index) {
-		this.index = index;
+	public void setPostindex(String postindex) {
+		this.postindex = postindex;
 	}
 	public String getId() {
 		return id;

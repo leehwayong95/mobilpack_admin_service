@@ -5,7 +5,7 @@
 	<!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
 	<!-- 공지사항 검색 -->
 	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		select postindex,id,enabled,language,title,createat,viewcount
+		select postindex,id,enabled,language,title,createat,viewcount,topsetting
 		from notice
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
@@ -17,7 +17,9 @@
     	and title LIKE '%${titlename}%'and content LIKE '%${titlename}%'
     	</if>
     	</where>
-    	ORDER BY postindex ASC
+    	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
+    	order by topsetting desc,createat DESC
+    	<!-- ORDER BY FIELD (column, 1순위, 2순위, 3순위, n순위...) -->
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
     	LIMIT ${Currentpage},${Number}
     	</if>
@@ -25,20 +27,36 @@
 
 	<!-- 공지사항 상세 -->
 	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		select id,enabled,title,content,topsetting,createat,updateat,viewcount
+		select postindex,id,enabled,title,content,topsetting,createat,updateat,viewcount
 		from notice
-		where postindex='${index}'
+		where postindex = '${postindex}'
 	</select>
+	<!-- 공지사항 게시중단 -->
+	<update id="stopposting" parameterType="String">
+		UPDATE notice
+		SET enabled='0'
+		WHERE postindex=${postindex}
+	</update>
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="String">
 		insert into notice(id,topsetting,language,title,content)
 		values('${id}','${topsetting}','${language}','${title}','${content}');
 	</insert>
 	<!-- 공지사항 조회수 +1 -->
+	<update id="plusviewcount" parameterType="String">
+		UPDATE notice
+		SET viewcount=viewcount+1
+		WHERE postindex=${postindex}
+	</update>
 	<!-- 공지사항 수정 -->
 	<update id="editnotice" parameterType="String">
 		UPDATE notice
-		SET id='${id}',enabled='${enabled}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
-		WHERE postindex='${index}'
+		SET id='${id}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
+		WHERE postindex=${postindex}
 	</update>
+	<!-- 공지사항 삭제 -->
+	<delete id="deletenotice" parameterType="String">
+		DELETE FROM notice
+		WHERE postindex='${index}'
+	</delete>
 </mapper>
