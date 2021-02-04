@@ -54,11 +54,15 @@ public interface Dao {
 	public List<NoticeModel> searchnotice(String Currentpage,String Number,String language,String titlename);
 	//(공지사항 상세)
 	public NoticeModel detailnotice(String postindex);
+	//(공지사항 죄회수 증가)
+	public void plusviewcount(String postindex);
+	//(공지사항 게시중단)
+    public void stopposting(String postindex);
 	
 	//(공지사항 작성)
 	public void insertnotice(String id,String topsetting,String language,String title,String content);
 	//(공지사항 수정)
-    public void editnotice(String postindex,String id,String enabled,String language,String title,String content,String topsetting);
+    public void editnotice(String postindex,String id,String language,String title,String content,String topsetting);
     //(공지사항 삭제)
     public void deletenotice(String postindex);
 	
