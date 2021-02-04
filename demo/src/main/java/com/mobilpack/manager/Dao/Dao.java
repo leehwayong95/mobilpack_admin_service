@@ -3,8 +3,14 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
-import com.mobilpack.manager.Model.AdminModel;import com.mobilpack.manager.Model.NoticeModel;
-import com.mobilpack.manager.Model.QnaModel;import com.mobilpack.manager.Model.UserModel;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mobilpack.manager.Model.AdminModel;
+import com.mobilpack.manager.Model.FileModel;
+import com.mobilpack.manager.Model.NoticeModel;
+import com.mobilpack.manager.Model.PostModel;
+import com.mobilpack.manager.Model.QnaModel;
+import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
     //(관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
@@ -122,5 +128,16 @@ public interface Dao {
 	public void deleteQnaPost (String index, String id);
 	//유저 QnA 수정
 	public void updateQnaPost (QnaModel model);
+	
+	/**********************************************************/
+	/**********************추천장소 관리입니다.**********************/
+	/**********************************************************/
+	
+	//게시글 등록
+	public void RecommandCreate (PostModel post);
+	//파일 이름 및 경로 등록
+	public void FileCreate(FileModel file);
+	//게시글 검색
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage,int number);
 }
 	
