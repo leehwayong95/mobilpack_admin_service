@@ -20,8 +20,12 @@ public class AdminRecommandService {
 	public void RecommandCreate(PostModel post) {
 		dao.RecommandCreate(post);
 	}
-	
+	//파일 경로, 이름 등의 정보를 db에 insert
 	public void FileCreate(FileModel file) {
 		dao.FileCreate(file);
+	}
+	//게시글 리스트 내용을 조건에 따라 select문으로 가져옴
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage, int number){
+		return dao.RecommandList(category, language, state, titlename,currentPage,number);
 	}
 }

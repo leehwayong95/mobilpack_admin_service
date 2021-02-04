@@ -105,5 +105,7 @@ public interface Dao {
 	public void RecommandCreate (PostModel post);
 	//파일 이름 및 경로 등록
 	public void FileCreate(FileModel file);
+	//게시글 검색
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage,int number);
 }
 	

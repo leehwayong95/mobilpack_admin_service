@@ -6,6 +6,7 @@ import lombok.Data;
 public class PostModel {
 	private String postindex;
 	private String default_lang;	//기본 언어
+	private String language;		//등록 언어
 	private String category;		//카테고리
 	private String title;			//추천장소명
 	private String admin_id;		//관리자 아이디
@@ -21,6 +22,7 @@ public class PostModel {
 	private String opentime;		//오픈시간
 	private String closetime;		//닫는시간
 	private String endtime;			//마감시간
+	private String count;			//댓글수
 	public String getPostindex() {
 		return postindex;
 	}
@@ -32,6 +34,12 @@ public class PostModel {
 	}
 	public void setDefault_lang(String default_lang) {
 		this.default_lang = default_lang;
+	}
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 	public String getCategory() {
 		return category;
@@ -123,4 +131,11 @@ public class PostModel {
 	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
+	}
+	
 }

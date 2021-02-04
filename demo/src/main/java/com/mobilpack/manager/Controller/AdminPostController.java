@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +37,8 @@ public class AdminPostController {
 	//게시글 등록 부분 api
 	@PostMapping("/create")
 	public String postCreate(@ModelAttribute PostModel post,
-			@RequestPart("files") List<MultipartFile> files) {
+			@RequestPart("files") List<MultipartFile> files,
+			HttpServletRequest req) {
 		//vue에서 오는 값들을 insert문으로 DB에 넣기
 		//동시에 postindex값을 리턴 받는다.
         service.RecommandCreate(post);
@@ -98,12 +100,11 @@ public class AdminPostController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<Map<String, Object>> postSearch(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	public List<PostModel> postSearch(
+			@RequestParam String category, String language, String state, String titlename,int currentPage, int number) {
+		//페이징을 위한 페이지 번호 관련 계산
+		currentPage=number*(currentPage-1);
+		return service.RecommandList(category, language, state, titlename,currentPage, number);
 	}
 	
 	@GetMapping("/info")
