@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoticeModel {
+	private String name;
 	private String postindex;
 	private String id;
 	private String enabled;
@@ -18,6 +19,13 @@ public class NoticeModel {
 	private String createat;
 	private String updateat;
 	private String viewcount;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getPostindex() {
 		return postindex;
 	}

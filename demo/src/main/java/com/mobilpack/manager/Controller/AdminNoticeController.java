@@ -74,13 +74,6 @@ public class AdminNoticeController {
 		return check;
 	}
 
-	/*
-	 * // (공지사항 상세)
-	 * 
-	 * @PostMapping("/detail") public NoticeModel detailnotice(@RequestBody
-	 * NoticeModel index) { System.out.println(index.getPostindex()); return
-	 * noticeservice.detailnotice(index.getPostindex()); }
-	 */
 	// (공지사항 상세)
 	@GetMapping("/detail")
 	 public NoticeModel detailnotice(@RequestParam String postindex) {
