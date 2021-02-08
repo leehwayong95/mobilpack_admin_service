@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobilpack.manager.Dao.Dao">
+	<!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
+	<!-- 유저 공지사항 검색 -->
+	<select id="usersearchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		SELECT a.name, n.postindex, n.title, n.createat, n.viewcount, n.topsetting, n.enabled
+		FROM notice AS n 
+		LEFT OUTER JOIN admin AS a 
+			ON a.admin_id = n.id
+		<where>
+		n.enabled='1'
+    	<!-- 제목이 빈값이 아닐때 -->
+    	<if test="title != null and title != ''">
+    	AND n.title LIKE '%${title}%'
+    	</if>
+    	</where>
+    	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
+    	ORDER BY topsetting desc,createat DESC
+    	<!-- ORDER BY FIELD (column, 1순위, 2순위, 3순위, n순위...) -->
+    	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
+    	LIMIT ${Currentpage},${Number}
+    	</if>
+	</select>
+
+	<!-- 유저 공지사항 상세 -->
+	<select id="userdetailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
+		SELECT a.name, n.postindex, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
+		FROM notice AS n 
+		LEFT OUTER JOIN admin AS a
+			ON a.admin_id = n.id
+		WHERE n.postindex = '${postindex}'
+	</select>
+
+	<!-- 유저 공지사항 조회수 +1 -->
+	<update id="userplusviewcount" parameterType="String">
+		UPDATE notice
+		SET viewcount=viewcount+1
+		WHERE postindex=${postindex}
+	</update>
+</mapper>

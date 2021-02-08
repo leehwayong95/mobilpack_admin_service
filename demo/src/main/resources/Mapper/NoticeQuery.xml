@@ -12,15 +12,15 @@
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
     	<if test="language!=null and language!=''">
-    	AND language LIKE'%${language}%'
+    	AND n.language LIKE'%${language}%'
     	</if>
     	<!-- 제목+내용이 빈값이 아닐때 -->
     	<if test="titlename != null and titlename != ''">
-    	AND title LIKE '%${titlename}%'AND content LIKE '%${titlename}%'
+    	AND n.title LIKE '%${titlename}%'AND n.content LIKE '%${titlename}%'
     	</if>
     	</where>
     	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
-    	ORDER BY topsetting desc,createat DESC
+    	ORDER BY n.topsetting DESC,n.createat DESC
     	<!-- ORDER BY FIELD (column, 1순위, 2순위, 3순위, n순위...) -->
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
     	LIMIT ${Currentpage},${Number}
