@@ -24,14 +24,18 @@ public interface Dao {
     //(관리자 id 증복 검사)
     public String idcheck(String id);
     //(관리자 등록)
-    public void joinadmin(String id,String password,String name,String phone,String email);
+    public void joinadmin(String id,String password,String name,String phone,String email, String salt);
     //(관리자 수정)
     public void editadmin(String id,String name,String phone,String email);
     //(관리자 비밀번호 초기화)
-    public void pwreset(String id);
+    public void pwreset(String id, String pw, String salt);
     
     //관리자 로그인쿼리
 	public AdminModel LoginQuery(String id, String pw);
+	/*
+	 * 관리자 Salt 값 가져오기
+	 */
+	public String getAdminSalt (String id);
 	//관리자 정보 변경 : 자기자신
 	public void editInfo(String id, String name, String phone, String email);
 	/*

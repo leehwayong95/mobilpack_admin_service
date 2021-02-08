@@ -1,5 +1,7 @@
 package com.mobilpack.manager.Service;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,14 @@ public class AdminLoginService {
 	//로그인 쿼리 결과 전달 메서드
 	public AdminModel Login(String id, String pw) throws NoinfoException
 	{
-		AdminModel loginmodel = dao.LoginQuery(id, pw);
+		String salt = dao.getAdminSalt(id);
+		String encryptPw = null;
+		try {
+			encryptPw = InfoEncryptService.getEncrypt(pw, salt);
+		} catch (NoSuchAlgorithmException e) {
+			throw new NoinfoException("Wrong ID");
+		}
+		AdminModel loginmodel = dao.LoginQuery(id, encryptPw);
 		if (loginmodel != null)
 			return loginmodel;
 		else
@@ -34,7 +43,18 @@ public class AdminLoginService {
 	public boolean editPw(String id, String currentpw, String editpw) throws NoinfoException
 	{
 		AdminModel targetModel = this.Login(id, currentpw);
-		dao.editPw(targetModel.getAdmin_id(), editpw);
+		String salt = null;
+		String EncryptPw = null;
+		if (targetModel == null) {
+			throw new NoinfoException("Wrong ID or PW");
+		}
+		try {
+			salt = dao.getAdminSalt(id);
+			EncryptPw = InfoEncryptService.getEncrypt(editpw, salt);
+		} catch (NoSuchAlgorithmException e) {
+			throw new NoinfoException("Wrong...");
+		}
+		dao.editPw(targetModel.getAdmin_id(), EncryptPw);
 		return true;
 	}
 }

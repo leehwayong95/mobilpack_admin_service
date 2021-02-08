@@ -81,6 +81,7 @@ public class AdminManagerController {
 			String check = "ok";
 			return check;
 		} catch (Exception e) {
+			e.printStackTrace();
 			String check = "1";
 			return check;
 		}

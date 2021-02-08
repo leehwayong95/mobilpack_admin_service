@@ -48,10 +48,10 @@ public class AdminQnaController {
 		HttpStatus status = null;
 		try {
 			QnaModel target=adminQnaService.getQna(index);
-			String requestId = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
+			//String requestId = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
 			//답변을 자기가 했는지 출력해주는 값을 추가
-			if (target.getAdmin_id() != null)
-				resultMap.put("answerOwner", target.getAdmin_id().equals(requestId));
+			//if (target.getAdmin_id() != null)
+				//resultMap.put("answerOwner", target.getAdmin_id().equals(requestId));
 			resultMap.put("status", true);
 			resultMap.put("post", target);
 			status = HttpStatus.OK;
@@ -63,6 +63,7 @@ public class AdminQnaController {
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

@@ -1,4 +1,5 @@
 package com.mobilpack.manager.Service;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,9 +49,11 @@ public class AdminManagerService {
     }
     
     //(관리자 등록)
-    public void joinadmin(String id,String name,String phone,String email) {
+    public void joinadmin(String id,String name,String phone,String email) throws NoSuchAlgorithmException {
     	String password = "admin1234!!";
-    	dao.joinadmin(id,password,name,phone,email);
+    	String salt = InfoEncryptService.getSalt();
+    	password = InfoEncryptService.getEncrypt(password, salt);
+    	dao.joinadmin(id,password,name,phone,email,salt);
     }
     
     //(관리자 수정)
@@ -59,8 +62,10 @@ public class AdminManagerService {
     }
     
   //(관리자 비밀번호 초기화)
-    public void pwreset(String id) {
-    	dao.pwreset(id);
+    public void pwreset(String id) throws NoSuchAlgorithmException {
+    	String salt = InfoEncryptService.getSalt();
+    	String EncryptPw = InfoEncryptService.getEncrypt("admin1234!!", salt);
+    	dao.pwreset(id, EncryptPw, salt);
     }
     
     //(관리자 상세정보)

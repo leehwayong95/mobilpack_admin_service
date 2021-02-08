@@ -78,6 +78,7 @@ public class AdminLoginController {
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
 		} catch (Exception e){
+			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.ACCEPTED;
