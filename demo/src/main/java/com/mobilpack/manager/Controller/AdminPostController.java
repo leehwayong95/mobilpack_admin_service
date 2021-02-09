@@ -4,6 +4,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,6 +13,9 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -101,19 +106,38 @@ public class AdminPostController {
 
 	@GetMapping("/search")
 	public List<PostModel> postSearch(
-			@RequestParam String category, String language, String state, String titlename,int currentPage, int number) {
+			@RequestParam String category, String language, String state, 
+			String titlename,int currentPage, int number,HttpServletRequest req) {
 		//페이징을 위한 페이지 번호 관련 계산
 		currentPage=number*(currentPage-1);
 		return service.RecommandList(category, language, state, titlename,currentPage, number);
 	}
 	
 	@GetMapping("/info")
-	public ResponseEntity<Map<String, Object>> postInfo(
-			@RequestBody Map<String, Object> param,
-			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	public Map<String, Object> postInfo(
+		@RequestParam String postindex,
+		HttpServletRequest req) throws Exception{
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		PostModel detail = new PostModel();
+		List<FileModel> file = new ArrayList<FileModel>();
+		detail = service.RecommandDetail(postindex);
+		file = service.IndexOutput(postindex);
+		map.put("postModel", detail);
+		map.put("fileList",file);
+		return map;
+	}
+	
+	@PostMapping("/download")
+	public ResponseEntity<Resource> fileDownload(
+			@RequestParam String fileindex,
+			HttpServletRequest req) throws Exception{
+		// 파일 다운로드 api
+		Resource resource = service.FileDownload(fileindex);
+		String mediaType = Files.probeContentType(Paths.get(resource.getFile().getAbsolutePath()));
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+resource.getFilename()+"\"")
+				.contentType(MediaType.parseMediaType(mediaType))
+				.body(resource);
 	}
 	
 	@PostMapping("/update")

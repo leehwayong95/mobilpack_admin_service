@@ -3,7 +3,7 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.apache.tomcat.util.file.ConfigurationSource.Resource;
 
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.FileModel;
@@ -147,5 +147,11 @@ public interface Dao {
 	public void FileCreate(FileModel file);
 	//게시글 검색
 	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage,int number);
+	//게시글 상세
+	public PostModel RecommandDetail(String postindex);
+	//파일 다운로드
+	public FileModel FileDownload(String fileindex);
+	//인덱스 불러오기
+	public List<FileModel> IndexOutput(String postindex);
 }
 	
