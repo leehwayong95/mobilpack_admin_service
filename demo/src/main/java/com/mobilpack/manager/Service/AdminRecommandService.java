@@ -1,10 +1,13 @@
 package com.mobilpack.manager.Service;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.mobilpack.manager.Dao.Dao;
 import com.mobilpack.manager.Model.FileModel;
@@ -27,5 +30,16 @@ public class AdminRecommandService {
 	//게시글 리스트 내용을 조건에 따라 select문으로 가져옴
 	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage, int number){
 		return dao.RecommandList(category, language, state, titlename,currentPage,number);
+	}
+	//게시글 상세 정보 내용 가져오기
+	public PostModel RecommandDetail(String postindex) {
+		return dao.RecommandDetail(postindex);
+	}
+	
+	public Resource FileDownload(String fileindex) throws MalformedURLException {
+		FileModel path =  dao.FileDownload(fileindex);
+		String targetPath = path.getFilepath();
+    	File target = new File(targetPath);
+    	return new UrlResource(target.toURI());
 	}
 }

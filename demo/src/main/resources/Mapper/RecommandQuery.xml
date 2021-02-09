@@ -41,4 +41,18 @@
 			</if>
 		</where>
 	</select>
+	<!-- 게시글 상세 정보 표시 -->
+	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
+		SELECT category, language, title, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
+		FROM recommended_place
+		WHERE postindex= '${postindex}'
+	</select>
+	<select id="FileDownload" parameterType="String" resultType="com.mobilpack.manager.Model.FileModel">
+		SELECT filepath FROM recommend_files
+		WHERE fileindex= '${fileindex}'
+	</select>
+	<select id="IndexOutput" parameterType="String" resultType="com.mobilpack.manager.Model.FileModel">
+		SELECT filepath FROM recommend_files
+		WHERE postindex= '${postindex}'
+	</select>
 </mapper>
