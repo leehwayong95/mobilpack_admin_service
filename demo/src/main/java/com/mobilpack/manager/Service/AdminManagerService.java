@@ -22,24 +22,28 @@ public class AdminManagerService {
 	// (관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
 	public List<AdminModel> searchadminlist(String Currentpage, String Number, String id, String name, String createat,
 			String updateat) {
-		try {
-			System.out.println( Currentpage);
-			System.out.println( Number);
-			SimpleDateFormat origin = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			SimpleDateFormat newdate = new SimpleDateFormat("yyyy-MM-dd");
-			Date Createat = origin.parse(createat);
-			Date Updateat = origin.parse(updateat);
-
-			String ChangeCreateat = newdate.format(Createat);
-			String ChangeUpdateat = newdate.format(Updateat);
-
-			return dao.searchadminlist(Currentpage, Number, id, name, ChangeCreateat, ChangeUpdateat);
-		} catch (ParseException e) {
-			System.out.println("포맷 오류");
-			String ChangeCreateat = null;
-			String ChangeUpdateat = null;
-			return dao.searchadminlist(Currentpage, Number, id, name, ChangeCreateat, ChangeUpdateat);
-		}
+		return dao.searchadminlist(Currentpage, Number, id, name, createat, updateat);
+//		try {
+//			System.out.println( createat);
+//			System.out.println( updateat);
+//			//SimpleDateFormat origin = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//			//SimpleDateFormat newdate = new SimpleDateFormat("yyyy-MM-dd");
+//			//Date Createat = origin.parse(createat);
+//			//Date Updateat = origin.parse(updateat);
+//
+//			//String ChangeCreateat = newdate.format(Createat);
+//			//String ChangeUpdateat = newdate.format(Updateat);
+//
+//			return dao.searchadminlist(Currentpage, Number, id, name, createat, updateat);
+//			//return dao.searchadminlist(Currentpage, Number, id, name, ChangeCreateat, ChangeUpdateat);
+//		//} catch (ParseException e) {
+//		  } catch (exception e) {
+//			System.out.println("포맷 오류");
+//			String ChangeCreateat = null;
+//			String ChangeUpdateat = null;
+//			return dao.searchadminlist(Currentpage, Number, id, name, createat, updateat);
+//			//return dao.searchadminlist(Currentpage, Number, id, name, ChangeCreateat, ChangeUpdateat);
+//		}
 	}
 	
     //(관리자 id 중복 검사)
