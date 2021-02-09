@@ -102,7 +102,14 @@ public interface Dao {
     //(공지사항 삭제)
     public void deletenotice(String postindex);
 	
-	
+    //(유저 공지사항 검색)
+  	public List<NoticeModel> usersearchnotice(String Currentpage,String Number,String title);
+  	//(유저 공지사항 상세)
+  	public NoticeModel userdetailnotice(String postindex);
+  	//(유저 공지사항 죄회수 증가)
+  	public void userplusviewcount(String postindex);
+    
+    
 	/**********************************************************/
 	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
 	/**********************************************************/

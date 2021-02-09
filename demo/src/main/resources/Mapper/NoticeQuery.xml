@@ -5,20 +5,22 @@
 	<!-- >>>>>>>>>> 공지사항 <<<<<<<<<< -->
 	<!-- 공지사항 검색 -->
 	<select id="searchnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		select postindex,id,enabled,language,title,createat,viewcount,topsetting
-		from notice
+		SELECT a.name, n.postindex, n.id, n.enabled, n.language, n.title, n.createat, n.viewcount, n.topsetting
+		FROM notice AS n 
+		LEFT OUTER JOIN admin AS a 
+			ON a.admin_id = n.id
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
     	<if test="language!=null and language!=''">
-    	and language LIKE'%${language}%'
+    	AND n.language LIKE'%${language}%'
     	</if>
     	<!-- 제목+내용이 빈값이 아닐때 -->
     	<if test="titlename != null and titlename != ''">
-    	and title LIKE '%${titlename}%'and content LIKE '%${titlename}%'
+    	AND n.title LIKE '%${titlename}%'AND n.content LIKE '%${titlename}%'
     	</if>
     	</where>
     	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
-    	order by topsetting desc,createat DESC
+    	ORDER BY n.topsetting DESC,n.createat DESC
     	<!-- ORDER BY FIELD (column, 1순위, 2순위, 3순위, n순위...) -->
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''">
     	LIMIT ${Currentpage},${Number}
@@ -27,9 +29,11 @@
 
 	<!-- 공지사항 상세 -->
 	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		select postindex,id,enabled,title,content,topsetting,createat,updateat,viewcount
-		from notice
-		where postindex = '${postindex}'
+		SELECT a.name, n.postindex, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
+		FROM notice AS n 
+		LEFT OUTER JOIN admin AS a
+			ON a.admin_id = n.id
+		WHERE n.postindex = '${postindex}'
 	</select>
 	<!-- 공지사항 게시중단 -->
 	<update id="stopposting" parameterType="String">
@@ -39,8 +43,8 @@
 	</update>
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="String">
-		insert into notice(id,topsetting,language,title,content)
-		values('${id}','${topsetting}','${language}','${title}','${content}');
+		INSERT into notice(id,topsetting,language,title,content)
+		VALUES('${id}','${topsetting}','${language}','${title}','${content}');
 	</insert>
 	<!-- 공지사항 조회수 +1 -->
 	<update id="plusviewcount" parameterType="String">
