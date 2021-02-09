@@ -1,10 +1,10 @@
 package com.mobilpack.manager.Controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +13,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -120,13 +118,12 @@ public class AdminPostController {
 		@RequestParam String postindex,
 		HttpServletRequest req) throws Exception{
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		Path path = Paths.get(".\\\\upload\\71\\58b2a584-9575-452d-8e1d-27771fa0a89c.jpg");
-		File down = new File(".\\\\upload\\71\\58b2a584-9575-452d-8e1d-27771fa0a89c.jpg");
-		Resource resource = new UrlResource(path.toUri());
 		PostModel detail = new PostModel();
+		List<FileModel> file = new ArrayList<FileModel>();
 		detail = service.RecommandDetail(postindex);
-		map.put("postmodel", detail);
-		map.put("file",resource);
+		file = service.IndexOutput(postindex);
+		map.put("postModel", detail);
+		map.put("fileList",file);
 		return map;
 	}
 	

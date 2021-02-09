@@ -43,16 +43,19 @@
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT category, language, title, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
+		SELECT category, default_language, title, admin_id, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
 		FROM recommended_place
 		WHERE postindex= '${postindex}'
 	</select>
+	<!-- 게시글 파일 다운로드 -->
 	<select id="FileDownload" parameterType="String" resultType="com.mobilpack.manager.Model.FileModel">
 		SELECT filepath FROM recommend_files
 		WHERE fileindex= '${fileindex}'
 	</select>
+	<!-- 게시글 파일 리스트 출력 -->
 	<select id="IndexOutput" parameterType="String" resultType="com.mobilpack.manager.Model.FileModel">
-		SELECT filepath FROM recommend_files
+		SELECT * FROM recommend_files
 		WHERE postindex= '${postindex}'
 	</select>
+	<!-- 게시글 수정 부분 -->
 </mapper>

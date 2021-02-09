@@ -35,11 +35,15 @@ public class AdminRecommandService {
 	public PostModel RecommandDetail(String postindex) {
 		return dao.RecommandDetail(postindex);
 	}
-	
+	//파일 다운
 	public Resource FileDownload(String fileindex) throws MalformedURLException {
 		FileModel path =  dao.FileDownload(fileindex);
 		String targetPath = path.getFilepath();
     	File target = new File(targetPath);
     	return new UrlResource(target.toURI());
+	}
+	//인덱스 불러오기
+	public List<FileModel> IndexOutput(String postindex){
+		return dao.IndexOutput(postindex);
 	}
 }
