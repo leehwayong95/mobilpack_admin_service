@@ -24,7 +24,8 @@ public class MobilpackManager  implements WebMvcConfigurer{
 	{
 		registry.addInterceptor(jwtInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns(Arrays.asList("/api/user/**","/api/su/my/login/**"));
+				.excludePathPatterns(Arrays.asList("/api/**"));
+				//.excludePathPatterns(Arrays.asList("/api/user/**","/api/su/my/login/**"));
 	}
 	
 	@Override
