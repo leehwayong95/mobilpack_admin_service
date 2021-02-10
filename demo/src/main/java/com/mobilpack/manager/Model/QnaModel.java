@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-@AllArgsConstructor
 public class QnaModel {
 	private String Qnaindex;
 	private String category;

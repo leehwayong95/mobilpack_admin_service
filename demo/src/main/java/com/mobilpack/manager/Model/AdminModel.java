@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AdminModel {
 	private String admin_id;
 	private String name;
