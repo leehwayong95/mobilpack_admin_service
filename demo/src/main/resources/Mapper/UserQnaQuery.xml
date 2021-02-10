@@ -5,7 +5,7 @@
 <!-- 사용자 Qna 작성 -->
 	<insert id="UserQnaWrite" parameterType="com.mobilpack.manager.Model.QnaModel">
 		INSERT INTO qnapost (category, title, content, user_id)
-		VALUE (${category},'${title}','${content}','${user_id}')
+		VALUE (${category},'${title}',"${content}",'${user_id}')
 	</insert>
 	<!-- 사용자 Qna 리스트 검색 -->
 	<select id="getQnaList" parameterType="String" resultType="com.mobilpack.manager.Model.QnaModel">
@@ -67,7 +67,7 @@
 	<!-- Qna 수정 쿼리 -->
 	<update id="updateQnaPost" parameterType="com.mobilpack.manager.Model.QnaModel">
 		UPDATE qnapost
-		SET category = ${category}, title = '${title}', content = '${content}'
+		SET category = ${category}, title = '${title}', content = "${content}"
 		WHERE qnaindex = ${Qnaindex} AND user_id = '${user_id}'
 	</update>
 </mapper>

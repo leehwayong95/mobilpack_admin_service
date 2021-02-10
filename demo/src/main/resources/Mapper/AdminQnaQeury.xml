@@ -63,7 +63,7 @@
    	<!-- 관리자 Qna 답변 쿼리 -->
    	<update id="setReply" parameterType="String">
    		UPDATE qnapost
-   		SET reply='${content}', admin_id='${admin_id}', replydate=now()
+   		SET reply="${content}", admin_id='${admin_id}', replydate=now()
    		WHERE qnaindex = ${index}
    	</update>
    	
