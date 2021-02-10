@@ -42,7 +42,7 @@ public class JwtService {
 		final JwtBuilder builder = Jwts.builder();
 		builder.setHeaderParam("typ", "JWT");
 
-		builder.setSubject("logintoken").setExpiration(new Date(System.currentTimeMillis() * 1000 + 60 * expireMin))
+		builder.setSubject("logintoken").setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
 				.claim("admin_id", admin.getAdmin_id()).claim("name", admin.getName());
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
 
@@ -59,7 +59,7 @@ public class JwtService {
 	public String createJWT(final UserModel user) {
 		final JwtBuilder builder = Jwts.builder();
 		builder.setHeaderParam("typ", "JWT");
-		builder.setSubject("logintoken").setExpiration(new Date(System.currentTimeMillis() * 1000 + 60 * expireMin))
+		builder.setSubject("logintoken").setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
 				.claim("user_id", user.getUser_id()).claim("name", user.getName());
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
 
