@@ -58,4 +58,19 @@
 		WHERE postindex= '${postindex}'
 	</select>
 	<!-- 게시글 수정 부분 -->
+	<update id="RecommandUpdate" parameterType="com.mobilpack.manager.Model.PostModel">
+		UPDATE recommended_place SET category = '${category}', default_lang = '${default_lang}',
+			title = '${title}', content = '${content}', tag = '${tag}', 
+			voice_info = '${voice_info}', location = '${location}', 
+			address = '${address}', phone = '${phone}', state = '${state}',
+			openday = '${openday}', opentime = '${opentime}', closetime = '${closetime}',
+			endtime = '${endtime}'
+		WHERE postindex = '${postindex}'
+	</update>
+	<!-- 파일 수정부분 -->
+	<update id="FileUpdate" parameterType="com.mobilpack.manager.Model.FileModel">
+		UPDATE recommend_files SET filename = '${filename}', fileuuid = '${fileuuid}',
+			filepath = '${filepath}'
+		WHERE fileindex = '${fileindex}'
+	</update>
 </mapper>

@@ -46,4 +46,17 @@ public class AdminRecommandService {
 	public List<FileModel> IndexOutput(String postindex){
 		return dao.IndexOutput(postindex);
 	}
+	//게시글 수정하기
+	public String RecommandUpdate(PostModel post) {
+		try { dao.RecommandUpdate(post);
+			return "SUCCESS";}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "FAIL";
+		}
+	}
+	//파일 수정하기
+	public void FileUpdate(FileModel file) {
+			dao.FileUpdate(file);
+	}
 }

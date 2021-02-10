@@ -160,5 +160,9 @@ public interface Dao {
 	public FileModel FileDownload(String fileindex);
 	//인덱스 불러오기
 	public List<FileModel> IndexOutput(String postindex);
+	//게시글 수정하기
+	public void RecommandUpdate(PostModel post);
+	//파일 수정하기
+	public void FileUpdate(FileModel file);
 }
 	
