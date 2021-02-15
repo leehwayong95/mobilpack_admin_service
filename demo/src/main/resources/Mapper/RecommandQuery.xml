@@ -43,7 +43,7 @@
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT category, default_language, title, admin_id, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
+		SELECT category, default_lang, title, admin_id, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
 		FROM recommended_place
 		WHERE postindex= '${postindex}'
 	</select>
@@ -72,5 +72,48 @@
 		UPDATE recommend_files SET filename = '${filename}', fileuuid = '${fileuuid}',
 			filepath = '${filepath}'
 		WHERE fileindex = '${fileindex}'
+	</update>
+	<!-- 추천장소 삭제 부분 -->
+	<delete id="RecommandDelete" parameterType = "String">
+		DELETE FROM recommended_place
+		WHERE postindex = '${postindex}'
+	</delete>
+	<!-- 추천장소 리뷰 출력 -->
+	<select id="RecommandComments" parameterType = "String" resultType="com.mobilpack.manager.Model.CommentModel">
+		SELECT * FROM comments as r
+		LEFT OUTER JOIN (SELECT name,user_id FROM user) AS c
+		ON r.id = c.user_id
+		WHERE postindex = '${postindex}'
+	</select>
+	<!-- 게시글 전부에 추천장소 리뷰 삭제  -->
+	<delete id="CommentDelete" parameterType = "String">
+		DELETE FROM comments
+		WHERE postindex = '${postindex}'
+	</delete>
+	<!-- 추천장소 파일 DB 삭제 -->
+	<delete id="FileDelete" parameterType = "String">
+		DELETE FROM recommend_files
+		WHERE fileindex = '${fileindex}'
+	</delete>
+	<!-- 번역 등록 -->
+	<insert id="TranslateCreate" parameterType = "com.mobilpack.manager.Model.TranslateModel">
+		INSERT INTO content_translate(language, postindex, title, content, tag, voice_info, address)
+		VALUE('${language}',${postindex},'${title}','${content}','${tag}','${voice_info}','${address}')
+	</insert>
+	<!-- 번역 상세 정보 -->
+	<select id="TranslateInfo" parameterType = "String" resultType = "com.mobilpack.manager.Model.TranslateModel">
+		SELECT * FROM content_translate
+		WHERE postindex = ${postindex}
+	</select>
+	<!-- 리뷰 삭제 -->
+	<delete id="CommentOneDelete" parameterType = "String">
+		DELETE FROM comments
+		WHERE commentindex = ${commentindex}
+	</delete>
+	<!-- 추천장소 서비스 활성화 -->
+	<update id = "StateUpdate" parameterType = "Integer">
+		UPDATE recommended_place
+		SET state = !state
+		WHERE postindex = ${postindex}
 	</update>
 </mapper>

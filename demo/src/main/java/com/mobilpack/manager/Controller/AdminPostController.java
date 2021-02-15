@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mobilpack.manager.Model.CommentModel;
 import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
+import com.mobilpack.manager.Model.TranslateModel;
 import com.mobilpack.manager.Service.AdminRecommandService;
 
 @CrossOrigin(origins = "http://localhost/")
@@ -82,7 +84,7 @@ public class AdminPostController {
     					catch(Exception e) {
     						//확장자가 맞지 않을 경우 false를 반환하고 코드 중지
     						e.printStackTrace();
-    						return "false";
+    						return "FALSE";
     					}
     					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 insert함
     					RepeatModel.setPostindex(post.getPostindex());
@@ -94,23 +96,34 @@ public class AdminPostController {
     					}
     					catch(Exception e) {
     						e.printStackTrace();
-    						return "false";
+    						return "FALSE";
     					}
     				}
     		else {
-    			return "wrong extension";
+    			return "FALSE";
     		}
     	}	
-	return "uploaded";
+	return "TRUE";
 	}
 
 	@GetMapping("/search")
-	public List<PostModel> postSearch(
+	public HashMap<String,Object> postSearch(
 			@RequestParam String category, String language, String state, 
 			String titlename,int currentPage, int number,HttpServletRequest req) {
+		int totalPage;
 		//페이징을 위한 페이지 번호 관련 계산
 		currentPage=number*(currentPage-1);
-		return service.RecommandList(category, language, state, titlename,currentPage, number);
+		//전체 게시글을 구하기 위한 코드
+		int listCount = service.RecommandList(category, language, state, titlename, null, null).size();
+		if (listCount % number != 0) {
+	          totalPage = listCount / number + 1;
+	        } else {
+	          totalPage = listCount / number;
+	        }
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("List", service.RecommandList(category, language, state, titlename,currentPage, number));
+		map.put("pageCount", totalPage );
+		return map;
 	}
 	
 	@GetMapping("/info")
@@ -120,10 +133,12 @@ public class AdminPostController {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		PostModel detail = new PostModel();
 		List<FileModel> file = new ArrayList<FileModel>();
+		List<CommentModel> comment = service.RecommandComments(postindex);
 		detail = service.RecommandDetail(postindex);
 		file = service.IndexOutput(postindex);
 		map.put("postModel", detail);
 		map.put("fileList",file);
+		map.put("comment", comment);
 		return map;
 	}
 	
@@ -149,7 +164,7 @@ public class AdminPostController {
 			service.RecommandUpdate(post);
 		}
 		catch(Exception e) {
-			return "FAIL";
+			return "FALSE";
 		}
 			//postindex값을 토대로 폴더를 구분
 			String folderName = post.getPostindex();
@@ -194,11 +209,10 @@ public class AdminPostController {
 					catch(Exception e) {
 						//확장자가 맞지 않을 경우 false를 반환하고 코드 중지
 						e.printStackTrace();
-						return "false";
+						return "FALSE";
 					}
 					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 insert함
 					RepeatModel.setFileindex(fileList.get(num).getFileindex());
-					System.out.println(fileList.get(num).getFileindex());
 					RepeatModel.setFilename(originalName);
 					RepeatModel.setFilepath(filePath);
 					RepeatModel.setFileuuid(newName.toString());
@@ -208,59 +222,94 @@ public class AdminPostController {
 					}
 					catch(Exception e) {
 						e.printStackTrace();
-						return "false";
+						return "FALSE";
 					}
 				}
 	    		else {
-	    			return "wrong extension";
+	    			return "FALSE";
 	    		}
 	    	}
-			return "SUCCESS";
+			return "TRUE";
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<Map<String, Object>> postDelete(
-			@RequestBody Map<String, Object> param,
+	@PostMapping("/delete")
+	public String postDelete(
+			@RequestParam String postindex,
 			HttpServletRequest req) {
-		// do something
+		//추천장소 게시글이랑 리뷰 DB 정보 지울것
+		try {
+			service.CommentDelete(postindex);
+			//해당 파일들의 정보를 지울 것(만약 파일이 있을 경우에)
+			List<FileModel> fileList = service.IndexOutput(postindex);
+			if(!fileList.isEmpty()) {
+				for(int repeat=0; repeat<fileList.size(); repeat++) {
+					File deleteFile = new File(fileList.get(repeat).getFilepath());
+					service.FileDelete(fileList.get(repeat).getFileindex());
+					deleteFile.delete();
+				}
+			}
+			service.RecommandDelete(postindex);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "FALSE";
+		}
+		// 파일 지울 것
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return "TRUE";
 	}
 	
 	@GetMapping("/translate/info")
-	public ResponseEntity<Map<String, Object>> postTranslateInfo(
-			@RequestBody Map<String, Object> param,
+	public List<TranslateModel> TranslateInfo(
+			@RequestParam String postindex,
 			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		//번역 정보 불러오기
+			return service.TranslateInfo(postindex);
 	}
 	
 	@PostMapping("/translate/create")
-	public ResponseEntity<Map<String, Object>> postTranslateCreate(
-			@RequestBody Map<String, Object> param,
+	public String postTranslateCreate(
+			@RequestBody TranslateModel translate,
 			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		// 번역 정보 등록하기
+		try {
+			service.TranslateCreate(translate);
+			return "TRUE";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "FALSE";
+		}
 	}
 	
-	@DeleteMapping("/comment/delete")
-	public ResponseEntity<Map<String, Object>> postCommentDelete(
-			@RequestBody Map<String, Object> param,
+	@PostMapping("/comment/delete")
+	public String postCommentDelete(
+			@RequestParam String commentindex,
 			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			// 해당 게시글 번호에 있는 댓글 삭제
+			try{
+				service.CommentOneDelete(commentindex);
+				return "TRUE";
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return "FALSE";
+			}
 	}
 	
 	@GetMapping("/place/enable")
-	public ResponseEntity<Map<String, Object>> postPlaceEnable(
-			@RequestBody Map<String, Object> param,
+	public String postPlaceEnable(
+			@RequestParam String postindex,
 			HttpServletRequest req) {
-		// do something
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		// 받은 postindex에 따라 추천장소 서비스 활성화 시키기
+			try {
+				service.StateUpdate(postindex);
+				return "TRUE";
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return "FALSE";
+			}
 	}
 
 	
