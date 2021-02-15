@@ -3,13 +3,13 @@ package com.mobilpack.manager.Dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tomcat.util.file.ConfigurationSource.Resource;
-
 import com.mobilpack.manager.Model.AdminModel;
+import com.mobilpack.manager.Model.CommentModel;
 import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.NoticeModel;
 import com.mobilpack.manager.Model.PostModel;
 import com.mobilpack.manager.Model.QnaModel;
+import com.mobilpack.manager.Model.TranslateModel;
 import com.mobilpack.manager.Model.UserModel;
 
 public interface Dao {
@@ -153,12 +153,32 @@ public interface Dao {
 	//파일 이름 및 경로 등록
 	public void FileCreate(FileModel file);
 	//게시글 검색
-	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage,int number);
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,Integer currentPage,Integer number);
 	//게시글 상세
 	public PostModel RecommandDetail(String postindex);
 	//파일 다운로드
 	public FileModel FileDownload(String fileindex);
 	//인덱스 불러오기
 	public List<FileModel> IndexOutput(String postindex);
+	//게시글 수정하기
+	public void RecommandUpdate(PostModel post);
+	//파일 수정하기
+	public void FileUpdate(FileModel file);
+	//게시글 리뷰 리스트 받기
+	public List<CommentModel> RecommandComments(String postindex);
+	//게시글 삭제
+	public void RecommandDelete(String postindex);
+	//게시글 리뷰 삭제
+	public void CommentDelete(String postindex);
+	//파일 삭제
+	public void FileDelete(String fileindex);
+	//번역 등록
+	public void TranslateCreate(TranslateModel translate);
+	//번역 상세 정보
+	public List<TranslateModel> TranslateInfo(String postindex);
+	//게시글 리뷰 하나 삭제
+	public void CommentOneDelete(String commentindex);
+	//추천장소 서비스 활성화
+	public void StateUpdate(String postindex);
 }
 	
