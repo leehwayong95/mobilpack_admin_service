@@ -111,7 +111,7 @@ public interface Dao {
     
     
 	/**********************************************************/
-	/****************아래는 사용자 쿼리관련 메서드 입니다.****************/
+	/*********************사용자 쿼리관련 메서드 입니다.****************/
 	/**********************************************************/
 	
 	//유저 로그인 
@@ -153,7 +153,7 @@ public interface Dao {
 	//파일 이름 및 경로 등록
 	public void FileCreate(FileModel file);
 	//게시글 검색
-	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage,int number);
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,Integer currentPage,Integer number);
 	//게시글 상세
 	public PostModel RecommandDetail(String postindex);
 	//파일 다운로드

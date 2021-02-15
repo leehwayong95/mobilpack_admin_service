@@ -28,7 +28,7 @@ public class AdminRecommandService {
 		dao.FileCreate(file);
 	}
 	//게시글 리스트 내용을 조건에 따라 select문으로 가져옴
-	public List<PostModel> RecommandList(String category, String language, String state, String titlename,int currentPage, int number){
+	public List<PostModel> RecommandList(String category, String language, String state, String titlename,Integer currentPage, Integer number){
 		return dao.RecommandList(category, language, state, titlename,currentPage,number);
 	}
 	//게시글 상세 정보 내용 가져오기

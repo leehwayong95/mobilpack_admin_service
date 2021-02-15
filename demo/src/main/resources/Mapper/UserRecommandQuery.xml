@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mobilpack.manager.Dao.UserRecommandDao">
+	<!-- 게시글 상세 정보 표시 -->
+	<select id="getRecommandPost" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
+		SELECT title, address, phone, openday, opentime, closetime, endtime, tag, content
+		FROM recommended_place
+		WHERE postindex = '${postindex}'
+	</select>
+</mapper>

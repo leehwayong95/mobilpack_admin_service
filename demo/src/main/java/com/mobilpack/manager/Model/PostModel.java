@@ -23,6 +23,14 @@ public class PostModel {
 	private String closetime;		//닫는시간
 	private String endtime;			//마감시간
 	private String count;			//댓글수
+	private String name;			//관리자 이름
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getPostindex() {
 		return postindex;
 	}
