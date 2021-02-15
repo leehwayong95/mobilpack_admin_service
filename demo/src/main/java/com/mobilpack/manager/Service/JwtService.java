@@ -54,7 +54,7 @@ public class JwtService {
 	 * 유저 JWT토큰 발급 method OverLoad된 메서드입니다.
 	 * 
 	 * @param UserModel을 사용합니다.
-	 * @return admin_id와 name을 담은 JWT String 반환
+	 * @return user_id와 name을 담은 JWT String 반환
 	 */
 	public String createJWT(final UserModel user) {
 		final JwtBuilder builder = Jwts.builder();

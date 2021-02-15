@@ -16,6 +16,11 @@ public class UserMyService {
 	@Autowired
 	Dao dao;
 	
+	/**
+	 * 회원 정보 인출 메서드
+	 * @param id 아이디 String
+	 * @return UserModel 반환
+	 */
 	public UserModel getUserInfo(String id) {
 		return dao.getUserInfo(id);
 	}
