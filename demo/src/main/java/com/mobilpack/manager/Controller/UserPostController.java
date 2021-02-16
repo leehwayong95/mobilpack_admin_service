@@ -81,14 +81,14 @@ public class UserPostController {
 			/*
 			 * 검색 결과 인출
 			 */
-			List<PostModel> searchList = adminService.RecommandList(category, requestLanguage, "1", name, page, count);
+			List<PostModel> searchList = userService.getRecommandList(category, requestLanguage, "1", name, page, count);
 			resultMap.put("result", searchList);
 			/*
 			 * 페이징을 위한 검색 조건에 따른 개수 구하기
 			 */
 			page = null;
 			count = null;
-			int ListCount = adminService.RecommandList(category, requestLanguage, "1", name, page, count).size();
+			int ListCount = userService.getRecommandList(category, requestLanguage, "1", name, page, count).size();
 			resultMap.put("count", ListCount);
 			
 			status = HttpStatus.ACCEPTED;

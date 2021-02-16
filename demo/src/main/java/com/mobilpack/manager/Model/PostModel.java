@@ -24,7 +24,14 @@ public class PostModel {
 	private String endtime;			//마감시간
 	private String count;			//댓글수
 	private String name;			//관리자 이름
+	private String thumbnail;		//썸네일 경로
 	
+	public String getThumbnail() {
+		return thumbnail;
+	}
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
 	public String getName() {
 		return name;
 	}
