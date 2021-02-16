@@ -24,6 +24,7 @@ import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.UserMyService;
 import com.mobilpack.manager.Service.UserRecommandService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/post")
 public class UserPostController {
