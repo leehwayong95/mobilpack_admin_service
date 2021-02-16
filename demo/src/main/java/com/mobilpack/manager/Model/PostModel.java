@@ -1,5 +1,7 @@
 package com.mobilpack.manager.Model;
 
+import org.springframework.core.io.Resource;
+
 import lombok.Data;
 
 @Data

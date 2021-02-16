@@ -9,7 +9,7 @@
 		WHERE postindex = '${postindex}'
 	</select>
 	<select id="getRecommandList" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT r.tag, r.postindex,r.category, r.language, r.default_lang, r.title, r.date, r.state, c.count, f.filepath AS Thumbnail
+		SELECT r.tag, r.postindex,r.category, r.content, r.default_lang, r.title, r.date, r.state, c.count, f.filepath AS Thumbnail
 			FROM recommended_place r 
 		LEFT OUTER JOIN (SELECT postindex,COUNT(*) AS count FROM comments GROUP BY postindex)AS c
 			ON r.postindex = c.postindex

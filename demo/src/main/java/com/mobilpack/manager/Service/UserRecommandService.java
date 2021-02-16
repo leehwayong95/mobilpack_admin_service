@@ -1,6 +1,8 @@
 package com.mobilpack.manager.Service;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,15 @@ public class UserRecommandService {
 			try {
 				if(i.getThumbnail() != null) {
 					File targetfile = new File(i.getThumbnail());
-					if(targetfile.exists())
-						i.setThumbnail(targetfile.getAbsolutePath());
+					if(targetfile.exists()) { //실제로 이 컴퓨터에 존재하는지 검사
+						//이미지 파일을 byte화 코드
+						//i.setImg(Files.readAllBytes(Path.of(targetfile.toURI())));
+						i.setThumbnail("http://localhost/img/" + i.getPostindex() +"/"+targetfile.getName().toString());
+					}
 					else
 						i.setThumbnail(null);
 				}
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 				i.setThumbnail(null);
 			}
 		}

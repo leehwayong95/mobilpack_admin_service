@@ -7,8 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +48,7 @@ public class UserPostController {
 			HttpServletRequest req) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+		HttpHeaders header = new HttpHeaders();
 		try {
 			/*
 			 * Request User Contry 인출 부분
@@ -90,7 +93,6 @@ public class UserPostController {
 			count = null;
 			int ListCount = userService.getRecommandList(category, requestLanguage, "1", name, page, count).size();
 			resultMap.put("count", ListCount);
-			
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("status", false);
