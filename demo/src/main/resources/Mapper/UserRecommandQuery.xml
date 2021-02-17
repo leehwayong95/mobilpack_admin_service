@@ -4,7 +4,7 @@
 <mapper namespace="com.mobilpack.manager.Dao.UserRecommandDao">
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="getRecommandPost" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT title, address, phone, openday, opentime, closetime, endtime, tag, content
+		SELECT title, address, phone, openday, opentime, closetime, endtime, tag, content, location
 		FROM recommended_place
 		WHERE postindex = '${postindex}'
 	</select>
@@ -42,5 +42,6 @@
 				LIMIT ${currentPage},${number}
 			</if>
 		</where>
+		ORDER BY r.postindex DESC
 	</select>
 </mapper>
