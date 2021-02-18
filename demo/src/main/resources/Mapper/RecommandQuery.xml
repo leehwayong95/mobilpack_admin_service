@@ -5,8 +5,8 @@
 	<!-- 추천 장소 관리 쿼리 -->
 	<!-- 게시글 등록 쿼리  -->
 	<insert id="RecommandCreate" parameterType="com.mobilpack.manager.Model.PostModel" useGeneratedKeys="true" keyProperty="postindex">
-		INSERT INTO recommended_place(default_lang,category,title,admin_id,content,tag,voice_info,location,address,phone,state,openday,opentime,closetime,endtime)
-		VALUES('${default_lang}','${category}','${title}','${admin_id}','${content}','${tag}','${voice_info}','${location}','${address}','${phone}','${state}','${openday}','${opentime}','${closetime}','${endtime}')
+		INSERT INTO recommended_place(default_lang,category,title,admin_id,content,tag,voice_info,location,address,phone,openday,opentime,closetime,endtime)
+		VALUES('${default_lang}','${category}','${title}','${admin_id}','${content}','${tag}','${voice_info}','${location}','${address}','${phone}','${openday}','${opentime}','${closetime}','${endtime}')
 	</insert>
 	<insert id="FileCreate" parameterType="com.mobilpack.manager.Model.FileModel">
 		INSERT INTO recommend_files(postindex,filename,fileuuid,filepath)
@@ -36,10 +36,11 @@
 			<if test="titlename!=null and titlename!=''">
 				AND title LIKE '%${titlename}%'
 			</if>
-			<if test="currentPage!=null and currentPage!='' and number!=null and number!=''">
+			<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
 				LIMIT ${currentPage},${number}
 			</if>
 		</where>
+		ORDER BY r.postindex DESC
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
@@ -115,5 +116,12 @@
 		UPDATE recommended_place
 		SET state = !state
 		WHERE postindex = ${postindex}
+	</update>
+	<!-- 번역 정보 수정 -->
+	<update id = "TranslateUpdate" parameterType =  "com.mobilpack.manager.Model.TranslateModel">
+		UPDATE content_translate
+		SET title = '${title}', content = '${content}', tag = '${tag}',
+			voice_info = '${voice_info}', address = '${address}'
+		WHERE postindex = ${postindex} AND language = '${language}'
 	</update>
 </mapper>

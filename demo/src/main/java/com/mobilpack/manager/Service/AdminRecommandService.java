@@ -95,4 +95,8 @@ public class AdminRecommandService {
 	public void StateUpdate(String postindex) {
 		dao.StateUpdate(postindex);
 	}
+	//번역 정보 수정
+	public void TranslateUpdate(TranslateModel translate) {
+		dao.TranslateUpdate(translate);
+	}
 }

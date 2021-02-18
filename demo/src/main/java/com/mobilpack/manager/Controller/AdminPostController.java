@@ -34,6 +34,7 @@ import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
 import com.mobilpack.manager.Model.TranslateModel;
 import com.mobilpack.manager.Service.AdminRecommandService;
+import com.mobilpack.manager.Service.JwtService;
 
 @CrossOrigin(origins = "http://localhost/")
 @RestController
@@ -41,15 +42,26 @@ import com.mobilpack.manager.Service.AdminRecommandService;
 public class AdminPostController {
 	@Autowired
 	AdminRecommandService service;
+	@Autowired
+	JwtService jwtService;
 	//게시글 등록 부분 api
 	@PostMapping("/create")
 	public String postCreate(@ModelAttribute PostModel post,
 			@RequestPart("files") List<MultipartFile> files,
 			HttpServletRequest req) {
 		//vue에서 오는 값들을 insert문으로 DB에 넣기
-		//동시에 postindex값을 리턴 받는다.
+		//jwtservice를 이용해 토큰에 있는 관리자 id를 받기
+		try {
+		String admin_id = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
+		post.setAdmin_id(admin_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "FALSE";
+		}
+		//쿼리문을 통해 DB에 insert함
         service.RecommandCreate(post);
-		//postindex값을 토대로 폴더를 구분
+		//postindex값을 토대로 폴더를 구분함
 		String folderName = post.getPostindex();
 		System.out.println(post.getPostindex());
 		//기본 경로를 설정함
@@ -108,8 +120,8 @@ public class AdminPostController {
 
 	@GetMapping("/search")
 	public HashMap<String,Object> postSearch(
-			@RequestParam String category, String language, String state, 
-			String titlename,int currentPage, int number,HttpServletRequest req) {
+			String category, String language, String state, 
+			String titlename,@RequestParam int currentPage,@RequestParam int number,HttpServletRequest req) {
 		int totalPage;
 		//페이징을 위한 페이지 번호 관련 계산
 		currentPage=number*(currentPage-1);
@@ -122,7 +134,7 @@ public class AdminPostController {
 	        }
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("List", service.RecommandList(category, language, state, titlename,currentPage, number));
-		map.put("pageCount", totalPage );
+		map.put("pageCount", listCount );
 		return map;
 	}
 	
@@ -280,6 +292,22 @@ public class AdminPostController {
 			e.printStackTrace();
 			return "FALSE";
 		}
+	}
+	
+	@PostMapping("/translate/update")
+	public String postTranslateUpdate(
+			@RequestBody TranslateModel translate,
+			HttpServletRequest req) {
+		//번역 내용 수정하기
+		try{
+			service.TranslateUpdate(translate);
+			return "TRUE";
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "FALSE";
+		}
+		
 	}
 	
 	@PostMapping("/comment/delete")

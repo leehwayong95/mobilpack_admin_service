@@ -180,5 +180,7 @@ public interface Dao {
 	public void CommentOneDelete(String commentindex);
 	//추천장소 서비스 활성화
 	public void StateUpdate(String postindex);
+	//번역 정보 수정
+	public void TranslateUpdate(TranslateModel translate);
 }
 	
