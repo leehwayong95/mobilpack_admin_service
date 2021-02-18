@@ -84,8 +84,8 @@ public class AdminRecommandService {
 		dao.TranslateCreate(translate);
 	}
 	//번역 상세 정보
-	public List<TranslateModel> TranslateInfo(String postindex){
-		return dao.TranslateInfo(postindex);
+	public List<TranslateModel> TranslateInfo(String postindex,String language){
+		return dao.TranslateInfo(postindex,language);
 	}
 	//게시글 리뷰 하나 삭제
 	public void CommentOneDelete(String commentindex) {

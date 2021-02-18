@@ -273,10 +273,10 @@ public class AdminPostController {
 	
 	@GetMapping("/translate/info")
 	public List<TranslateModel> TranslateInfo(
-			@RequestParam String postindex,
+			@RequestParam String postindex,String language,
 			HttpServletRequest req) {
 		//번역 정보 불러오기
-			return service.TranslateInfo(postindex);
+			return service.TranslateInfo(postindex,language);
 	}
 	
 	@PostMapping("/translate/create")
