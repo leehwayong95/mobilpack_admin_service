@@ -59,7 +59,7 @@ public class UserMyController {
 		HttpStatus status = null;
 		UserModel targetModel = null;
 		try {
-			targetModel = myservice.getUserInfo(jwtservice.getInfo(req.getHeader("authorization")).get("user_id").toString());
+			targetModel = myservice.getUserInfo((String)jwtservice.getInfo(req.getHeader("authorization")).get("user_id"));
 			resultMap.put("status", true);
 			resultMap.put("UserModel", targetModel);
 			status = HttpStatus.OK;
