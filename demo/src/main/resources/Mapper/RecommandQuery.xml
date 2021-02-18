@@ -37,6 +37,9 @@
 				AND title LIKE '%${titlename}%'
 			</if>
 		</where>
+		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
+			LIMIT ${currentPage},${number}
+		</if>
 		ORDER BY r.postindex DESC
 		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
 			LIMIT ${currentPage},${number}
@@ -44,8 +47,10 @@
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT category, default_lang, title, admin_id, content, tag, voice_info,address,location,date,state,phone,openday,closetime,endtime
-		FROM recommended_place
+		SELECT r.category, r.default_lang, r.title, r.admin_id, r.content, r.tag, r.voice_info,r.address,r.location,r.date,r.state,r.phone, r.openday, r.closetime, r.endtime, p.name
+		FROM recommended_place r
+		LEFT OUTER JOIN admin p
+		ON r.admin_id = p.admin_id
 		WHERE postindex= '${postindex}'
 	</select>
 	<!-- 게시글 파일 다운로드 -->
