@@ -175,7 +175,7 @@ public interface Dao {
 	//번역 등록
 	public void TranslateCreate(TranslateModel translate);
 	//번역 상세 정보
-	public List<TranslateModel> TranslateInfo(String postindex);
+	public List<TranslateModel> TranslateInfo(String postindex,String language);
 	//게시글 리뷰 하나 삭제
 	public void CommentOneDelete(String commentindex);
 	//추천장소 서비스 활성화

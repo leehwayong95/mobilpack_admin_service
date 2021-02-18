@@ -103,7 +103,7 @@
 	<!-- 번역 상세 정보 -->
 	<select id="TranslateInfo" parameterType = "String" resultType = "com.mobilpack.manager.Model.TranslateModel">
 		SELECT * FROM content_translate
-		WHERE postindex = ${postindex}
+		WHERE postindex = '${postindex}' and language = '${language}'
 	</select>
 	<!-- 리뷰 삭제 -->
 	<delete id="CommentOneDelete" parameterType = "String">
