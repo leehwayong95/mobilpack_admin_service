@@ -38,10 +38,10 @@
 			<if test="titlename!=null and titlename!=''">
 				AND title LIKE '%${titlename}%'
 			</if>
-			<if test="currentPage!=null and currentPage!='' and number!=null and number!=''">
-				LIMIT ${currentPage},${number}
-			</if>
 		</where>
 		ORDER BY r.postindex DESC
+		<if test="currentPage!=null and currentPage!='' and number!=null and number!=''">
+			LIMIT ${currentPage},${number}
+		</if>
 	</select>
 </mapper>

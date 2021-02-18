@@ -36,11 +36,11 @@
 			<if test="titlename!=null and titlename!=''">
 				AND title LIKE '%${titlename}%'
 			</if>
-			<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
-				LIMIT ${currentPage},${number}
-			</if>
 		</where>
 		ORDER BY r.postindex DESC
+		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
+			LIMIT ${currentPage},${number}
+		</if>
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
