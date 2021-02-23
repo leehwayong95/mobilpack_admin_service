@@ -37,9 +37,6 @@
 				AND title LIKE '%${titlename}%'
 			</if>
 		</where>
-		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
-			LIMIT ${currentPage},${number}
-		</if>
 		ORDER BY r.postindex DESC
 		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
 			LIMIT ${currentPage},${number}

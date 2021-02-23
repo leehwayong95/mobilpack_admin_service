@@ -44,4 +44,19 @@
 			LIMIT ${currentPage},${number}
 		</if>
 	</select>
+	
+	<!-- 추천장소 리뷰 출력 -->
+	<select id="getCommentsList" parameterType = "String" resultType="com.mobilpack.manager.Model.CommentModel">
+		SELECT c.name, r.content, r.createat 
+		FROM comments as r
+			LEFT OUTER JOIN user AS c
+			ON r.id = c.user_id
+		WHERE postindex = '${postindex}'
+	</select>
+	<!-- 추천장소 첨부파일 url -->
+	<select id="getFileList" parameterType="String" resultType="com.mobilpack.manager.Model.FileModel">
+		SELECT filepath
+		FROM recommend_files
+		WHERE postindex= '${postindex}'
+	</select>
 </mapper>
