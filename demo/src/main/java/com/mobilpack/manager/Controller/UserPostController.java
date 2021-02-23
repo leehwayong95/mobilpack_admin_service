@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -107,8 +109,9 @@ public class UserPostController {
 	}
 	
 	@GetMapping("/{index}")
-	public ResponseEntity<Map<String, Object>> userInfo(
-			@PathVariable String index) {
+	public ResponseEntity<Map<String, Object>> getUserRecommandPost (
+		@PathVariable String index
+		) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -136,5 +139,24 @@ public class UserPostController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	@PutMapping("/{index}")
+	public Map<String, Object> putUserReview (
+			@RequestParam(value="content") String content,
+			@PathVariable String index,
+			HttpServletRequest req
+			) {
+		String id = null;
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			id = jwtService.getUserID(req.getHeader("authorization"));
+			userService.putUserReview(index, content, id);
+			resultMap.put("status", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+		}
+		return resultMap;
 	}
 }

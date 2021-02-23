@@ -59,4 +59,9 @@
 		FROM recommend_files
 		WHERE postindex= '${postindex}'
 	</select>
+	<!-- 유저 리뷰 insert -->
+	<insert id="putUserReview" parameterType="String">
+		INSERT INTO comments (id, content, postindex)
+		VALUES (#{id}, #{content}, #{index})
+	</insert>
 </mapper>

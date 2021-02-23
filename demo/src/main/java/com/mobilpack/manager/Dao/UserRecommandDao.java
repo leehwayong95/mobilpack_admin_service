@@ -38,4 +38,6 @@ public interface UserRecommandDao {
 	 * @return List<FileModel> 리스트로 반환
 	 */
 	public List<FileModel> getFileList (String postindex);
+	
+	public void putUserReview (String index, String content, String id);
 }

@@ -49,4 +49,8 @@ public class UserRecommandService {
 	public List<FileModel> getFileList (String postindex) {
 		return dao.getFileList(postindex);
 	}
+	
+	public void putUserReview (String index, String content,String id) {
+		dao.putUserReview(index, content, id);
+	}
 }
