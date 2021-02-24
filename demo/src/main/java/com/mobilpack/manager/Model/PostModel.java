@@ -2,6 +2,8 @@ package com.mobilpack.manager.Model;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -27,6 +29,8 @@ public class PostModel {
 	private String count;			//댓글수
 	private String name;			//관리자 이름
 	private String thumbnail;		//썸네일 경로
+	private List<MultipartFile> files;
+	private List<Object> filemodellist;
 	
 	public String getThumbnail() {
 		return thumbnail;
