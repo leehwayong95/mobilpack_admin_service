@@ -1,5 +1,7 @@
 package com.mobilpack.manager.Controller;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
 import com.mobilpack.manager.Model.UserModel;
 import com.mobilpack.manager.Service.AdminRecommandService;
@@ -54,7 +59,7 @@ public class UserPostController {
 			/*
 			 * Request User Contry 인출 부분
 			 */
-			String requestToken = req.getHeader("authorization");
+			String requestToken = req.getHeader("Authorization");
 			String requestUserID = jwtService.getUserID(requestToken);
 			UserModel requestUser = userInfoService.getUserInfo(requestUserID);
 			String requestUserContry = requestUser.getCountry();
@@ -96,6 +101,7 @@ public class UserPostController {
 			resultMap.put("count", ListCount);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
@@ -104,8 +110,54 @@ public class UserPostController {
 	}
 	
 	@GetMapping("/{index}")
-	public PostModel userInfo(
-			@PathVariable String index) {
-		return userService.getRecommandPost(index);
+	public ResponseEntity<Map<String, Object>> getUserRecommandPost (
+		@PathVariable String index
+		) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			resultMap.put("post", userService.getRecommandPost(index));
+			resultMap.put("comments", userService.getComments(index));
+			List<FileModel> tmp_FileList = userService.getFileList(index);
+			List<String> FileList = new ArrayList<>();
+			for (FileModel i : tmp_FileList) {
+				try {
+					File targetfile = new File(i.getFilepath());
+					if (targetfile.exists())
+						i.setFilepath("http://localhost/img/" + index + "/" + targetfile.getName());
+					else 
+						continue;
+				} catch(Exception e) {
+					continue;
+				}
+				FileList.add(i.getFilepath());
+			}
+			resultMap.put("files", FileList);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	@PutMapping("/{index}")
+	public Map<String, Object> putUserReview (
+			@RequestParam String content,
+			@PathVariable String index,
+			HttpServletRequest req
+			) {
+		String id = null;
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			id = jwtService.getUserID(req.getHeader("Authorization"));
+			userService.putUserReview(index, content, id);
+			resultMap.put("status", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", e.getMessage());
+		}
+		return resultMap;
 	}
 }

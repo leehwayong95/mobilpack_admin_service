@@ -1,14 +1,14 @@
 package com.mobilpack.manager.Service;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobilpack.manager.Dao.UserRecommandDao;
+import com.mobilpack.manager.Model.CommentModel;
+import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
 
 @Service
@@ -40,5 +40,17 @@ public class UserRecommandService {
 			}
 		}
 		return recommandList;
+	}
+	
+	public List<CommentModel> getComments (String postindex) {
+		return dao.getCommentsList(postindex);
+	}
+	
+	public List<FileModel> getFileList (String postindex) {
+		return dao.getFileList(postindex);
+	}
+	
+	public void putUserReview (String index, String content,String id) {
+		dao.putUserReview(index, content, id);
 	}
 }
