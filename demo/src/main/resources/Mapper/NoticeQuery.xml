@@ -44,7 +44,7 @@
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="String">
 		INSERT into notice(id,topsetting,language,title,content)
-		VALUES('${id}','${topsetting}','${language}','${title}','${content}');
+		VALUES('${id}','${topsetting}','${language}','${title}',#{content});
 	</insert>
 	<!-- 공지사항 조회수 +1 -->
 	<update id="plusviewcount" parameterType="String">
