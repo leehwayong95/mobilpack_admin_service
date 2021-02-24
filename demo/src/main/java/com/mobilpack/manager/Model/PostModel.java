@@ -1,6 +1,6 @@
 package com.mobilpack.manager.Model;
 
-import org.springframework.core.io.Resource;
+import java.util.List;
 
 import lombok.Data;
 
@@ -154,5 +154,4 @@ public class PostModel {
 	public void setCount(String count) {
 		this.count = count;
 	}
-	
 }

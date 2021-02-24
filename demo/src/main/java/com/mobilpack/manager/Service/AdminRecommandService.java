@@ -1,6 +1,7 @@
 package com.mobilpack.manager.Service;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -111,6 +112,18 @@ public class AdminRecommandService {
 	public void UpdateTranslateDelete(TranslateModel translate) {
 		dao.UpdateTranslateDelete(translate);
 	}
-	
-	
+	//객체 불러오기
+    public void ObjectGet(Object obj) {
+        // 가져오고자하는 객체를 선언합니다. ( 새로 생성할 경우 value는 존재하지 않습니다. 
+        try {
+            // 반복문을 이용하여 해당 클래스에 정의된 필드를 가져옵니다.
+            for (Field field : obj.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+            Object value = field.get(obj); // 필드에 해당하는 값을 가져옵니다.
+            System.out.println("field : "+field.getName()+" | value : "+ value);
+            }
+       }catch (Exception e) {
+            e.printStackTrace();
+      }
+    }
 }

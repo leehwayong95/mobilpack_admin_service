@@ -62,12 +62,21 @@
 	</select>
 	<!-- 게시글 수정 부분 -->
 	<update id="RecommandUpdate" parameterType="com.mobilpack.manager.Model.PostModel">
-		UPDATE recommended_place SET category = '${category}', default_lang = '${default_lang}',
-			title = '${title}', content = '${content}', tag = '${tag}', 
-			voice_info = '${voice_info}', location = '${location}', 
-			address = '${address}', phone = '${phone}', state = '${state}',
-			openday = '${openday}', opentime = '${opentime}', closetime = '${closetime}',
-			endtime = '${endtime}'
+		UPDATE recommended_place 
+		SET 
+		category = '${category}'
+		, default_lang = '${default_lang}'
+		, title = '${title}'
+		, content = '${content}'
+		, tag = '${tag}'
+		, voice_info = '${voice_info}'
+		, location = '${location}'
+		, address = '${address}'
+		, phone = '${phone}'
+		, openday = ${openday}
+		, opentime = '${opentime}'
+		, closetime = '${closetime}'
+		, endtime = '${endtime}'
 		WHERE postindex = '${postindex}'
 	</update>
 	<!-- 파일 수정부분 -->

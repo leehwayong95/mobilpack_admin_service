@@ -177,7 +177,8 @@ public class AdminPostController {
 	@PostMapping("/update")
 	public String postUpdate(
 			@ModelAttribute PostModel post, 
-			@RequestPart("files") List<MultipartFile> files,
+			MultipartHttpServletRequest mtfRequest,
+			@ModelAttribute List<FileModel> filemodellist,
 			HttpServletRequest req) {
 		try {
 			service.RecommandUpdate(post);
@@ -185,6 +186,11 @@ public class AdminPostController {
 		catch(Exception e) {
 			return "FALSE";
 		}
+			List<MultipartFile> files = new ArrayList<>();
+			if(files != null) {
+			   files = mtfRequest.getFiles("files");
+			}
+			System.out.println(filemodellist.get(0).getFileindex());
 			//postindex값을 토대로 폴더를 구분
 			String folderName = post.getPostindex();
 			// fileindex값 출력을 위해 postindex값을 넣어 리스트에 담음
