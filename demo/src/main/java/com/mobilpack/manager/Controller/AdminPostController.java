@@ -293,6 +293,7 @@ public class AdminPostController {
 		// 번역 정보 등록하기
 		try {
 			service.TranslateCreate(translate);
+			service.UpdateTranslateCreate(translate);
 			return "TRUE";
 		}
 		catch(Exception e) {
@@ -316,6 +317,24 @@ public class AdminPostController {
 		}
 		
 	}
+	
+	
+	@PostMapping("/translate/delete")
+	public String postTranslateDelete(
+			@RequestBody TranslateModel translate,
+			HttpServletRequest req) {
+			// 번역 내용 삭제
+			try{
+				service.TranslateDelete(translate);
+				service.UpdateTranslateDelete(translate);
+				return "TRUE";
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return "FALSE";
+			}
+	}
+	
 	
 	@PostMapping("/comment/delete")
 	public String postCommentDelete(

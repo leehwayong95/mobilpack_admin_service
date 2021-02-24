@@ -174,6 +174,8 @@ public interface Dao {
 	public void FileDelete(String fileindex);
 	//번역 등록
 	public void TranslateCreate(TranslateModel translate);
+	//번역 등록 갱신
+	public void UpdateTranslateCreate(TranslateModel translate);
 	//번역 상세 정보
 	public List<TranslateModel> TranslateInfo(String postindex,String language);
 	//게시글 리뷰 하나 삭제
@@ -182,5 +184,9 @@ public interface Dao {
 	public void StateUpdate(String postindex);
 	//번역 정보 수정
 	public void TranslateUpdate(TranslateModel translate);
+	//번역 정보 삭제
+	public void TranslateDelete(TranslateModel translate);
+	//번역 정보 삭제 갱신
+	public void UpdateTranslateDelete(TranslateModel translate);
 }
 	
