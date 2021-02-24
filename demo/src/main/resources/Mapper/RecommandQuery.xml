@@ -103,6 +103,12 @@
 		INSERT INTO content_translate(language, postindex, title, content, tag, voice_info, address)
 		VALUE('${language}',${postindex},'${title}','${content}','${tag}','${voice_info}','${address}')
 	</insert>
+	<!-- 번역 등록 갱신-->
+	<update id = "UpdateTranslateCreate" parameterType = "String">
+		UPDATE recommended_place
+		SET language = language + '${language}'
+		WHERE postindex = ${postindex}
+	</update>
 	<!-- 번역 상세 정보 -->
 	<select id="TranslateInfo" parameterType = "String" resultType = "com.mobilpack.manager.Model.TranslateModel">
 		SELECT * FROM content_translate
@@ -131,4 +137,10 @@
 		DELETE FROM content_translate
 		WHERE  postindex = '${postindex}' AND language = '${language}'
 	</delete>
+	<!-- 번역 삭제 갱신-->
+	<update id = "UpdateTranslateDelete" parameterType = "String">
+		UPDATE recommended_place
+		SET language = language - '${language}'
+		WHERE postindex = ${postindex}
+	</update>
 </mapper>

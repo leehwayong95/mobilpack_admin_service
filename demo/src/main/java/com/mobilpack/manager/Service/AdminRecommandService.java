@@ -83,6 +83,10 @@ public class AdminRecommandService {
 	public void TranslateCreate(TranslateModel translate) {
 		dao.TranslateCreate(translate);
 	}
+	//번역 등록 갱신
+	public void UpdateTranslateCreate(TranslateModel translate) {
+		dao.UpdateTranslateCreate(translate);
+	}
 	//번역 상세 정보
 	public List<TranslateModel> TranslateInfo(String postindex,String language){
 		return dao.TranslateInfo(postindex,language);
@@ -103,4 +107,10 @@ public class AdminRecommandService {
 	public void TranslateDelete(TranslateModel translate) {
 		dao.TranslateDelete(translate);
 	}
+	//번역 정보 삭제 갱신
+	public void UpdateTranslateDelete(TranslateModel translate) {
+		dao.UpdateTranslateDelete(translate);
+	}
+	
+	
 }

@@ -286,6 +286,7 @@ public class AdminPostController {
 		// 번역 정보 등록하기
 		try {
 			service.TranslateCreate(translate);
+			service.UpdateTranslateCreate(translate);
 			return "TRUE";
 		}
 		catch(Exception e) {
@@ -318,6 +319,7 @@ public class AdminPostController {
 			// 번역 내용 삭제
 			try{
 				service.TranslateDelete(translate);
+				service.UpdateTranslateDelete(translate);
 				return "TRUE";
 			}
 			catch(Exception e) {
@@ -325,8 +327,6 @@ public class AdminPostController {
 				return "FALSE";
 			}
 	}
-	
-	
 	
 	
 	@PostMapping("/comment/delete")
