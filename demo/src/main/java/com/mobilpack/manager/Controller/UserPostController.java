@@ -59,7 +59,7 @@ public class UserPostController {
 			/*
 			 * Request User Contry 인출 부분
 			 */
-			String requestToken = req.getHeader("authorization");
+			String requestToken = req.getHeader("Authorization");
 			String requestUserID = jwtService.getUserID(requestToken);
 			UserModel requestUser = userInfoService.getUserInfo(requestUserID);
 			String requestUserContry = requestUser.getCountry();
@@ -101,6 +101,7 @@ public class UserPostController {
 			resultMap.put("count", ListCount);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
@@ -142,14 +143,14 @@ public class UserPostController {
 	}
 	@PutMapping("/{index}")
 	public Map<String, Object> putUserReview (
-			@RequestParam(value="content") String content,
+			@RequestParam String content,
 			@PathVariable String index,
 			HttpServletRequest req
 			) {
 		String id = null;
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
-			id = jwtService.getUserID(req.getHeader("authorization"));
+			id = jwtService.getUserID(req.getHeader("Authorization"));
 			userService.putUserReview(index, content, id);
 			resultMap.put("status", true);
 		} catch (Exception e) {
