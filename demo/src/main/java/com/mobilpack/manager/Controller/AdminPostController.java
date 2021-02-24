@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.mobilpack.manager.Model.CommentModel;
 import com.mobilpack.manager.Model.FileModel;
@@ -47,8 +48,9 @@ public class AdminPostController {
 	//게시글 등록 부분 api
 	@PostMapping("/create")
 	public String postCreate(@ModelAttribute PostModel post,
-			@RequestPart("files") List<MultipartFile> files,
+			MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest req) {
+		List<MultipartFile> files = mtfRequest.getFiles("files");
 		//vue에서 오는 값들을 insert문으로 DB에 넣기
 		//jwtservice를 이용해 토큰에 있는 관리자 id를 받기
 		try {
@@ -72,12 +74,16 @@ public class AdminPostController {
 		if(!folderPath.exists()) {
 			folderPath.mkdir();
 		}
+		System.out.println(files);
 		//다중 파일 업로드를 위한 for문
     	for(MultipartFile file : files) {
     		//파일 모델 객체 생성
     		FileModel RepeatModel = new FileModel();
     		//파일명 변수에 저장
     		String originalName = file.getOriginalFilename();
+    		System.out.println("getName : " + file.getName());
+    		System.out.println("getOriginalFilename : " + file.getOriginalFilename());
+    		System.out.println("getResources : " + file.getResource());
     		//파일 확장자 검사를 위해 split으로 확장자 구분
     		String[] nameCheck = 
     				originalName.split("\\.");
@@ -115,6 +121,7 @@ public class AdminPostController {
     			return "FALSE";
     		}
     	}	
+    	
 	return "TRUE";
 	}
 
@@ -223,7 +230,7 @@ public class AdminPostController {
 						e.printStackTrace();
 						return "FALSE";
 					}
-					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 insert함
+					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 update함
 					RepeatModel.setFileindex(fileList.get(num).getFileindex());
 					RepeatModel.setFilename(originalName);
 					RepeatModel.setFilepath(filePath);
