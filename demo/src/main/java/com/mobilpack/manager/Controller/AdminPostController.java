@@ -310,6 +310,25 @@ public class AdminPostController {
 		
 	}
 	
+	
+	@PostMapping("/translate/delete")
+	public String postTranslateDelete(
+			@RequestBody TranslateModel translate,
+			HttpServletRequest req) {
+			// 번역 내용 삭제
+			try{
+				service.TranslateDelete(translate);
+				return "TRUE";
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return "FALSE";
+			}
+	}
+	
+	
+	
+	
 	@PostMapping("/comment/delete")
 	public String postCommentDelete(
 			@RequestParam String commentindex,

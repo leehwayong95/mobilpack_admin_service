@@ -182,5 +182,7 @@ public interface Dao {
 	public void StateUpdate(String postindex);
 	//번역 정보 수정
 	public void TranslateUpdate(TranslateModel translate);
+	//번역 정보 삭제
+	public void TranslateDelete(TranslateModel translate);
 }
 	

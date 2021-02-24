@@ -99,4 +99,8 @@ public class AdminRecommandService {
 	public void TranslateUpdate(TranslateModel translate) {
 		dao.TranslateUpdate(translate);
 	}
+	//번역 정보 삭제
+	public void TranslateDelete(TranslateModel translate) {
+		dao.TranslateDelete(translate);
+	}
 }

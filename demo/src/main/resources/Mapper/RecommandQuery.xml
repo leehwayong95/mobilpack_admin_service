@@ -37,9 +37,6 @@
 				AND title LIKE '%${titlename}%'
 			</if>
 		</where>
-		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
-			LIMIT ${currentPage},${number}
-		</if>
 		ORDER BY r.postindex DESC
 		<if test="currentPage!=null and !currentPage.equals('') and number!=null and !number.equals('')">
 			LIMIT ${currentPage},${number}
@@ -129,4 +126,9 @@
 			voice_info = '${voice_info}', address = '${address}'
 		WHERE postindex = ${postindex} AND language = '${language}'
 	</update>
+	<!-- 번역 삭제 -->
+	<delete id="TranslateDelete" parameterType = "String">
+		DELETE FROM content_translate
+		WHERE  postindex = '${postindex}' AND language = '${language}'
+	</delete>
 </mapper>
