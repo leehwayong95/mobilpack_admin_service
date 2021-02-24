@@ -34,15 +34,15 @@ public class AdminManagerController {
 			System.out.println(Check);
 			if (Check == null) {
 				// 중복 id 없음
-				Check = "ok";
+				Check = "TRUE";
 				return Check;
 			} else {
 				// id 중복됨
-				Check = "1";
+				Check = "FALSE";
 				return Check;
 			}
 		} catch (Exception e) {
-			String Check = "0";
+			String Check = "FALSE";
 			return Check;
 		}
 	}
@@ -52,10 +52,10 @@ public class AdminManagerController {
 	public String join(@RequestBody AdminModel admin) {
 		try {
 			adminservice.joinadmin(admin.getAdmin_id(), admin.getName(), admin.getPhone(),admin.getEmail());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
@@ -65,10 +65,10 @@ public class AdminManagerController {
 	public String edit(@RequestBody AdminModel admin) {
 		try {
 			adminservice.editadmin(admin.getAdmin_id(), admin.getName(), admin.getPhone(), admin.getEmail());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
@@ -78,11 +78,11 @@ public class AdminManagerController {
 	public String pwreset(@RequestBody AdminModel admin) {
 		try {
 			adminservice.pwreset(admin.getAdmin_id());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
 			e.printStackTrace();
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
@@ -122,10 +122,10 @@ public class AdminManagerController {
 	public String delete(@RequestBody AdminModel admin) {
 		try {
 			adminservice.deleteadmin(admin.getAdmin_id());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
