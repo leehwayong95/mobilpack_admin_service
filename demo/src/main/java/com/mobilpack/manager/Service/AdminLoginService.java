@@ -21,13 +21,22 @@ public class AdminLoginService {
 		try {
 			encryptPw = InfoEncryptService.getEncrypt(pw, salt);
 		} catch (NoSuchAlgorithmException e) {
-			throw new NoinfoException("Wrong ID");
+			if (dao.getUserSalt(id) == null) {
+				throw new NoinfoException("Wrong PW or ID");
+			} else { 
+				throw new NoinfoException("UserID");
+			}
 		}
 		AdminModel loginmodel = dao.LoginQuery(id, encryptPw);
 		if (loginmodel != null)
 			return loginmodel;
-		else
-			throw new NoinfoException("Wrong PW or ID");
+		else {
+			if (dao.getUserSalt(id) == null) {
+				throw new NoinfoException("Wrong PW or ID");
+			} else { 
+				throw new NoinfoException("UserID");
+			}
+		}
 	}
 	//정보 수정 메서드 (비밀번호제외)
 	public boolean editInfo(String id, String name, String phone, String email) throws NoinfoException
