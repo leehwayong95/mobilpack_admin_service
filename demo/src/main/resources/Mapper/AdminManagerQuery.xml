@@ -48,10 +48,10 @@
     	</if>
     	<!-- 날짜가 빈값이 아닐때 -->
     	<if test="createat!=null and createat !='' and updateat !=null and updateat !=''">
-    	and createat between '${createat}' and '${updateat}'
+    	and createat  >= '${createat}' and '${updateat}' >= createat
     	</if>
     	</where>
-    	ORDER BY admin.createat ASC
+    	ORDER BY admin.createat DESC
     	<if test ="Currentpage!=null and Currentpage!='' and Number!=null and Number!=''"> 
     	LIMIT ${Currentpage},${Number}
     	</if>
