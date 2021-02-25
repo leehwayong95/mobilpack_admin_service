@@ -21,7 +21,7 @@ public class UserLoginService {
 		try { // 비밀번호 암호화
 			encryptPW = InfoEncryptService.getEncrypt(pw, salt);
 		} catch (NullPointerException e) {
-			throw new NoinfoException("Wrong PW or ID");
+			throw new NoinfoException("Wrong ID");
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
@@ -29,7 +29,7 @@ public class UserLoginService {
 		if (targetUser != null) {
 			return targetUser;
 		} else {
-			throw new NoinfoException("Wrong PW or ID");
+			throw new NoinfoException("Wrong PW");
 		}
 	}
 	//회원가입의 아이디 중복확인 서비스
