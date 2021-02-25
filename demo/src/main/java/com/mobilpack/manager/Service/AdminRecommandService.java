@@ -1,13 +1,20 @@
 package com.mobilpack.manager.Service;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.mobilpack.manager.Dao.Dao;
 import com.mobilpack.manager.Model.CommentModel;
@@ -111,6 +118,74 @@ public class AdminRecommandService {
 	public void UpdateTranslateDelete(TranslateModel translate) {
 		dao.UpdateTranslateDelete(translate);
 	}
-	
-	
+	//객체 불러오기
+    public void ObjectGet(Object obj) {
+        // 가져오고자하는 객체를 선언합니다. ( 새로 생성할 경우 value는 존재하지 않습니다. 
+        try {
+            // 반복문을 이용하여 해당 클래스에 정의된 필드를 가져옵니다.
+            for (Field field : obj.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+            Object value = field.get(obj); // 필드에 해당하는 값을 가져옵니다.
+            System.out.println("field : "+field.getName()+" | value : "+ value);
+            }
+       }catch (Exception e) {
+            e.printStackTrace();
+      }
+    }
+    //파일 실제 생성
+    public String FileWrite(List<MultipartFile> files, String postindex) {
+    	//게시글 index를 토대로 폴더를 구분함
+    	String folderName = postindex;
+    	//기본 경로를 설정함
+    	String basePath = ".\\\\upload";
+    	//경로 생성
+    	File folderPath = new File(basePath+"//"+folderName);
+    	//해당 경로가 없을 경우 자동으로 구분 폴더 생성
+    	if(!folderPath.exists()) {
+    		folderPath.mkdir();
+    	}
+    	//다음 파ㄹ일 업로드를 위한 for문
+    	for(MultipartFile file : files) {
+    		//파일 모델 객체 생성
+    		FileModel RepeatModel = new FileModel();
+    		//파일명 변수에 저장
+    		String originalName = file.getOriginalFilename();
+    		//파일 확장자 검사를 위해 split으로 확장자 구분
+    		//String안에 그냥 .을 쓰면 구분 못함 \\.을 써야 구분함 .이 정규식이기 때문
+    		String[] nameCheck = originalName.split("\\.");
+    		//고유식별자 생성
+    		UUID newName = UUID.randomUUID();
+    		//고유식별자를 이용한 파일 생성
+    		String filePath = basePath+"\\\\"+folderName+"\\\\"+newName+"."+nameCheck[1];
+    		//png와 jpg 확장자만 받기 위해 예외처리 진행
+    		if(nameCheck[1].equals("png")||nameCheck[1].equals("jpg")) {
+				try {
+					//확장자가 맞을 경우 파일 업로드
+					Path path = Paths.get(filePath);
+				    Files.write(path, file.getBytes());
+				} 
+				catch(Exception e) {
+					//확장자가 맞지 않을 경우 false를 반환하고 코드 중지
+					e.printStackTrace();
+					return "FALSE";
+				}
+				//파일모델에 이름,경로,고유식별명,게시글index를 넣고 insert함
+				RepeatModel.setPostindex(postindex);
+				RepeatModel.setFilename(originalName);
+				RepeatModel.setFilepath(filePath);
+				RepeatModel.setFileuuid(newName.toString());
+				try {
+					FileCreate(RepeatModel);
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					return "FALSE";
+				}
+ 			}
+	 		else {
+	 			return "FALSE";
+	 		}
+    	}
+    	return "TRUE";
+    }
 }

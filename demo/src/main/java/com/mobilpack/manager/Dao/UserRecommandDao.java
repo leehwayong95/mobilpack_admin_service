@@ -2,6 +2,8 @@ package com.mobilpack.manager.Dao;
 
 import java.util.List;
 
+import com.mobilpack.manager.Model.CommentModel;
+import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
 
 public interface UserRecommandDao {
@@ -22,4 +24,20 @@ public interface UserRecommandDao {
 	 * @return List<PostModel> 리스트로 반환
 	 */
 	public List<PostModel> getRecommandList (String category, String language, String state, String titlename,Integer currentPage,Integer number);
+	
+	/**
+	 * 유저용 추천장소 리뷰 불러오기
+	 * @param postindex 게시물 인덱스번호
+	 * @return List<CommentModel> 리스트로 반환
+	 */
+	public List<CommentModel> getCommentsList (String postindex);
+	
+	/**
+	 * 유저용 추천장소 첨부파일 불러오기 
+	 * @param postindex 게시물 인덱스 번호
+	 * @return List<FileModel> 리스트로 반환
+	 */
+	public List<FileModel> getFileList (String postindex);
+	
+	public void putUserReview (String index, String content, String id);
 }

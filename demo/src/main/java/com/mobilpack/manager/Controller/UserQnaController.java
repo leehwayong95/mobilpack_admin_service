@@ -67,7 +67,7 @@ public class UserQnaController {
 		HttpStatus status = null;
 		try {
 			QnaModel target = qnaService.getQnaPost(index);
-			boolean permission = jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString().equals(target.getUser_id());
+			boolean permission = jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString().equals(target.getUser_id());
 			resultMap.put("permission", permission);
 			resultMap.put("QnaPostModel", target);
 			status = HttpStatus.OK;
@@ -89,7 +89,7 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			String id = jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			String id = jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString();
 			qnaService.deleteQnaPost(index, id);
 			resultMap.put("result", true);
 			status = HttpStatus.OK;
@@ -108,7 +108,7 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			String id = jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			String id = jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString();
 			qnaService.updateQnaPost(model,  id, index);
 			resultMap.put("result", true);
 			status = HttpStatus.OK;
@@ -127,7 +127,7 @@ public class UserQnaController {
 		HttpStatus status = null;
 		try {
 			//토큰해석 : 글쓴이 파악 및 설정
-			model.setUser_id(jwtService.getInfo(req.getHeader("authorization")).get("user_id").toString());
+			model.setUser_id(jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString());
 			qnaService.UserQnaWrite(model);
 			status = HttpStatus.OK;
 		}	catch (Exception e) {

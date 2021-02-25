@@ -40,7 +40,7 @@ public class UserMyController {
 		editModel.setPhone(param.get("phone").toString());
 		editModel.setUser_id(param.get("email").toString());
 		try {
-			String targetUser = jwtservice.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			String targetUser = jwtservice.getInfo(req.getHeader("Authorization")).get("user_id").toString();
 			myservice.updateUserInfo(targetUser, editModel);
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
@@ -59,7 +59,7 @@ public class UserMyController {
 		HttpStatus status = null;
 		UserModel targetModel = null;
 		try {
-			targetModel = myservice.getUserInfo((String)jwtservice.getInfo(req.getHeader("authorization")).get("user_id"));
+			targetModel = myservice.getUserInfo((String)jwtservice.getInfo(req.getHeader("Authorization")).get("user_id"));
 			resultMap.put("status", true);
 			resultMap.put("UserModel", targetModel);
 			status = HttpStatus.OK;
@@ -81,7 +81,7 @@ public class UserMyController {
 		try {
 			String currentpw = param.get("currentpw").toString();
 			String editpw = param.get("editpw").toString();
-			String targetid = jwtservice.getInfo(req.getHeader("authorization")).get("user_id").toString();
+			String targetid = jwtservice.getInfo(req.getHeader("Authorization")).get("user_id").toString();
 			myservice.updatepw(targetid, currentpw, editpw);
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
