@@ -44,7 +44,7 @@
 	</select>
 	<!-- 게시글 상세 정보 표시 -->
 	<select id="RecommandDetail" parameterType="String" resultType="com.mobilpack.manager.Model.PostModel">
-		SELECT r.category, r.default_lang, r.title, r.admin_id, r.content, r.tag, r.voice_info,r.address,r.location,r.date,r.state,r.phone, r.openday, r.closetime, r.endtime, p.name, r.opentime
+		SELECT r.category, r.default_lang, r.title, r.admin_id, r.content, r.tag, r.voice_info,r.address,r.location,r.date,r.state,r.phone, r.openday, r.closetime, r.endtime, p.name, r.opentime, r.language
 		FROM recommended_place r
 		LEFT OUTER JOIN admin p
 		ON r.admin_id = p.admin_id
@@ -66,6 +66,7 @@
 		SET 
 		category = '${category}'
 		, default_lang = '${default_lang}'
+		, language = '${language}'
 		, title = '${title}'
 		, content = '${content}'
 		, tag = '${tag}'
