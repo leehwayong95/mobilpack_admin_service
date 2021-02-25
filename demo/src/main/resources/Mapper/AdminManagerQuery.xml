@@ -12,7 +12,7 @@
 	 	<!-- 관리자 수정  -->
     <update id="editadmin" parameterType="String">
    		UPDATE admin
-    	SET name='${name}',phone='${phone}',email='${email}'
+    	SET name='${name}',phone='${phone}',email='${email}', updateat = NOW()
     	WHERE admin_id='${id}'
 	</update>
 	<!-- 관리자 삭제 -->
@@ -48,7 +48,7 @@
     	</if>
     	<!-- 날짜가 빈값이 아닐때 -->
     	<if test="createat!=null and createat !='' and updateat !=null and updateat !=''">
-    	and createat  >= '${createat}' and '${updateat}' >= createat
+    	and DATE_FORMAT(createat,'%Y-%m-%d') >= '${createat}' and '${updateat}' >= DATE_FORMAT(createat,'%Y-%m-%d')
     	</if>
     	</where>
     	ORDER BY admin.createat DESC
