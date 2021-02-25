@@ -1,8 +1,8 @@
 package com.mobilpack.manager.Model;
 
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class PostModel {
@@ -28,6 +28,9 @@ public class PostModel {
 	private String name;			//관리자 이름
 	private String thumbnail;		//썸네일 경로
 	
+	public PostModel() {
+		
+	}
 	public String getThumbnail() {
 		return thumbnail;
 	}
