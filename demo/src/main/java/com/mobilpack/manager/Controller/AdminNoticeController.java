@@ -57,10 +57,10 @@ public class AdminNoticeController {
 		try {
 			noticeservice.editnotice(notice.getPostindex(), notice.getId(), notice.getLanguage(),
 					notice.getTitle(), notice.getContent(), notice.getTopsetting());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
@@ -70,7 +70,7 @@ public class AdminNoticeController {
 	public String noticeCreate(@RequestBody NoticeModel notice) {
 		noticeservice.insertnotice(notice.getId(), notice.getTopsetting(), notice.getLanguage(), notice.getTitle(),
 				notice.getContent());
-		String check = "ok";
+		String check = "TRUE";
 		return check;
 	}
 
@@ -100,10 +100,10 @@ public class AdminNoticeController {
 	public String deletenotice(@RequestBody NoticeModel notice) {
 		try {
 			noticeservice.deletenotice(notice.getPostindex());
-			String check = "ok";
+			String check = "TRUE";
 			return check;
 		} catch (Exception e) {
-			String check = "1";
+			String check = "FALSE";
 			return check;
 		}
 	}
