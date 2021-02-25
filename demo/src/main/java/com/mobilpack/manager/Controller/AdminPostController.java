@@ -45,12 +45,15 @@ public class AdminPostController {
 	AdminRecommandService service;
 	@Autowired
 	JwtService jwtService;
+	@ModelAttribute("FileModel") 
+	public FileModel getFileModel() {
+		return new FileModel(); }
+	
 	//게시글 등록 부분 api
 	@PostMapping("/create")
 	public String postCreate(@ModelAttribute PostModel post,
 			MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest req) {
-		List<MultipartFile> files = mtfRequest.getFiles("files");
 		//vue에서 오는 값들을 insert문으로 DB에 넣기
 		//jwtservice를 이용해 토큰에 있는 관리자 id를 받기
 		try {
@@ -61,68 +64,22 @@ public class AdminPostController {
 			e.printStackTrace();
 			return "FALSE";
 		}
+		//mtfRequest를 이용해 파일 생성
+		List<MultipartFile> files = mtfRequest.getFiles("files");
 		//쿼리문을 통해 DB에 insert함
+		try {
         service.RecommandCreate(post);
-		//postindex값을 토대로 폴더를 구분함
-		String folderName = post.getPostindex();
-		System.out.println(post.getPostindex());
-		//기본 경로를 설정함
-		String basePath =".\\\\upload";
-		//기본 경로에 postindex값을 넣어 게시글 별로 경로 생성
-		File folderPath = new File(basePath+"//"+folderName);	
-		// 해당 경로가 없을 겅우 자동으로 폴더 생성
-		if(!folderPath.exists()) {
-			folderPath.mkdir();
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "FALSE";
 		}
-		System.out.println(files);
-		//다중 파일 업로드를 위한 for문
-    	for(MultipartFile file : files) {
-    		//파일 모델 객체 생성
-    		FileModel RepeatModel = new FileModel();
-    		//파일명 변수에 저장
-    		String originalName = file.getOriginalFilename();
-    		System.out.println("getName : " + file.getName());
-    		System.out.println("getOriginalFilename : " + file.getOriginalFilename());
-    		System.out.println("getResources : " + file.getResource());
-    		//파일 확장자 검사를 위해 split으로 확장자 구분
-    		String[] nameCheck = 
-    				originalName.split("\\.");
-    		//고유식별자 생성
-    		UUID newName = UUID.randomUUID();
-    		//고유식별자를 이용한 파일 생성
-    		String filePath = basePath+"\\\\"+folderName+"\\\\" + newName+"."+nameCheck[1];
-    		//png와 jpg 확장자만 받기 위해 예외처리 진행
-    		if(nameCheck[1].equals("png")
-    				   ||nameCheck[1].equals("jpg")) {
-    					try {
-    						//확장자가 맞을 경우 파일 업로드
-    						Path path = Paths.get(filePath);
-    					    Files.write(path, file.getBytes());
-    					} 
-    					catch(Exception e) {
-    						//확장자가 맞지 않을 경우 false를 반환하고 코드 중지
-    						e.printStackTrace();
-    						return "FALSE";
-    					}
-    					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 insert함
-    					RepeatModel.setPostindex(post.getPostindex());
-    					RepeatModel.setFilename(originalName);
-    					RepeatModel.setFilepath(filePath);
-    					RepeatModel.setFileuuid(newName.toString());
-    					try {
-    					service.FileCreate(RepeatModel);
-    					}
-    					catch(Exception e) {
-    						e.printStackTrace();
-    						return "FALSE";
-    					}
-    				}
-    		else {
-    			return "FALSE";
-    		}
-    	}	
-    	
-	return "TRUE";
+      //받은 파일을 가지고 파일 생성함
+		String result = service.FileWrite(files, post.getPostindex());
+		if(result.equals("TRUE")) {
+			return "TRUE";
+		} else {
+			return "FALSE";
+		}
 	}
 
 	@GetMapping("/search")
@@ -177,78 +134,30 @@ public class AdminPostController {
 	@PostMapping("/update")
 	public String postUpdate(
 			@ModelAttribute PostModel post, 
-			@RequestPart("files") List<MultipartFile> files,
+			MultipartHttpServletRequest mtfRequest,
+			@RequestParam List<String> deletelist,
 			HttpServletRequest req) {
-		try {
-			service.RecommandUpdate(post);
-		}
-		catch(Exception e) {
-			return "FALSE";
-		}
-			//postindex값을 토대로 폴더를 구분
-			String folderName = post.getPostindex();
-			// fileindex값 출력을 위해 postindex값을 넣어 리스트에 담음
-			List<FileModel> fileList = service.IndexOutput(post.getPostindex());
-			//파일 리스트의 경로에 있는 파일을 지우고 시작
-			//기본 경로를 설정함
-			String basePath =".\\\\upload";
-			//기본 경로에 postindex값을 넣어 게시글 별로 경로 생성
-			File folderPath = new File(basePath+"//"+folderName);	
-			//파일 인덱스 추출을 위한 반복변수
-			int num = 0;
-			//다중 파일 업로드를 위한 for문
-	    	for(MultipartFile file : files) {
-	    		//파일 모델 객체 생성
-	    		FileModel RepeatModel = new FileModel();
-	    		//파일명 변수에 저장
-	    		String originalName = file.getOriginalFilename();
-	    		//만약 파일 이름이 같으면 수정안하고 넘어간다
-	    		//다를 경우에는 해당 경로에 있는 기존 파일을 지움
-	    		if(originalName.equals(fileList.get(num).getFilename())) {
-	    			continue;
-	    		}else {
-	    			File deleteFile = new File(fileList.get(num).getFilepath());
-	    			deleteFile.delete();
-	    		}
-	    		//파일 확장자 검사를 위해 split으로 확장자 구분
-	    		String[] nameCheck = 
-	    				originalName.split("\\.");
-	    		//고유식별자 생성
-	    		UUID newName = UUID.randomUUID();
-	    		//고유식별자를 이용한 파일 생성
-	    		String filePath = basePath+"\\\\"+folderName+"\\\\" + newName+"."+nameCheck[1];
-	    		//png와 jpg 확장자만 받기 위해 예외처리 진행
-	    		if(nameCheck[1].equals("png")
-				   ||nameCheck[1].equals("jpg")) {
-					try {
-						//확장자가 맞을 경우 파일 업로드
-						Path path = Paths.get(filePath);
-					    Files.write(path, file.getBytes());
-					} 
-					catch(Exception e) {
-						//확장자가 맞지 않을 경우 false를 반환하고 코드 중지
-						e.printStackTrace();
-						return "FALSE";
-					}
-					//파일모델에 이름,경로,고유식별명,게시글index를 넣고 update함
-					RepeatModel.setFileindex(fileList.get(num).getFileindex());
-					RepeatModel.setFilename(originalName);
-					RepeatModel.setFilepath(filePath);
-					RepeatModel.setFileuuid(newName.toString());
-					num++;	//리스트 반복을 위한 num 변수 값 증가
-					try {
-						service.FileUpdate(RepeatModel);
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-						return "FALSE";
-					}
+			try {
+				service.RecommandUpdate(post);
+			}
+			catch(Exception e) {
+				return "FALSE";
+			}
+			//mtfRequest통해 파일 생성
+			List<MultipartFile> files = mtfRequest.getFiles("files");
+			//지울 파일 리스트에서 파일 인덱스를 받아서 해당 파일을 db에서 지운다
+			if(!deletelist.get(0).equals("0")) {
+				for(int repeat = 0; repeat<deletelist.size();repeat++) {
+					service.FileDelete(deletelist.get(repeat));
 				}
-	    		else {
-	    			return "FALSE";
-	    		}
-	    	}
-			return "TRUE";
+			}
+			//받은 파일을 가지고 파일 생성함
+			String result = service.FileWrite(files, post.getPostindex());
+			if(result.equals("TRUE")) {
+				return "TRUE";
+			} else {
+				return "FALSE";
+			}
 	}
 	
 	@PostMapping("/delete")
