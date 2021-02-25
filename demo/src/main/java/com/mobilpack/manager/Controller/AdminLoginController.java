@@ -55,11 +55,15 @@ public class AdminLoginController {
 			resultMap.put("jwt-token", token);
 			resultMap.put("name", loginadmin.getName());
 			status = HttpStatus.ACCEPTED;
-		} catch (NoinfoException e) {
+		} catch (Exception e) {
+			//e.printStackTrace();
 			resultMap.put("status", false);
 			//Debug
-			//resultMap.put("reason", e.getMessage());
-			status = HttpStatus.OK;
+			resultMap.put("reason", e.getMessage());
+			if(e.getMessage().equals("UserID"))
+				status = HttpStatus.GONE;
+			else
+				status = HttpStatus.OK;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
