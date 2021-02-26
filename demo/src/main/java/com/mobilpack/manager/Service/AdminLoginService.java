@@ -20,12 +20,14 @@ public class AdminLoginService {
 		String encryptPw = null;
 		try {
 			encryptPw = InfoEncryptService.getEncrypt(pw, salt);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NullPointerException e) {
 			if (dao.getUserSalt(id) == null) {
 				throw new NoinfoException("Wrong PW or ID");
 			} else { 
 				throw new NoinfoException("UserID");
 			}
+		} catch (NoSuchAlgorithmException e) {
+			throw new NoinfoException("Wrong PW or ID");
 		}
 		AdminModel loginmodel = dao.LoginQuery(id, encryptPw);
 		if (loginmodel != null)

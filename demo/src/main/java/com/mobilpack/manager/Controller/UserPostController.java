@@ -68,7 +68,7 @@ public class UserPostController {
 				case"KR":
 					requestLanguage = "1";
 					break;
-				case"EN":
+				case"US":
 					requestLanguage = "2";
 					break;
 				case"JP":

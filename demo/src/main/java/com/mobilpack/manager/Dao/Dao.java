@@ -136,7 +136,7 @@ public interface Dao {
 	//유저 QnA 작성
 	public void UserQnaWrite (QnaModel qna);
 	//유저 QnA List 검색
-	public List<QnaModel> getQnaList(String category, String title, String answer, String min, String max, String page, String count);
+	public List<QnaModel> getQnaList(String category, String title, String answer, String min, String max, String page, String count, String userid);
 	//유저 QnA 자세히 보기
 	public QnaModel getQnaPost(String index);
 	//유저 QnA 삭제

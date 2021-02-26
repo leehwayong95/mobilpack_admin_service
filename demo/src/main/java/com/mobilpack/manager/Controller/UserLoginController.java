@@ -45,8 +45,11 @@ public class UserLoginController {
 			status = HttpStatus.OK;
 		} catch (NoinfoException e) {
 			resultMap.put("status", false);
-			resultMap.put("reason", e.getMessage());
-			status = HttpStatus.ACCEPTED;
+//			resultMap.put("reason", e.getMessage());
+			if(e.getMessage().equals("Wrong ID"))
+				status = HttpStatus.GONE;
+			else
+				status = HttpStatus.ACCEPTED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
