@@ -46,6 +46,7 @@
 				AND DATE_FORMAT(q.createat, '%Y%m%d') <= STR_TO_DATE(#{max}, '%Y%m%d')
 				]]>
 			</if>
+			AND user_id = #{userid}
 		</where>
 		ORDER BY q.createat DESC
 		<if test="page != null">

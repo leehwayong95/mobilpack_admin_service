@@ -56,9 +56,10 @@ public class UserQnaService {
 		String answer = param.get("answer");
 		String min = param.get("min");
 		String max = param.get("max");
+		String userid = param.get("userID");
 		
 		//쿼리
-		return dao.getQnaList(category, title, answer, min, max, page, count);
+		return dao.getQnaList(category, title, answer, min, max, page, count, userid);
 	}
 	
 	//Qna 자세히 보기 메서드

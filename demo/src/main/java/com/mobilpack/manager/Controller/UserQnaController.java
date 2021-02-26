@@ -42,6 +42,8 @@ public class UserQnaController {
 		HttpStatus status = null;
 		try {
 			//페이징 포함 개수 반환
+			String id = jwtService.getUserID(req.getHeader("Authorization"));
+			param.put("userID", id);
 			List<QnaModel> searchList = qnaService.getQnaList(param);
 			resultMap.put("list", searchList);
 			//전체 검색 결과 개수 반환
