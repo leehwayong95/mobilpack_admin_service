@@ -89,13 +89,8 @@ public class AdminPostController {
 		int totalPage;
 		//페이징을 위한 페이지 번호 관련 계산
 		currentPage=number*(currentPage-1);
-		//전체 게시글을 구하기 위한 코드
+		//전체 게시글을 받아서 listCount에 값 저장
 		int listCount = service.RecommandList(category, language, state, titlename, null, null).size();
-		if (listCount % number != 0) {
-	          totalPage = listCount / number + 1;
-	        } else {
-	          totalPage = listCount / number;
-	        }
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("List", service.RecommandList(category, language, state, titlename,currentPage, number));
 		map.put("pageCount", listCount );
@@ -106,12 +101,15 @@ public class AdminPostController {
 	public Map<String, Object> postInfo(
 		@RequestParam String postindex,
 		HttpServletRequest req) throws Exception{
+		//map 생성
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		PostModel detail = new PostModel();
-		List<FileModel> file = new ArrayList<FileModel>();
+		//PostModel 생성 하고 추천장소 게시글 정보 담음
+		PostModel detail = service.RecommandDetail(postindex);
+		//FileModel List 생성하고 fileModel 리스트를 담음
+		List<FileModel> file = service.IndexOutput(postindex);
+		//CommentModel List에 추천장소 리뷰 List를 담음
 		List<CommentModel> comment = service.RecommandComments(postindex);
-		detail = service.RecommandDetail(postindex);
-		file = service.IndexOutput(postindex);
+		//해당 부분들을 맵에 담아서 리턴
 		map.put("postModel", detail);
 		map.put("fileList",file);
 		map.put("comment", comment);
@@ -122,8 +120,9 @@ public class AdminPostController {
 	public ResponseEntity<Resource> fileDownload(
 			@RequestParam String fileindex,
 			HttpServletRequest req) throws Exception{
-		// 파일 다운로드 api
+		// 파일 경로를 통해 resource를 받음
 		Resource resource = service.FileDownload(fileindex);
+		// Files를 이용해 해당 resource를 mediaType으로 받아서 리턴
 		String mediaType = Files.probeContentType(Paths.get(resource.getFile().getAbsolutePath()));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+resource.getFilename()+"\"")
@@ -137,27 +136,28 @@ public class AdminPostController {
 			MultipartHttpServletRequest mtfRequest,
 			@RequestParam List<String> deletelist,
 			HttpServletRequest req) {
-			try {
-				service.RecommandUpdate(post);
+		//받은 post 값을 DB에 update함
+		try {
+			service.RecommandUpdate(post);
+		}
+		catch(Exception e) {
+			return "FALSE";
+		}
+		//mtfRequest통해 파일 생성
+		List<MultipartFile> files = mtfRequest.getFiles("files");
+		//지울 파일 리스트에서 파일 인덱스를 받아서 해당 파일을 db에서 지운다
+		if(!deletelist.get(0).equals("0")) {
+			for(int repeat = 0; repeat<deletelist.size();repeat++) {
+				service.FileDelete(deletelist.get(repeat));
 			}
-			catch(Exception e) {
-				return "FALSE";
-			}
-			//mtfRequest통해 파일 생성
-			List<MultipartFile> files = mtfRequest.getFiles("files");
-			//지울 파일 리스트에서 파일 인덱스를 받아서 해당 파일을 db에서 지운다
-			if(!deletelist.get(0).equals("0")) {
-				for(int repeat = 0; repeat<deletelist.size();repeat++) {
-					service.FileDelete(deletelist.get(repeat));
-				}
-			}
-			//받은 파일을 가지고 파일 생성함
-			String result = service.FileWrite(files, post.getPostindex());
-			if(result.equals("TRUE")) {
-				return "TRUE";
-			} else {
-				return "FALSE";
-			}
+		}
+		//받은 파일을 가지고 실제 파일 생성
+		String result = service.FileWrite(files, post.getPostindex());
+		if(result.equals("TRUE")) {
+			return "TRUE";
+		} else {
+			return "FALSE";
+		}
 	}
 	
 	@PostMapping("/delete")
@@ -166,8 +166,10 @@ public class AdminPostController {
 			HttpServletRequest req) {
 		//추천장소 게시글이랑 리뷰 DB 정보 지울것
 		try {
+			// 해당 게시글의 리뷰 dB 삭제
 			service.CommentDelete(postindex);
 			//해당 파일들의 정보를 지울 것(만약 파일이 있을 경우에)
+			// 해당 게시글에 해당하는 file들을 불러와서 실제 위치에 있는 파일을 삭제
 			List<FileModel> fileList = service.IndexOutput(postindex);
 			if(!fileList.isEmpty()) {
 				for(int repeat=0; repeat<fileList.size(); repeat++) {
@@ -176,6 +178,7 @@ public class AdminPostController {
 					deleteFile.delete();
 				}
 			}
+			// 마지막으로 해당 postindex의 DB에 있는 정보들을 삭제
 			service.RecommandDelete(postindex);
 		}
 		catch(Exception e) {
@@ -201,6 +204,7 @@ public class AdminPostController {
 			HttpServletRequest req) {
 		// 번역 정보 등록하기
 		try {
+			// 번역 정보 등록 및 DB의 language 부분 수정
 			service.TranslateCreate(translate);
 			service.UpdateTranslateCreate(translate);
 			return "TRUE";
@@ -234,6 +238,7 @@ public class AdminPostController {
 			HttpServletRequest req) {
 			// 번역 내용 삭제
 			try{
+				// 번역 내용 삭제 및 language 부분 삭제
 				service.TranslateDelete(translate);
 				service.UpdateTranslateDelete(translate);
 				return "TRUE";
@@ -251,6 +256,7 @@ public class AdminPostController {
 			HttpServletRequest req) {
 			// 해당 게시글 번호에 있는 댓글 삭제
 			try{
+				//commetindex를 받아서 해당 리뷰 삭제
 				service.CommentOneDelete(commentindex);
 				return "TRUE";
 			}
