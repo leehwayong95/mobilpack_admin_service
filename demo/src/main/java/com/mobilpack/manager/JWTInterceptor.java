@@ -25,10 +25,10 @@ public class JWTInterceptor implements HandlerInterceptor {
 			String token = request.getHeader("authorization");
 			if (token != null && token.length() > 0) {
 				name = (String)jwtService.getInfo(token).get("name");
-				System.out.println("요청자 : " + name + ", 결과 : true");
+				System.out.println("요청자 : " + name + ", 토큰 해석 결과 : true");
 				return true;
 			} else {
-				System.out.println("요청자 : " + name + ", 결과 : false");
+				System.out.println("요청자 : " + name + ", 토큰 해석 결과 : false");
 				throw new RuntimeException("NojwtTokenError");
 			}
 		}

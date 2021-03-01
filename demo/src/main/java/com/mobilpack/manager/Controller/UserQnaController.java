@@ -110,7 +110,7 @@ public class UserQnaController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			String id = jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString();
+			String id = jwtService.getUserID(req.getHeader("Authorization"));
 			qnaService.updateQnaPost(model,  id, index);
 			resultMap.put("result", true);
 			status = HttpStatus.OK;

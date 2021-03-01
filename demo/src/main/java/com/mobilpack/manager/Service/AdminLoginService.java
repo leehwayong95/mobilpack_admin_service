@@ -22,22 +22,18 @@ public class AdminLoginService {
 			encryptPw = InfoEncryptService.getEncrypt(pw, salt);
 		} catch (NullPointerException e) {
 			if (dao.getUserSalt(id) == null) {
-				throw new NoinfoException("Wrong PW or ID");
+				throw new NoinfoException("Wrong ID");
 			} else { 
 				throw new NoinfoException("UserID");
 			}
 		} catch (NoSuchAlgorithmException e) {
-			throw new NoinfoException("Wrong PW or ID");
+			throw new NoinfoException("WTF");
 		}
 		AdminModel loginmodel = dao.LoginQuery(id, encryptPw);
 		if (loginmodel != null)
 			return loginmodel;
 		else {
-			if (dao.getUserSalt(id) == null) {
-				throw new NoinfoException("Wrong PW or ID");
-			} else { 
-				throw new NoinfoException("UserID");
-			}
+			throw new NoinfoException("Wrong PW");
 		}
 	}
 	//정보 수정 메서드 (비밀번호제외)
@@ -63,7 +59,7 @@ public class AdminLoginService {
 			salt = dao.getAdminSalt(id);
 			EncryptPw = InfoEncryptService.getEncrypt(editpw, salt);
 		} catch (NoSuchAlgorithmException e) {
-			throw new NoinfoException("Wrong...");
+			throw new NoinfoException("WTF");
 		}
 		dao.editPw(targetModel.getAdmin_id(), EncryptPw);
 		return true;

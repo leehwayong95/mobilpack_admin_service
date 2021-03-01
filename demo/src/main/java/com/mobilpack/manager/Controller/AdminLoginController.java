@@ -77,7 +77,7 @@ public class AdminLoginController {
 		String currentpw = param.get("currentpw").toString();
 		String editpw = param.get("editpw").toString();
 		try {
-			String id = (String)jwtservice.getInfo(req.getHeader("authorization")).get("admin_id");
+			String id = jwtservice.getAdminID(req.getHeader("authorization"));
 			loginservice.editPw(id, currentpw, editpw);
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
