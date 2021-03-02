@@ -29,7 +29,7 @@
 
 	<!-- 공지사항 상세 -->
 	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		SELECT a.name, n.postindex, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
+		SELECT a.name, n.postindex,n.language, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
 		FROM notice AS n 
 		LEFT OUTER JOIN admin AS a
 			ON a.admin_id = n.id
