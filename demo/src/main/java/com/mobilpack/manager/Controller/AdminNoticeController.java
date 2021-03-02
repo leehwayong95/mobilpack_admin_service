@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.NoticeModel;
+import com.mobilpack.manager.Service.JwtService;
 import com.mobilpack.manager.Service.NoticeManagerService;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -26,6 +29,8 @@ import com.mobilpack.manager.Service.NoticeManagerService;
 public class AdminNoticeController {
 	@Autowired
 	private NoticeManagerService noticeservice;
+	@Autowired
+	JwtService jwtservice;
 
 	// (공지사항 검색)
 	@GetMapping("/search")
@@ -67,8 +72,15 @@ public class AdminNoticeController {
 
 	// (공지사항 작성)
 	@PostMapping("/insert")
-	public String noticeCreate(@RequestBody NoticeModel notice) {
-		noticeservice.insertnotice(notice.getId(), notice.getTopsetting(), notice.getLanguage(), notice.getTitle(),
+	public String noticeCreate(@RequestBody NoticeModel notice, HttpServletRequest req) {
+		String token = req.getHeader("authorization");
+		String adminid = null;
+		try {
+			adminid = jwtservice.getAdminID(token);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		noticeservice.insertnotice(adminid, notice.getTopsetting(), notice.getLanguage(), notice.getTitle(),
 				notice.getContent());
 		String check = "TRUE";
 		return check;
@@ -90,8 +102,14 @@ public class AdminNoticeController {
 	// (공지사항 게시중단)
 	@PostMapping("/stopposting")
 	 public String stopposting(@RequestBody NoticeModel notice) {
-	 System.out.println( notice.getPostindex());
 	 noticeservice.stopposting( notice.getPostindex()); 
+	 return "ok";
+	 }
+	
+	// (공지사항 게시재개)
+	@PostMapping("/Resumeposting")
+	 public String Resumeposting(@RequestBody NoticeModel notice) {
+	 noticeservice.Resumeposting( notice.getPostindex()); 
 	 return "ok";
 	 }
 	 
