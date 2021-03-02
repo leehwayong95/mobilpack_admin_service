@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Service.AdminLoginService;
@@ -61,7 +62,7 @@ public class AdminLoginController {
 			//Debug
 			resultMap.put("reason", e.getMessage());
 			if(e.getMessage().equals("UserID"))
-				status = HttpStatus.GONE;
+				status = HttpStatus.UNAUTHORIZED;
 			else
 				status = HttpStatus.OK;
 		}
@@ -81,6 +82,11 @@ public class AdminLoginController {
 			loginservice.editPw(id, currentpw, editpw);
 			resultMap.put("status", true);
 			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e){
 			e.printStackTrace();
 			resultMap.put("status", false);
@@ -93,6 +99,7 @@ public class AdminLoginController {
 	@GetMapping("/info")//로그인 정보 조회
 	public ResponseEntity<Map<String, Object>> getMyInfo(
 			HttpServletRequest req) {
+		System.out.println("hEllo");
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -101,6 +108,11 @@ public class AdminLoginController {
 			String id = (String)info.get("admin_id");
 			resultMap.put("admininfo", managerService.admininformation(id));
 			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -122,6 +134,11 @@ public class AdminLoginController {
 			loginservice.editInfo(id, name, phone, email);
 			status = HttpStatus.OK;
 			resultMap.put("status", true);
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());

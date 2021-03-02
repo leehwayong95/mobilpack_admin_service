@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.UserModel;
 
@@ -74,12 +75,12 @@ public class JwtService {
 	 * @return claims의 body를 반환합니다.
 	 * @throws Exception JWT Key가 만료되었을때 오류가 납니다.
 	 */
-	public Map<String, Object> getInfo(final String jwt) throws Exception {
+	public Map<String, Object> getInfo(final String jwt) throws JwtExpiredException {
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
 		} catch (Exception e) {
-			throw new Exception(e.getMessage());
+			throw new JwtExpiredException(e.getMessage());
 		}
 		return claims.getBody();
 	}

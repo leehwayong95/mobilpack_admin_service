@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.AdminQnaService;
@@ -138,6 +139,11 @@ public class AdminQnaController {
 			adminQnaService.setReply(index, param.get("content").toString(), admin_id );
 			resultMap.put("status",true);
 			status=HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());

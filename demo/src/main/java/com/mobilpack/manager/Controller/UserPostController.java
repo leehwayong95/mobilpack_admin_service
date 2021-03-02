@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
 import com.mobilpack.manager.Model.UserModel;
@@ -100,6 +101,11 @@ public class UserPostController {
 			int ListCount = userService.getRecommandList(category, requestLanguage, "1", name, page, count).size();
 			resultMap.put("count", ListCount);
 			status = HttpStatus.ACCEPTED;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("status", false);
@@ -142,22 +148,30 @@ public class UserPostController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	@PutMapping("/{index}")
-	public Map<String, Object> putUserReview (
+	public ResponseEntity<Map<String, Object>> putUserReview (
 			@RequestParam String content,
 			@PathVariable String index,
 			HttpServletRequest req
 			) {
 		String id = null;
 		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
 		try {
 			id = jwtService.getUserID(req.getHeader("Authorization"));
 			userService.putUserReview(index, content, id);
 			resultMap.put("status", true);
+			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("status", false);
 			resultMap.put("reason", e.getMessage());
+			status = HttpStatus.ACCEPTED;
 		}
-		return resultMap;
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Model.CommentModel;
 import com.mobilpack.manager.Model.FileModel;
 import com.mobilpack.manager.Model.PostModel;
@@ -59,8 +61,10 @@ public class AdminPostController {
 		try {
 		String admin_id = jwtService.getInfo(req.getHeader("authorization")).get("admin_id").toString();
 		post.setAdmin_id(admin_id);
-		}
-		catch(Exception e) {
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			return "JwtExpired";
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "FALSE";
 		}

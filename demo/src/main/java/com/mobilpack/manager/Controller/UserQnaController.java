@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Exception.NoinfoException;
 import com.mobilpack.manager.Model.QnaModel;
 import com.mobilpack.manager.Service.JwtService;
@@ -51,7 +52,12 @@ public class UserQnaController {
 			QnaModel model = qnaService.getQnaList(null).get(0);
 			resultMap.put("count",model.getQnaindex());
 			status = HttpStatus.OK;
-		}	catch (Exception e) {
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
+		} catch (Exception e) {
 			resultMap.put("result", false);
 			if (e.getMessage() == "Bad Request")
 				status = HttpStatus.BAD_REQUEST;
@@ -73,6 +79,11 @@ public class UserQnaController {
 			resultMap.put("permission", permission);
 			resultMap.put("QnaPostModel", target);
 			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (NoinfoException e) {
 			resultMap.put("result", false);
 			resultMap.put("reason", e.getMessage());
@@ -95,6 +106,11 @@ public class UserQnaController {
 			qnaService.deleteQnaPost(index, id);
 			resultMap.put("result", true);
 			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			resultMap.put("result", false);
 			status = HttpStatus.BAD_REQUEST;
@@ -114,6 +130,11 @@ public class UserQnaController {
 			qnaService.updateQnaPost(model,  id, index);
 			resultMap.put("result", true);
 			status = HttpStatus.OK;
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
 		} catch (Exception e) {
 			resultMap.put("result", false);
 			status = HttpStatus.BAD_REQUEST;
@@ -132,7 +153,12 @@ public class UserQnaController {
 			model.setUser_id(jwtService.getInfo(req.getHeader("Authorization")).get("user_id").toString());
 			qnaService.UserQnaWrite(model);
 			status = HttpStatus.OK;
-		}	catch (Exception e) {
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+			resultMap.put("reason", "JwtExpired");
+			status = HttpStatus.UNAUTHORIZED;
+		} catch (Exception e) {
 			resultMap.put("result", false);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
