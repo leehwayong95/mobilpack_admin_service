@@ -45,6 +45,8 @@ public class AdminRecommandService {
 		return dao.RecommandDetail(postindex);
 	}
 	//파일 다운
+	//파일 인덱스를 받아서 해당 파일에 대한 DB 정보를 받음
+	//그 DB 정보에서 파일 경로를 Resource형태로 출력
 	public Resource FileDownload(String fileindex) throws MalformedURLException {
 		FileModel path =  dao.FileDownload(fileindex);
 		String targetPath = path.getFilepath();
@@ -52,10 +54,12 @@ public class AdminRecommandService {
     	return new UrlResource(target.toURI());
 	}
 	//인덱스 불러오기
+	//postindex값을 가지고 해당 게시글의 fileindex들을 리턴
 	public List<FileModel> IndexOutput(String postindex){
 		return dao.IndexOutput(postindex);
 	}
 	//게시글 수정하기
+	//받은 postModel 형식으로 DB에 Update함
 	public String RecommandUpdate(PostModel post) {
 		try { 
 			dao.RecommandUpdate(post);
@@ -67,54 +71,67 @@ public class AdminRecommandService {
 		}
 	}
 	//파일 수정하기
+	//이제 사용 안함. 이부분은 없어도 될 것 같음
 	public void FileUpdate(FileModel file) {
 			dao.FileUpdate(file);
 	}
 	//게시글 리뷰 받기
+	//postindex를 받고 해당 게시글에 있는 commentModel들을 리스트로 리턴
 	public List<CommentModel> RecommandComments(String postindex){
 		return dao.RecommandComments(postindex);
 	}
 	//게시글 삭제
+	//postindex를 받고 해당 게시글을 삭제
 	public void RecommandDelete(String postindex) {
 		dao.RecommandDelete(postindex);
 	}
 	//게시글 리뷰 삭제
+	// postindex값을 받고 해당 게시글에 있는 리뷰들 삭제
 	public void CommentDelete(String postindex) {
 		dao.CommentDelete(postindex);
 	}
 	//파일 삭제
+	//fileindex를 받고 해당 fileindex DB를 삭제
 	public void FileDelete(String fileindex) {
 		dao.FileDelete(fileindex);
 	}
 	//번역 등록
+	//translateModel을 받고 insert함
 	public void TranslateCreate(TranslateModel translate) {
 		dao.TranslateCreate(translate);
 	}
-	//번역 등록 갱신
+	//번역 등록 수정
+	//translateModel을 insert했을 때 해당 게시글의 lnaguage filed를 수정함
 	public void UpdateTranslateCreate(TranslateModel translate) {
 		dao.UpdateTranslateCreate(translate);
 	}
 	//번역 상세 정보
+	//받은 postindex와 language에 맞는 번역 정보 리턴
 	public List<TranslateModel> TranslateInfo(String postindex,String language){
 		return dao.TranslateInfo(postindex,language);
 	}
 	//게시글 리뷰 하나 삭제
+	// commentindex에 해당하는 리뷰 하나 delete
 	public void CommentOneDelete(String commentindex) {
 		dao.CommentOneDelete(commentindex);
 	}
 	//추천장소 서비스 활성화
+	//추천장소의 state 부분을 활성화 하는 부분
 	public void StateUpdate(String postindex) {
 		dao.StateUpdate(postindex);
 	}
 	//번역 정보 수정
+	//번역 내용을 translateModel로 받고 해당 내용 update함
 	public void TranslateUpdate(TranslateModel translate) {
 		dao.TranslateUpdate(translate);
 	}
 	//번역 정보 삭제
+	//TranslateModel 받은 내용을 delete함
 	public void TranslateDelete(TranslateModel translate) {
 		dao.TranslateDelete(translate);
 	}
 	//번역 정보 삭제 갱신
+	//번역 정보에서 수정했을 떄 language부분 수정
 	public void UpdateTranslateDelete(TranslateModel translate) {
 		dao.UpdateTranslateDelete(translate);
 	}
