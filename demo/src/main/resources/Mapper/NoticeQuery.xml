@@ -11,12 +11,12 @@
 			ON a.admin_id = n.id
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
-    	<if test="language!=null and language!=''">
-    	AND n.language LIKE'%${language}%'
+    	<if test="language != null and language != ''">
+    	AND n.language LIKE '%${language}%'
     	</if>
     	<!-- 제목+내용이 빈값이 아닐때 -->
     	<if test="titlename != null and titlename != ''">
-    	AND n.title LIKE '%${titlename}%'AND n.content LIKE '%${titlename}%'
+    	AND n.title LIKE '%${titlename}%' OR n.content LIKE '%${titlename}%'
     	</if>
     	</where>
     	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
