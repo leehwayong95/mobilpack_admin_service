@@ -73,6 +73,7 @@ public class AdminPostController {
 		//쿼리문을 통해 DB에 insert함
 		try {
         service.RecommandCreate(post);
+        
 		} catch(Exception e) {
 			e.printStackTrace();
 			return "FALSE";
@@ -80,7 +81,7 @@ public class AdminPostController {
       //받은 파일을 가지고 파일 생성함
 		String result = service.FileWrite(files, post.getPostindex());
 		if(result.equals("TRUE")) {
-			return "TRUE";
+			return post.getPostindex();
 		} else {
 			return "FALSE";
 		}
