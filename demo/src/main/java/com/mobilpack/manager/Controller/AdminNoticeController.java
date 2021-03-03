@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.NoticeModel;
 import com.mobilpack.manager.Service.JwtService;
@@ -77,6 +78,9 @@ public class AdminNoticeController {
 		String adminid = null;
 		try {
 			adminid = jwtservice.getAdminID(token);
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			return "JwtExpired";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
