@@ -23,7 +23,6 @@ public class AdminManagerService {
 	// (관리자 검색) 관리자를 검색한 결과 리스트 가져오기 (페이징 포함)
 	public List<AdminModel> searchadminlist(String Currentpage, String Number, String id, String name, String createat,
 			String updateat) {
-		System.out.println( "여기가 최종 날짜 입니다."+updateat);
 		return dao.searchadminlist(Currentpage, Number, id, name, createat, updateat);
 //		try {
 //			System.out.println( createat);

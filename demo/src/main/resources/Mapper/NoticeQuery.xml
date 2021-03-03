@@ -11,12 +11,12 @@
 			ON a.admin_id = n.id
 		<where>
     	<!-- 언어가 빈값이 아닐때 -->
-    	<if test="language!=null and language!=''">
-    	AND n.language LIKE'%${language}%'
+    	<if test="language != null and language != ''">
+    	AND n.language LIKE '%${language}%'
     	</if>
     	<!-- 제목+내용이 빈값이 아닐때 -->
     	<if test="titlename != null and titlename != ''">
-    	AND n.title LIKE '%${titlename}%'AND n.content LIKE '%${titlename}%'
+    	AND n.title LIKE '%${titlename}%' OR n.content LIKE '%${titlename}%'
     	</if>
     	</where>
     	<!-- ORDER BY field(topsetting,1,0),createat DESC) -->
@@ -29,7 +29,7 @@
 
 	<!-- 공지사항 상세 -->
 	<select id="detailnotice" parameterType="String" resultType='com.mobilpack.manager.Model.NoticeModel'>
-		SELECT a.name, n.postindex, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
+		SELECT a.name, n.postindex,n.language, n.id, n.enabled, n.title, n.content, n.topsetting, n.createat, n.updateat, n.viewcount
 		FROM notice AS n 
 		LEFT OUTER JOIN admin AS a
 			ON a.admin_id = n.id
@@ -39,6 +39,12 @@
 	<update id="stopposting" parameterType="String">
 		UPDATE notice
 		SET enabled='0'
+		WHERE postindex=${postindex}
+	</update>
+	<!-- 공지사항 게시재개 -->
+	<update id="Resumeposting" parameterType="String">
+		UPDATE notice
+		SET enabled='1'
 		WHERE postindex=${postindex}
 	</update>
 	<!-- 공지사항 작성 -->
@@ -55,7 +61,7 @@
 	<!-- 공지사항 수정 -->
 	<update id="editnotice" parameterType="String">
 		UPDATE notice
-		SET id='${id}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}'
+		SET id='${id}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}',updateat = NOW()
 		WHERE postindex=${postindex}
 	</update>
 	<!-- 공지사항 삭제 -->

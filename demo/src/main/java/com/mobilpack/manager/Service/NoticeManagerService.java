@@ -30,6 +30,10 @@ public class NoticeManagerService {
     public void stopposting(String postindex) {
     dao.stopposting(postindex);
     }
+    //(공지사항 게시재개)
+    public void Resumeposting(String postindex) {
+    dao.Resumeposting(postindex);
+    }
     //(공지사항 작성)
     public void insertnotice(String id,String topsetting,String language,String title,String content) {
     	dao.insertnotice(id,topsetting,language,title,content);
