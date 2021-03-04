@@ -24,19 +24,15 @@ public class NoticeManagerService {
     }
     //(공지사항 조회수 증가)
     public void plusviewcount(String postindex) {
-    dao.plusviewcount(postindex);
+    	dao.plusviewcount(postindex);
     }
-    //(공지사항 게시중단)
+    //(공지사항 게시 토글)
     public void stopposting(String postindex) {
-    dao.stopposting(postindex);
-    }
-    //(공지사항 게시재개)
-    public void Resumeposting(String postindex) {
-    dao.Resumeposting(postindex);
+    	dao.stopposting(postindex);
     }
     //(공지사항 작성)
-    public void insertnotice(String id,String topsetting,String language,String title,String content) {
-    	dao.insertnotice(id,topsetting,language,title,content);
+    public void insertnotice(NoticeModel notice) {
+    	dao.insertnotice(notice);
     }
     //(공지사항 수정)
     public void editnotice(String postindex,String id,String language,String title,String content,String topsetting) {

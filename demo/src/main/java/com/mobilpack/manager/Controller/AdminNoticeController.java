@@ -83,10 +83,11 @@ public class AdminNoticeController {
 			return "JwtExpired";
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "FALSE";
 		}
-		noticeservice.insertnotice(adminid, notice.getTopsetting(), notice.getLanguage(), notice.getTitle(),
-				notice.getContent());
-		String check = "TRUE";
+		notice.setId(adminid);
+		noticeservice.insertnotice(notice);
+		String check = notice.getPostindex();
 		return check;
 	}
 
