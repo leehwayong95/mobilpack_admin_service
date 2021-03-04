@@ -99,7 +99,6 @@ public class AdminLoginController {
 	@GetMapping("/info")//로그인 정보 조회
 	public ResponseEntity<Map<String, Object>> getMyInfo(
 			HttpServletRequest req) {
-		System.out.println("hEllo");
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobilpack.manager.Exception.JwtExpiredException;
 import com.mobilpack.manager.Model.AdminModel;
 import com.mobilpack.manager.Model.NoticeModel;
 import com.mobilpack.manager.Service.JwtService;
@@ -77,12 +78,16 @@ public class AdminNoticeController {
 		String adminid = null;
 		try {
 			adminid = jwtservice.getAdminID(token);
+		} catch (JwtExpiredException e) {
+			e.printStackTrace();
+			return "JwtExpired";
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "FALSE";
 		}
-		noticeservice.insertnotice(adminid, notice.getTopsetting(), notice.getLanguage(), notice.getTitle(),
-				notice.getContent());
-		String check = "TRUE";
+		notice.setId(adminid);
+		noticeservice.insertnotice(notice);
+		String check = notice.getPostindex();
 		return check;
 	}
 
@@ -106,13 +111,6 @@ public class AdminNoticeController {
 	 return "ok";
 	 }
 	
-	// (공지사항 게시재개)
-	@PostMapping("/Resumeposting")
-	 public String Resumeposting(@RequestBody NoticeModel notice) {
-	 noticeservice.Resumeposting( notice.getPostindex()); 
-	 return "ok";
-	 }
-	 
 	// (공지사항 삭제)
 	@PostMapping("/delete")
 	public String deletenotice(@RequestBody NoticeModel notice) {
