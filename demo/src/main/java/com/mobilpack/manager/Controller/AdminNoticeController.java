@@ -110,13 +110,6 @@ public class AdminNoticeController {
 	 return "ok";
 	 }
 	
-	// (공지사항 게시재개)
-	@PostMapping("/Resumeposting")
-	 public String Resumeposting(@RequestBody NoticeModel notice) {
-	 noticeservice.Resumeposting( notice.getPostindex()); 
-	 return "ok";
-	 }
-	 
 	// (공지사항 삭제)
 	@PostMapping("/delete")
 	public String deletenotice(@RequestBody NoticeModel notice) {

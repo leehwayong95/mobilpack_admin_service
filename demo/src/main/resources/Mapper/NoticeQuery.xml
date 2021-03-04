@@ -38,19 +38,16 @@
 	<!-- 공지사항 게시중단 -->
 	<update id="stopposting" parameterType="String">
 		UPDATE notice
-		SET enabled='0'
-		WHERE postindex=${postindex}
-	</update>
-	<!-- 공지사항 게시재개 -->
-	<update id="Resumeposting" parameterType="String">
-		UPDATE notice
-		SET enabled='1'
+		SET enabled = !enabled
 		WHERE postindex=${postindex}
 	</update>
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="String">
 		INSERT into notice(id,topsetting,language,title,content)
 		VALUES('${id}','${topsetting}','${language}','${title}',#{content});
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">  
+        select postindex FROM dual
+        </selectKey>
 	</insert>
 	<!-- 공지사항 조회수 +1 -->
 	<update id="plusviewcount" parameterType="String">
