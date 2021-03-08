@@ -44,7 +44,7 @@
 	<!-- 공지사항 작성 -->
 	 <insert id="insertnotice" parameterType="com.mobilpack.manager.Model.NoticeModel" useGeneratedKeys="true" keyProperty="postindex">
 		INSERT into notice(id,topsetting,language,title,content)
-		VALUES('${id}','${topsetting}','${language}','${title}', '${content}');
+		VALUES('${id}','${topsetting}','${language}','${title}', #{content});
 		<!--selectKey keyProperty="no" resultType="int" order="BEFORE">  
         	select postindex FROM dual
         </selectKey-->
