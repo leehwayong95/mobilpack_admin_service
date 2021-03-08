@@ -58,7 +58,7 @@
 	<!-- 공지사항 수정 -->
 	<update id="editnotice" parameterType="String">
 		UPDATE notice
-		SET id='${id}',language='${language}',title='${title}',content='${content}',topsetting='${topsetting}',updateat = NOW()
+		SET id='${id}',language='${language}',title='${title}',content=#{content},topsetting='${topsetting}',updateat = NOW()
 		WHERE postindex=${postindex}
 	</update>
 	<!-- 공지사항 삭제 -->
